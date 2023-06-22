@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "899488201348",
+    "project_id": "quizwhizz-b593e",
+    "storage_bucket": "quizwhizz-b593e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:899488201348:android:4be9e30ac7a0a7fd7720d1",
+        "android_client_info": {
+          "package_name": "com.da2.tdtu.quizwhizz.quizwhizz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "899488201348-bdad1kklqcj78eee8nvfhcuf8knfqu2t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgJTRczcOl_K5xiF70PsCKvGIv3Kq0a3g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "899488201348-bdad1kklqcj78eee8nvfhcuf8knfqu2t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "899488201348-q8g2cu76bf8cmpbjq10h0ecu703210st.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.da2.tdtu.quizwhizz.quizwhizz"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:899488201348:android:23bc2621b841d6627720d1",
+        "android_client_info": {
+          "package_name": "com.tdtu.da2.g160.whizz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "899488201348-bdad1kklqcj78eee8nvfhcuf8knfqu2t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgJTRczcOl_K5xiF70PsCKvGIv3Kq0a3g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "899488201348-bdad1kklqcj78eee8nvfhcuf8knfqu2t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "899488201348-q8g2cu76bf8cmpbjq10h0ecu703210st.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.da2.tdtu.quizwhizz.quizwhizz"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
