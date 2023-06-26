@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "899488201348-bdad1kklqcj78eee8nvfhcuf8knfqu2t.apps.googleusercontent.com",
+          "client_id": "899488201348-8roa2ps27l56ubl25t4a3sskit6qfsct.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.da2.tdtu.quizwhizz.quizwhizz",
+            "certificate_hash": "4e34ebf19e405af7933667a54e464c30bdd6e3cf"
+          }
+        },
+        {
+          "client_id": "899488201348-pk1l1no9jeah8dd3e4crmosb1fk5f9tu.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -50,7 +58,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "899488201348-bdad1kklqcj78eee8nvfhcuf8knfqu2t.apps.googleusercontent.com",
+          "client_id": "899488201348-pk1l1no9jeah8dd3e4crmosb1fk5f9tu.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
