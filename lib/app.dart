@@ -8,6 +8,7 @@ import 'package:whizz/src/features/auth/data/repositories/auth_repository.dart';
 import 'package:whizz/src/features/auth/ui/auth_screen.dart';
 import 'package:whizz/src/gen/colors.gen.dart';
 import 'package:whizz/src/gen/fonts.gen.dart';
+import 'package:whizz/src/router/app_router.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -20,9 +21,12 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => AuthCubit(AuthenticationRepository()))
       ],
       child: ScreenUtilInit(
-        builder: (context, child) => MaterialApp(
+        builder: (context, child) => MaterialApp.router(
           title: 'Quizwhizz',
           debugShowCheckedModeBanner: false,
+          routeInformationProvider: AppRouter.router.routeInformationProvider,
+          routeInformationParser: AppRouter.router.routeInformationParser,
+          routerDelegate: AppRouter.router.routerDelegate,
           theme: ThemeData(
             fontFamily: FontFamily.montserrat,
             colorScheme: ColorScheme.fromSeed(
@@ -33,7 +37,6 @@ class MyApp extends StatelessWidget {
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           locale: const Locale('vi'),
-          home: child,
         ),
         child: const AuthScreen(),
       ),

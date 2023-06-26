@@ -68,4 +68,8 @@ class AuthCubit extends Cubit<AuthState> {
       emit(state.copyWith(status: FormzSubmissionStatus.failure));
     }
   }
+
+  Future<void> signOut() async {
+    await _authenticationRepository.logout();
+  }
 }
