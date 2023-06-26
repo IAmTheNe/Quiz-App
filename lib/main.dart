@@ -4,11 +4,10 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:whizz/app.dart';
 import 'package:whizz/firebase_options.dart';
 
-void main() {
+void main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
-

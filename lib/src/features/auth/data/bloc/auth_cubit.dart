@@ -47,8 +47,12 @@ class AuthCubit extends Cubit<AuthState> {
     } on SignInWithEmailAndPasswordException catch (e) {
       emit(state.copyWith(
           errorMessage: e.message, status: FormzSubmissionStatus.failure));
-    } catch (_) {
-      emit(state.copyWith(status: FormzSubmissionStatus.failure));
+    } catch (e) {
+      emit(
+        state.copyWith(
+            status: FormzSubmissionStatus.failure,
+            errorMessage: 'Unknown Error'),
+      );
     }
   }
 

@@ -69,6 +69,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '899488201348',
     projectId: 'quizwhizz-b593e',
     storageBucket: 'quizwhizz-b593e.appspot.com',
+    androidClientId: '899488201348-8roa2ps27l56ubl25t4a3sskit6qfsct.apps.googleusercontent.com',
     iosClientId: '899488201348-uhja4n8v0t0b0acoifnr9ln19g8ull3q.apps.googleusercontent.com',
     iosBundleId: 'com.tdtu.da2.g160.whizz',
   );

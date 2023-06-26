@@ -5,7 +5,7 @@ enum PasswordValidationError { invalid }
 class Password extends FormzInput<String, PasswordValidationError> {
   const Password.dirty([super.value = '']) : super.dirty();
 
-  const Password.pure([super.value = '']) : super.pure();
+  const Password.pure() : super.pure('');
 
   static final _passwordRegex = RegExp(
       r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$');

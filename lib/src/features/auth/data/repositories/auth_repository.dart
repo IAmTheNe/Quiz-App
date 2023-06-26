@@ -69,9 +69,11 @@ class AuthenticationRepository {
   }) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: password);
+        email: email,
+        password: password,
+      );
     } on firebase_auth.FirebaseAuthException catch (e) {
-      throw SignInWithEmailAndPasswordException(e.code);
+      throw SignInWithEmailAndPasswordException.fromCode(e.code);
     } catch (_) {
       throw const SignInWithEmailAndPasswordException();
     }
