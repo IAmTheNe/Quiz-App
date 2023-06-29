@@ -1,4 +1,13 @@
-part of 'auth_screen.dart';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:formz/formz.dart';
+import 'package:whizz/src/common/constants/constants.dart';
+import 'package:whizz/src/common/shared/shared_widget.dart';
+import 'package:whizz/src/features/auth/data/bloc/login/login_cubit.dart';
+import 'package:whizz/src/gen/assets.gen.dart';
+import 'package:whizz/src/gen/colors.gen.dart';
 
 class LoginSection extends StatelessWidget {
   const LoginSection({
@@ -7,7 +16,7 @@ class LoginSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthCubit, AuthState>(
+    return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
         if (state.status.isFailure) {
           ScaffoldMessenger.of(context)
@@ -32,84 +41,88 @@ class LoginSection extends StatelessWidget {
               topRight: Radius.circular(24),
             ),
           ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 32.w),
-            child: Column(
-              children: [
-                Distance(
-                  height: 24.h,
-                ),
-                Text(
-                  'Đăng nhập',
-                  style: TextStyle(
-                    fontSize: 24.sp,
-                    fontWeight: FontWeight.w700,
-                    color: CustomColors.darkBrown,
+          child: Card(
+            elevation: 0,
+            margin: EdgeInsets.zero,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 32.w),
+              child: Column(
+                children: [
+                  Distance(
+                    height: 24.h,
                   ),
-                ),
-                Distance(
-                  height: 16.h,
-                ),
-                const EmailField(),
-                Distance(
-                  height: 12.h,
-                ),
-                const PasswordField(),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: TextButton(
-                    onPressed: () {},
-                    style: ButtonStyle(
-                      overlayColor: MaterialStateColor.resolveWith(
-                          (states) => Colors.transparent),
+                  Text(
+                    'Đăng nhập',
+                    style: TextStyle(
+                      fontSize: 24.sp,
+                      fontWeight: FontWeight.w700,
+                      color: Constants.primaryColor,
                     ),
-                    child: Text(
-                      'Quên mật khẩu',
-                      style: TextStyle(
-                        color: const Color(0xFF0000FF).withOpacity(.6),
-                        fontWeight: FontWeight.w700,
+                  ),
+                  Distance(
+                    height: 16.h,
+                  ),
+                  const EmailField(),
+                  Distance(
+                    height: 12.h,
+                  ),
+                  const PasswordField(),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: TextButton(
+                      onPressed: () {},
+                      style: ButtonStyle(
+                        overlayColor: MaterialStateColor.resolveWith(
+                            (states) => Colors.transparent),
                       ),
-                    ),
-                  ),
-                ),
-                Distance(
-                  height: 20.h,
-                ),
-                const LoginButton(),
-                Distance(
-                  height: 20.h,
-                ),
-                Text(
-                  'Hoặc đăng nhập với',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: CustomColors.darkBrown,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Distance(
-                  height: 8.h,
-                ),
-                const AnotherMethodLoginSection(),
-                const Spacer(),
-                const Text.rich(
-                  TextSpan(
-                    text: 'Bạn không có tài khoản? ',
-                    children: [
-                      TextSpan(
-                        text: 'Đăng ký ngay',
+                      child: Text(
+                        'Quên mật khẩu',
                         style: TextStyle(
+                          color: const Color(0xFF0000FF).withOpacity(.6),
                           fontWeight: FontWeight.w700,
-                          color: Color(0xFF0000FF),
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-                Distance(
-                  height: 32.h,
-                ),
-              ],
+                  Distance(
+                    height: 20.h,
+                  ),
+                  const LoginButton(),
+                  Distance(
+                    height: 20.h,
+                  ),
+                  Text(
+                    'Hoặc đăng nhập với',
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: Constants.primaryColor,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Distance(
+                    height: 8.h,
+                  ),
+                  const AnotherMethodLoginSection(),
+                  const Spacer(),
+                  const Text.rich(
+                    TextSpan(
+                      text: 'Bạn không có tài khoản? ',
+                      children: [
+                        TextSpan(
+                          text: 'Đăng ký ngay',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFF0000FF),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Distance(
+                    height: 32.h,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -130,7 +143,7 @@ class AnotherMethodLoginSection extends StatelessWidget {
       children: [
         InkWell(
           onTap: () {
-            context.read<AuthCubit>().loginWithGoogle();
+            context.read<LoginCubit>().loginWithGoogle();
           },
           child: Assets.images.loginGoogle.image(),
         ),
@@ -148,12 +161,12 @@ class LoginButton extends StatelessWidget {
 
   void login(BuildContext context) {
     FocusScope.of(context).unfocus();
-    context.read<AuthCubit>().loginWithCredentials();
+    context.read<LoginCubit>().loginWithCredentials();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthCubit, AuthState>(
+    return BlocBuilder<LoginCubit, LoginState>(
       builder: (context, state) {
         return (state.status.isInProgress)
             ? const CircularProgressIndicator.adaptive()
@@ -173,18 +186,18 @@ class PasswordField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthCubit, AuthState>(
+    return BlocBuilder<LoginCubit, LoginState>(
         buildWhen: (previous, current) => previous.password != current.password,
         builder: (context, state) {
           return TextField(
             obscureText: true,
             onChanged: (value) {
-              context.read<AuthCubit>().passwordChanged(value);
+              context.read<LoginCubit>().passwordChanged(value);
             },
             decoration: InputDecoration(
               isDense: true,
               filled: true,
-              fillColor: CustomColors.paleGray,
+              fillColor: Palettes.paleGray,
               border: const OutlineInputBorder(
                 borderSide: BorderSide.none,
                 borderRadius: BorderRadius.all(
@@ -209,19 +222,19 @@ class EmailField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthCubit, AuthState>(
+    return BlocBuilder<LoginCubit, LoginState>(
       buildWhen: (previous, current) => previous.email != current.email,
       builder: (context, state) {
         return TextField(
           key: const Key('loginForm_emailInput_textField'),
           onChanged: (value) {
-            context.read<AuthCubit>().emailChanged(value);
+            context.read<LoginCubit>().emailChanged(value);
           },
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             isDense: true,
             filled: true,
-            fillColor: CustomColors.paleGray,
+            fillColor: Palettes.paleGray,
             border: const OutlineInputBorder(
               borderSide: BorderSide.none,
               borderRadius: BorderRadius.all(

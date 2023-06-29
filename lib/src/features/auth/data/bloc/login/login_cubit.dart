@@ -8,10 +8,10 @@ import 'package:whizz/src/features/auth/data/repositories/auth_repository.dart';
 
 import 'package:whizz/src/features/auth/data/exceptions/auth_exception.dart';
 
-part 'auth_state.dart';
+part 'login_state.dart';
 
-class AuthCubit extends Cubit<AuthState> {
-  AuthCubit(this._authenticationRepository) : super(const AuthState());
+class LoginCubit extends Cubit<LoginState> {
+  LoginCubit(this._authenticationRepository) : super(const LoginState());
 
   final AuthenticationRepository _authenticationRepository;
 

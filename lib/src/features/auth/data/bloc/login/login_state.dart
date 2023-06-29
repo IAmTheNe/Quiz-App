@@ -1,7 +1,7 @@
-part of 'auth_cubit.dart';
+part of 'login_cubit.dart';
 
-class AuthState extends Equatable {
-  const AuthState({
+class LoginState extends Equatable {
+  const LoginState({
     this.email = const Email.pure(),
     this.password = const Password.pure(),
     this.status = FormzSubmissionStatus.initial,
@@ -18,14 +18,14 @@ class AuthState extends Equatable {
   @override
   List<Object?> get props => [email, password, status, isValid, errorMessage];
 
-  AuthState copyWith({
+  LoginState copyWith({
     Email? email,
     Password? password,
     FormzSubmissionStatus? status,
     bool? isValid,
     String? errorMessage,
   }) {
-    return AuthState(
+    return LoginState(
       email: email ?? this.email,
       password: password ?? this.password,
       status: status ?? this.status,

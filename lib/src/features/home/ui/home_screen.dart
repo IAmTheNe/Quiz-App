@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:whizz/src/features/auth/data/bloc/auth_cubit.dart';
+import 'package:whizz/src/features/auth/data/bloc/login/login_cubit.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -13,7 +13,7 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              context.read<AuthCubit>().signOut();
+              context.read<LoginCubit>().signOut();
             },
             icon: const Icon(Icons.logout),
           ),

@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:whizz/src/features/auth/data/bloc/auth_cubit.dart';
+import 'package:whizz/src/features/auth/data/bloc/login/login_cubit.dart';
 import 'package:whizz/src/features/auth/data/models/user.dart';
 import 'package:whizz/src/features/auth/data/repositories/auth_repository.dart';
-import 'package:whizz/src/features/auth/ui/auth_screen.dart';
+import 'package:whizz/src/features/auth/ui/login/login_screen.dart';
 import 'package:whizz/src/features/home/ui/home_screen.dart';
 
 enum RouterPath {
@@ -46,8 +46,8 @@ class AppRouter {
         path: '/auth',
         name: RouterPath.login.name,
         builder: (context, state) => BlocProvider(
-          create: (_) => AuthCubit(_authRepo),
-          child: const AuthScreen(),
+          create: (_) => LoginCubit(_authRepo),
+          child: const LoginScreen(),
         ),
       ),
       GoRoute(
@@ -63,8 +63,6 @@ class AppRouter {
 
   static GoRouter get router => _router;
 }
-
-
 
 class GoRouterRefreshStream extends ChangeNotifier {
   GoRouterRefreshStream(Stream<dynamic> stream) {

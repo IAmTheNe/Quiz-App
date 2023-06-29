@@ -134,6 +134,6 @@ flutter_gen:
   colors:
     enabled: true
     outputs:
-      class_name: CustomColors
+      class_name: Palettes
     inputs:
       - assets/colors/colors.xml

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:whizz/src/gen/colors.gen.dart';
+import 'package:whizz/src/common/constants/constants.dart';
 
 class Distance extends StatelessWidget {
   const Distance({
@@ -39,7 +39,7 @@ class CustomButton extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         minimumSize: const Size.fromHeight(45),
-        backgroundColor: CustomColors.darkBrown,
+        backgroundColor: Constants.primaryColor,
       ),
       child: Text(
         title,

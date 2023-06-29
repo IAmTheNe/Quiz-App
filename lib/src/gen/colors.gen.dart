@@ -10,8 +10,8 @@
 import 'package:flutter/painting.dart';
 import 'package:flutter/material.dart';
 
-class CustomColors {
-  CustomColors._();
+class Palettes {
+  Palettes._();
 
   /// Color: #61463B
   static const Color darkBrown = Color(0xFF61463B);

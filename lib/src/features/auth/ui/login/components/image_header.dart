@@ -1,4 +1,7 @@
-part of 'auth_screen.dart';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:whizz/src/gen/assets.gen.dart';
 
 class ImageHeader extends StatelessWidget {
   const ImageHeader({
