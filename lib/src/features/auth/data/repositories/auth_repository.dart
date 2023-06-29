@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:whizz/src/features/auth/data/exceptions/auth_exception.dart';
-import 'package:whizz/src/modules/cache.dart';
 
-import 'package:whizz/src/features/auth/data/models/user.dart';
+import 'package:whizz/src/features/auth/data/exceptions/auth_exception.dart';
 import 'package:whizz/src/features/auth/data/extensions/auth_extension.dart';
+import 'package:whizz/src/features/auth/data/models/user.dart';
+import 'package:whizz/src/modules/cache.dart';
 
 class AuthenticationRepository {
   AuthenticationRepository({
@@ -38,6 +38,8 @@ class AuthenticationRepository {
     return _cache.read<User>(key: 'user') ?? User.empty;
   }
 
+  /// The function `loginWithGoogle` handles the login process using Google authentication in a Flutter
+  /// app, supporting both web and mobile platforms.
   Future<void> loginWithGoogle() async {
     try {
       late final firebase_auth.AuthCredential credential;
@@ -63,13 +65,20 @@ class AuthenticationRepository {
     }
   }
 
+  /// The function `loginWithEmailAndPassword` attempts to sign in a user with their email and password
+  /// using Firebase Authentication, and throws an exception if there is an error.
+  ///
+  /// Args:
+  ///   email (String): A string representing the user's email address.
+  ///   password (String): The password parameter is a required string that represents the user's
+  /// password for authentication.
   Future<void> loginWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
-        email: email,
+        email: email.trim(),
         password: password,
       );
     } on firebase_auth.FirebaseAuthException catch (e) {
@@ -79,6 +88,7 @@ class AuthenticationRepository {
     }
   }
 
+  /// The function `logout` signs out the user from both Firebase authentication and Google sign-in.
   Future<void> logout() async {
     try {
       await Future.wait([
@@ -86,7 +96,42 @@ class AuthenticationRepository {
         _googleSignIn.signOut(),
       ]);
     } catch (_) {
-      // TODO: THÊM EXCEPTION CHO LOGOUT
+      throw LogoutException();
     }
+  }
+
+  /// The function `signUp` attempts to create a new user account using the provided email and password,
+  /// and throws exceptions if there are any errors.
+  ///
+  /// Args:
+  ///   email (String): A required parameter of type String that represents the email address of the
+  /// user signing up.
+  ///   password (String): The password parameter is a required string that represents the user's
+  /// password for the sign-up process.
+  Future<void> signUp({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      await _firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      throw SignUpWithEmailAndPasswordException.fromCode(e.code);
+    } catch (_) {
+      throw const SignInWithEmailAndPasswordException();
+    }
+  }
+
+  /// The function sends an email verification to the current user.
+  Future<void> sendEmailVerification() async {
+    await _firebaseAuth.currentUser!.sendEmailVerification();
+  }
+
+  /// The current user's email is verified or not.
+  Future<bool> get emailVerified async {
+    await _firebaseAuth.currentUser!.reload();
+    return _firebaseAuth.currentUser!.emailVerified;
   }
 }

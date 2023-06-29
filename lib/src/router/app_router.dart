@@ -8,12 +8,15 @@ import 'package:whizz/src/features/auth/data/bloc/login/login_cubit.dart';
 import 'package:whizz/src/features/auth/data/models/user.dart';
 import 'package:whizz/src/features/auth/data/repositories/auth_repository.dart';
 import 'package:whizz/src/features/auth/ui/login/login_screen.dart';
+import 'package:whizz/src/features/auth/ui/signup/signup_screen.dart';
+import 'package:whizz/src/features/auth/ui/verify_email/verify_email_screen.dart';
 import 'package:whizz/src/features/home/ui/home_screen.dart';
 
 enum RouterPath {
   home,
   login,
   register,
+  verifyEmail,
   noConnection,
   error,
 }
@@ -25,17 +28,17 @@ class AppRouter {
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
-    initialLocation: '/auth',
+    initialLocation: '/login',
     navigatorKey: _rootNavigatorKey,
     redirect: (context, state) {
       final isLoggedIn = _authRepo.currentUser != User.empty;
       if (isLoggedIn) {
-        if (state.matchedLocation == '/auth') {
-          return '/home';
+        if (state.matchedLocation == '/login') {
+          return '/verify';
         }
       } else {
-        if (state.matchedLocation == '/home') {
-          return '/auth';
+        if (state.matchedLocation == '/verify') {
+          return '/login';
         }
       }
       return null;
@@ -43,9 +46,9 @@ class AppRouter {
     refreshListenable: GoRouterRefreshStream(_authRepo.user),
     routes: [
       GoRoute(
-        path: '/auth',
+        path: '/login',
         name: RouterPath.login.name,
-        builder: (context, state) => BlocProvider(
+        builder: (_, state) => BlocProvider(
           create: (_) => LoginCubit(_authRepo),
           child: const LoginScreen(),
         ),
@@ -53,9 +56,25 @@ class AppRouter {
       GoRoute(
         path: '/home',
         name: RouterPath.home.name,
-        pageBuilder: (context, state) => MaterialPage(
+        pageBuilder: (_, state) => MaterialPage(
           key: state.pageKey,
           child: const HomeScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/sign_up',
+        name: RouterPath.register.name,
+        pageBuilder: (_, state) => MaterialPage(
+          key: state.pageKey,
+          child: const SignUpScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/verify',
+        name: RouterPath.verifyEmail.name,
+        pageBuilder: (_, state) => MaterialPage(
+          key: state.pageKey,
+          child: const VerificationEmailScreen(),
         ),
       ),
     ],

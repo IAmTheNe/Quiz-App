@@ -4,21 +4,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
+import 'package:whizz/src/common/extensions/extension.dart';
 import 'package:whizz/src/common/shared/shared_widget.dart';
 import 'package:whizz/src/features/auth/data/bloc/login/login_cubit.dart';
+import 'package:whizz/src/features/auth/data/bloc/register/signup_cubit.dart';
 import 'package:whizz/src/gen/assets.gen.dart';
 import 'package:whizz/src/gen/colors.gen.dart';
 import 'package:whizz/src/router/app_router.dart';
-import 'package:whizz/src/common/extensions/extension.dart';
 
-class LoginSection extends StatelessWidget {
-  const LoginSection({
-    super.key,
-  });
+class SignUpSection extends StatelessWidget {
+  const SignUpSection({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginCubit, LoginState>(
+    return BlocListener<SignUpCubit, SignUpState>(
       listener: (context, state) {
         if (state.status.isFailure) {
           context.showSnackBar(state.errorMessage ?? 'Authentication Failed!');
@@ -48,7 +47,7 @@ class LoginSection extends StatelessWidget {
                     height: 24.h,
                   ),
                   Text(
-                    'Đăng nhập',
+                    'Đăng ký',
                     style: TextStyle(
                       fontSize: 24.sp,
                       fontWeight: FontWeight.w700,
@@ -63,27 +62,14 @@ class LoginSection extends StatelessWidget {
                     height: 12.h,
                   ),
                   const PasswordField(),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: TextButton(
-                      onPressed: () {},
-                      style: ButtonStyle(
-                        overlayColor: MaterialStateColor.resolveWith(
-                            (states) => Colors.transparent),
-                      ),
-                      child: Text(
-                        'Quên mật khẩu',
-                        style: TextStyle(
-                          color: const Color(0xFF0000FF).withOpacity(.6),
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
+                  Distance(
+                    height: 12.h,
                   ),
+                  const ConfirmedPasswordField(),
                   Distance(
                     height: 20.h,
                   ),
-                  const LoginButton(),
+                  const SignUpButton(),
                   Distance(
                     height: 20.h,
                   ),
@@ -102,14 +88,14 @@ class LoginSection extends StatelessWidget {
                   const Spacer(),
                   GestureDetector(
                     onTap: () {
-                      context.pushNamed(RouterPath.register.name);
+                      context.goNamed(RouterPath.login.name);
                     },
                     child: const Text.rich(
                       TextSpan(
-                        text: 'Bạn không có tài khoản? ',
+                        text: 'Bạn đã có tài khoản? ',
                         children: [
                           TextSpan(
-                            text: 'Đăng ký ngay',
+                            text: 'Đăng nhập ngay',
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               color: Color(0xFF0000FF),
@@ -155,25 +141,25 @@ class AnotherMethodLoginSection extends StatelessWidget {
   }
 }
 
-class LoginButton extends StatelessWidget {
-  const LoginButton({
+class SignUpButton extends StatelessWidget {
+  const SignUpButton({
     super.key,
   });
 
-  void login(BuildContext context) {
+  void register(BuildContext context) {
     FocusScope.of(context).unfocus();
-    context.read<LoginCubit>().loginWithCredentials();
+    context.read<SignUpCubit>().signUpSubmitted();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginState>(
+    return BlocBuilder<SignUpCubit, SignUpState>(
       builder: (context, state) {
         return (state.status.isInProgress)
             ? const CircularProgressIndicator.adaptive()
             : CustomButton(
-                onPressed: state.isValid ? () => login(context) : null,
-                title: 'Đăng nhập',
+                onPressed: state.isValid ? () => register(context) : null,
+                title: 'Đăng ký ngay',
               );
       },
     );
@@ -187,13 +173,13 @@ class PasswordField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginState>(
+    return BlocBuilder<SignUpCubit, SignUpState>(
         buildWhen: (previous, current) => previous.password != current.password,
         builder: (context, state) {
           return TextField(
             obscureText: true,
             onChanged: (value) {
-              context.read<LoginCubit>().passwordChanged(value);
+              context.read<SignUpCubit>().passwordChanged(value);
             },
             decoration: InputDecoration(
               isDense: true,
@@ -223,13 +209,13 @@ class EmailField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginState>(
+    return BlocBuilder<SignUpCubit, SignUpState>(
       buildWhen: (previous, current) => previous.email != current.email,
       builder: (context, state) {
         return TextField(
-          key: const Key('loginForm_emailInput_textField'),
+          key: const Key('signUpForm_emailInput_textField'),
           onChanged: (value) {
-            context.read<LoginCubit>().emailChanged(value);
+            context.read<SignUpCubit>().emailChanged(value);
           },
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
@@ -246,6 +232,44 @@ class EmailField extends StatelessWidget {
             hintText: 'Email',
             errorText:
                 state.email.displayError != null ? 'Invalid Email' : null,
+          ),
+        );
+      },
+    );
+  }
+}
+
+class ConfirmedPasswordField extends StatelessWidget {
+  const ConfirmedPasswordField({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SignUpCubit, SignUpState>(
+      buildWhen: (previous, current) => previous.email != current.email,
+      builder: (context, state) {
+        return TextField(
+          key: const Key('signUpForm_confirmedPasswordInput_textField'),
+          obscureText: true,
+          onChanged: (value) {
+            context.read<SignUpCubit>().confirmedPasswordChanged(value);
+          },
+          decoration: InputDecoration(
+            isDense: true,
+            filled: true,
+            fillColor: Palettes.paleGray,
+            border: const OutlineInputBorder(
+              borderSide: BorderSide.none,
+              borderRadius: BorderRadius.all(
+                Radius.circular(32),
+              ),
+            ),
+            prefixIcon: const Icon(Icons.lock),
+            hintText: 'Nhập lại mật khẩu',
+            errorText: state.confirmedPassword.displayError != null
+                ? 'Invalid Password'
+                : null,
           ),
         );
       },

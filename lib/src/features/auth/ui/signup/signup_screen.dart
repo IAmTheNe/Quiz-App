@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:whizz/src/common/shared/shared_widget.dart';
+import 'package:whizz/src/features/auth/ui/signup/components/signup_section.dart';
 
-import 'package:whizz/src/features/auth/ui/login/components/login_section.dart';
-
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class SignUpScreen extends StatelessWidget {
+  const SignUpScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    FlutterNativeSplash.remove();
     return Scaffold(
       body: SingleChildScrollView(
         child: Stack(
@@ -19,7 +16,7 @@ class LoginScreen extends StatelessWidget {
               height: 1.sh,
             ),
             const ImageHeader(),
-            const LoginSection(),
+            const SignUpSection(),
           ],
         ),
       ),
