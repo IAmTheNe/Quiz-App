@@ -124,14 +124,16 @@ class AuthenticationRepository {
     }
   }
 
-  /// The function sends an email verification to the current user.
-  Future<void> sendEmailVerification() async {
-    await _firebaseAuth.currentUser!.sendEmailVerification();
+  /// The function reloads the current user's data from Firebase Authentication.
+  Future<void> reload() async {
+    await _firebaseAuth.currentUser?.reload();
   }
 
-  /// The current user's email is verified or not.
-  Future<bool> get emailVerified async {
-    await _firebaseAuth.currentUser!.reload();
-    return _firebaseAuth.currentUser!.emailVerified;
+  /// The current user's email has been verified or not. Default `false`.
+  bool get isEmailVerified => _firebaseAuth.currentUser?.emailVerified ?? false;
+
+ /// The function sends an email verification to the current user if they are logged in.
+  void sendEmailVerification() {
+    _firebaseAuth.currentUser?.sendEmailVerification();
   }
 }

@@ -1,30 +1,21 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whizz/src/features/auth/data/repositories/auth_repository.dart';
 
-part 'verify_email_state.dart';
-
-class VerifyEmailCubit extends Cubit<VerifyEmailState> {
+final class VerifyEmailCubit extends Cubit<bool> {
   VerifyEmailCubit(this._authenticationRepository)
-      : super(const VerifyEmailState());
+      : super(_authenticationRepository.isEmailVerified);
 
   final AuthenticationRepository _authenticationRepository;
 
-  Future<bool> get isEmailVerified async =>
-      await _authenticationRepository.emailVerified;
-
-  void sendEmailVerified() async {
-    await _authenticationRepository.sendEmailVerification();
+  void checkEmailVerified() {
+    _authenticationRepository
+        .reload()
+        .then((_) => emit(_authenticationRepository.isEmailVerified));
   }
 
-  void checkEmailVerified() async {
-    emit(
-      VerifyEmailState(
-          isVerified: await _authenticationRepository.emailVerified),
-    );
+  void sendEmailVerification() {
+    _authenticationRepository.sendEmailVerification();
   }
 
-  void cancel() async {
-    await _authenticationRepository.logout();
-  }
+  bool get emailVerified => _authenticationRepository.isEmailVerified;
 }

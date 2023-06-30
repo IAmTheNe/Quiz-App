@@ -21,21 +21,24 @@ class VerificationEmailScreen extends StatefulWidget {
 
 class _VerificationEmailScreenState extends State<VerificationEmailScreen> {
   Timer? _timer;
-  @override
-  void didChangeDependencies() async {
-    super.didChangeDependencies();
-    await checkEmailVerified();
-  }
 
   @override
   void initState() {
     super.initState();
-    _timer = Timer.periodic(
-      const Duration(seconds: 3),
-      (_) async {
-        await checkEmailVerified();
-      },
-    );
+
+    context.read<VerifyEmailCubit>().sendEmailVerification();
+    _timer = Timer.periodic(const Duration(seconds: 3), (_) {
+      checkEmailVerified();
+    });
+  }
+
+  checkEmailVerified() {
+    context.read<VerifyEmailCubit>().checkEmailVerified();
+    final isVerified = context.read<VerifyEmailCubit>().emailVerified;
+
+    if (isVerified) {
+      _timer?.cancel();
+    }
   }
 
   @override
@@ -46,22 +49,11 @@ class _VerificationEmailScreenState extends State<VerificationEmailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<VerifyEmailCubit, VerifyEmailState>(
+    return BlocBuilder<VerifyEmailCubit, bool>(
       builder: (context, state) {
-        return state.isVerified
-            ? const HomeScreen()
-            : const VerificationSection();
+        return state ? const HomeScreen() : const VerificationSection();
       },
     );
-  }
-
-  Future<void> checkEmailVerified() async {
-    final isVerified = await context.read<VerifyEmailCubit>().isEmailVerified;
-    if (!isVerified) {
-      context.read<VerifyEmailCubit>().sendEmailVerified();
-    } else {
-      _timer?.cancel();
-    }
   }
 }
 
@@ -71,7 +63,7 @@ class VerificationSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<VerifyEmailCubit, VerifyEmailState>(
+      body: BlocBuilder<VerifyEmailCubit, bool>(
         builder: (context, state) {
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -117,7 +109,7 @@ class VerificationSection extends StatelessWidget {
                   const Spacer(),
                   CustomButton(
                       onPressed: () {
-                        context.read<VerifyEmailCubit>().checkEmailVerified();
+                        // context.read<VerifyEmailCubit>().checkEmailVerified();
                       },
                       title: 'Tiếp tục'),
                   const Spacer(),
@@ -130,7 +122,7 @@ class VerificationSection extends StatelessWidget {
                   ),
                   TextButton.icon(
                       onPressed: () {
-                        context.read<VerifyEmailCubit>().cancel();
+                        // context.read<VerifyEmailCubit>().cancel();
                       },
                       icon: const Icon(Icons.arrow_back),
                       label: const Text('Quay về màn hình đăng nhập')),
