@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -122,11 +120,14 @@ class VerificationSection extends StatelessWidget {
                     height: 16.h,
                   ),
                   TextButton.icon(
-                      onPressed: () {
-                        context.read<VerifyEmailCubit>().cancel();
-                      },
-                      icon: const Icon(Icons.arrow_back),
-                      label: const Text('Quay về màn hình đăng nhập')),
+                    onPressed: () {
+                      context.read<VerifyEmailCubit>().cancel();
+                    },
+                    icon: const Icon(Icons.arrow_back),
+                    label: const Text(
+                      'Quay về màn hình đăng nhập',
+                    ),
+                  ),
                   const Spacer(),
                 ],
               ),

@@ -66,7 +66,9 @@ class LoginSection extends StatelessWidget {
                   Align(
                     alignment: Alignment.topRight,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        context.pushNamed(RouterPath.resetPassword.name);
+                      },
                       style: ButtonStyle(
                         overlayColor: MaterialStateColor.resolveWith(
                             (states) => Colors.transparent),
@@ -149,7 +151,11 @@ class AnotherMethodLoginSection extends StatelessWidget {
           child: Assets.images.loginGoogle.image(),
         ),
         Distance(width: 4.w),
-        Assets.images.loginFacebook.image(),
+        InkWell(
+            onTap: () {
+              context.showSnackBar('Tính năng đang phát triển!');
+            },
+            child: Assets.images.loginFacebook.image()),
       ],
     );
   }

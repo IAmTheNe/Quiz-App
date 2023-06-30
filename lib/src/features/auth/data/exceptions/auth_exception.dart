@@ -103,7 +103,7 @@ class SignUpWithEmailAndPasswordException implements Exception {
         );
       case 'operation-not-allowed':
         return const SignUpWithEmailAndPasswordException(
-          'Operation is not allowed.  Please contact support.',
+          'Operation is not allowed. Please contact support.',
         );
       case 'weak-password':
         return const SignUpWithEmailAndPasswordException(
@@ -111,6 +111,48 @@ class SignUpWithEmailAndPasswordException implements Exception {
         );
       default:
         return const SignUpWithEmailAndPasswordException();
+    }
+  }
+}
+
+class PasswordResetEmailException implements Exception {
+  const PasswordResetEmailException(
+      [this.message = 'An unknown exception occurred.']);
+
+  final String message;
+
+  factory PasswordResetEmailException.fromCode(String code) {
+    switch (code) {
+      case 'invalid-email':
+        return const PasswordResetEmailException(
+          'Email is not valid or badly formatted.',
+        );
+      case 'missing-android-pkg-name':
+        return const PasswordResetEmailException(
+          'An Android package name must be provided if the Android app is required to be installed.',
+        );
+      case 'missing-continue-uri':
+        return const PasswordResetEmailException(
+          'A continue URL must be provided in the request.',
+        );
+      case 'missing-ios-bundle-id':
+        return const PasswordResetEmailException(
+          'An iOS Bundle ID must be provided if an App Store ID is provided.',
+        );
+      case 'invalid-continue-uri':
+        return const PasswordResetEmailException(
+          'The continue URL provided in the request is invalid.',
+        );
+      case 'unauthorized-continue-uri':
+        return const PasswordResetEmailException(
+          'The domain of the continue URL is not whitelisted. Whitelist the domain in the Firebase console.',
+        );
+      case 'user-not-found':
+        return const PasswordResetEmailException(
+          'Email is not found, please create an account.',
+        );
+      default:
+        return const PasswordResetEmailException();
     }
   }
 }

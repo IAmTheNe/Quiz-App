@@ -6,6 +6,7 @@ import 'package:whizz/src/common/constants/constants.dart';
 
 import 'package:whizz/src/features/auth/data/bloc/login/login_cubit.dart';
 import 'package:whizz/src/features/auth/data/bloc/register/signup_cubit.dart';
+import 'package:whizz/src/features/auth/data/bloc/reset_password/reset_password_cubit.dart';
 import 'package:whizz/src/features/auth/data/bloc/verify_email/verify_email_cubit.dart';
 import 'package:whizz/src/features/auth/data/repositories/auth_repository.dart';
 import 'package:whizz/src/features/auth/ui/login/login_screen.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => SignUpCubit(AuthenticationRepository())),
         BlocProvider(
             create: (_) => VerifyEmailCubit(AuthenticationRepository())),
+        BlocProvider(create: (_) => ResetPasswordCubit(AuthenticationRepository())),
       ],
       child: ScreenUtilInit(
         builder: (context, child) => MaterialApp.router(

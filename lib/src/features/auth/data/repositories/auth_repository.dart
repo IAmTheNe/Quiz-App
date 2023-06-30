@@ -132,8 +132,24 @@ class AuthenticationRepository {
   /// The current user's email has been verified or not. Default `false`.
   bool get isEmailVerified => _firebaseAuth.currentUser?.emailVerified ?? false;
 
- /// The function sends an email verification to the current user if they are logged in.
+  /// The function sends an email verification to the current user if they are logged in.
   void sendEmailVerification() {
     _firebaseAuth.currentUser?.sendEmailVerification();
+  }
+
+  /// The function sends a password reset email to the specified email address using Firebase
+  /// Authentication.
+  ///
+  /// Args:
+  ///   email (String): The email parameter is a string that represents the email address of the user
+  /// who wants to reset their password.
+  Future<void> sendPasswordResetEmail(String email) async {
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      throw PasswordResetEmailException.fromCode(e.code);
+    } catch (_) {
+      throw const PasswordResetEmailException();
+    }
   }
 }

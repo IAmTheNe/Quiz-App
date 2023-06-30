@@ -8,6 +8,7 @@ import 'package:whizz/src/features/auth/data/bloc/login/login_cubit.dart';
 import 'package:whizz/src/features/auth/data/models/user.dart';
 import 'package:whizz/src/features/auth/data/repositories/auth_repository.dart';
 import 'package:whizz/src/features/auth/ui/login/login_screen.dart';
+import 'package:whizz/src/features/auth/ui/reset_password/reset_password_screen.dart';
 import 'package:whizz/src/features/auth/ui/signup/signup_screen.dart';
 import 'package:whizz/src/features/auth/ui/verify_email/verify_email_screen.dart';
 import 'package:whizz/src/features/home/ui/home_screen.dart';
@@ -17,6 +18,7 @@ enum RouterPath {
   login,
   register,
   verifyEmail,
+  resetPassword,
   noConnection,
   error,
 }
@@ -75,6 +77,14 @@ class AppRouter {
         pageBuilder: (_, state) => MaterialPage(
           key: state.pageKey,
           child: const VerificationEmailScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/reset_password',
+        name: RouterPath.resetPassword.name,
+        pageBuilder: (_, state) => MaterialPage(
+          key: state.pageKey,
+          child: const PasswordResetScreen(),
         ),
       ),
     ],

@@ -7,7 +7,7 @@ extension BuildContextX on BuildContext {
       ..showSnackBar(
         SnackBar(
           content: Text(message),
-          duration: duration ?? const Duration(seconds: 4),
+          duration: duration ?? const Duration(seconds: 2),
         ),
       );
   }
