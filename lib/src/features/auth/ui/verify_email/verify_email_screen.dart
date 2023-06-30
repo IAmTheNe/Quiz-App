@@ -32,7 +32,7 @@ class _VerificationEmailScreenState extends State<VerificationEmailScreen> {
     });
   }
 
-  checkEmailVerified() {
+  void checkEmailVerified() {
     context.read<VerifyEmailCubit>().checkEmailVerified();
     final isVerified = context.read<VerifyEmailCubit>().emailVerified;
 
@@ -108,10 +108,11 @@ class VerificationSection extends StatelessWidget {
                   ),
                   const Spacer(),
                   CustomButton(
-                      onPressed: () {
-                        // context.read<VerifyEmailCubit>().checkEmailVerified();
-                      },
-                      title: 'Tiếp tục'),
+                    onPressed: () {
+                      context.read<VerifyEmailCubit>().checkEmailVerified();
+                    },
+                    title: 'Tiếp tục',
+                  ),
                   const Spacer(),
                   TextButton(
                     onPressed: () {},
@@ -122,7 +123,7 @@ class VerificationSection extends StatelessWidget {
                   ),
                   TextButton.icon(
                       onPressed: () {
-                        // context.read<VerifyEmailCubit>().cancel();
+                        context.read<VerifyEmailCubit>().cancel();
                       },
                       icon: const Icon(Icons.arrow_back),
                       label: const Text('Quay về màn hình đăng nhập')),

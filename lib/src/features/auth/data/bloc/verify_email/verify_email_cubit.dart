@@ -18,4 +18,8 @@ final class VerifyEmailCubit extends Cubit<bool> {
   }
 
   bool get emailVerified => _authenticationRepository.isEmailVerified;
+
+  Future<void> cancel() async {
+    await _authenticationRepository.logout();
+  }
 }
