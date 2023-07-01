@@ -9,7 +9,6 @@ import 'package:whizz/src/features/auth/data/bloc/register/signup_cubit.dart';
 import 'package:whizz/src/features/auth/data/bloc/reset_password/reset_password_cubit.dart';
 import 'package:whizz/src/features/auth/data/bloc/verify_email/verify_email_cubit.dart';
 import 'package:whizz/src/features/auth/data/repositories/auth_repository.dart';
-import 'package:whizz/src/features/auth/ui/login/login_screen.dart';
 import 'package:whizz/src/gen/fonts.gen.dart';
 import 'package:whizz/src/router/app_router.dart';
 
@@ -45,7 +44,6 @@ class MyApp extends StatelessWidget {
           supportedLocales: AppLocalizations.supportedLocales,
           locale: const Locale('vi'),
         ),
-        child: const LoginScreen(),
       ),
     );
   }

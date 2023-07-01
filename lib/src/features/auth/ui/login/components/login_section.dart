@@ -21,7 +21,8 @@ class LoginSection extends StatelessWidget {
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
         if (state.status.isFailure) {
-          context.showSnackBar(state.errorMessage ?? 'Authentication Failed!');
+          context.showErrorSnackBar(
+              state.errorMessage ?? 'Authentication Failed!');
         }
       },
       child: Positioned(
@@ -153,7 +154,7 @@ class AnotherMethodLoginSection extends StatelessWidget {
         Distance(width: 4.w),
         InkWell(
             onTap: () {
-              context.showSnackBar('Tính năng đang phát triển!');
+              context.showErrorSnackBar('Tính năng đang phát triển!');
             },
             child: Assets.images.loginFacebook.image()),
       ],

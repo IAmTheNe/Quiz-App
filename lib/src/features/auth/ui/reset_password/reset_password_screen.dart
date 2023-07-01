@@ -18,13 +18,13 @@ class PasswordResetScreen extends StatelessWidget {
       body: BlocListener<ResetPasswordCubit, ResetPasswordState>(
         listener: (context, state) {
           if (state.status.isFailure) {
-            context.showSnackBar(
+            context.showErrorSnackBar(
               state.errorMessage ?? 'Không thể gửi email xác nhận!',
             );
           }
 
           if (state.status.isSuccess && state.isValid) {
-            context.showSnackBar('Đã gửi email xác nhận');
+            context.showSuccessSnackBar('Đã gửi email xác nhận');
           }
         },
         child: Padding(
@@ -58,6 +58,7 @@ class PasswordResetScreen extends StatelessWidget {
                       : CustomButton(
                           onPressed: state.isValid
                               ? () {
+                                  FocusScope.of(context).unfocus();
                                   context
                                       .read<ResetPasswordCubit>()
                                       .sendPasswordResetEmail()

@@ -20,7 +20,8 @@ class SignUpSection extends StatelessWidget {
     return BlocListener<SignUpCubit, SignUpState>(
       listener: (context, state) {
         if (state.status.isFailure) {
-          context.showSnackBar(state.errorMessage ?? 'Authentication Failed!');
+          context.showErrorSnackBar(
+              state.errorMessage ?? 'Authentication Failed!');
         }
       },
       child: Positioned(
