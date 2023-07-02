@@ -48,9 +48,20 @@ class $AssetsImagesGen {
   AssetGenImage get loginGoogle =>
       const AssetGenImage('assets/images/login_google.png');
 
+  /// File path: assets/images/login_twitter.png
+  AssetGenImage get loginTwitter =>
+      const AssetGenImage('assets/images/login_twitter.png');
+
   /// List of all assets
-  List<dynamic> get values =>
-      [appIcon, appLogo, hello, icFacebook, loginFacebook, loginGoogle];
+  List<dynamic> get values => [
+        appIcon,
+        appLogo,
+        hello,
+        icFacebook,
+        loginFacebook,
+        loginGoogle,
+        loginTwitter
+      ];
 }
 
 class $AssetsRawGen {

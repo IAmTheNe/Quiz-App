@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/gen/assets.gen.dart';
 
+export 'custom_button.dart';
+
 class Distance extends StatelessWidget {
   const Distance({
     super.key,

@@ -152,4 +152,16 @@ class AuthenticationRepository {
       throw const PasswordResetEmailException();
     }
   }
+
+  Future<void> loginWithPhone(String phoneNumber) async {
+    _firebaseAuth.verifyPhoneNumber(
+      phoneNumber: phoneNumber,
+      verificationCompleted: (credential) {
+        _firebaseAuth.signInWithCredential(credential);
+      },
+      verificationFailed: (_) {},
+      codeSent: (_, __) {},
+      codeAutoRetrievalTimeout: (_) {},
+    );
+  }
 }

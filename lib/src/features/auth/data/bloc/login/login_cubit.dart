@@ -1,9 +1,11 @@
 import 'package:equatable/equatable.dart';
+import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
 import 'package:whizz/src/features/auth/data/models/email.dart';
 import 'package:whizz/src/features/auth/data/models/password.dart';
+import 'package:whizz/src/features/auth/data/models/phone.dart';
 import 'package:whizz/src/features/auth/data/repositories/auth_repository.dart';
 
 import 'package:whizz/src/features/auth/data/exceptions/auth_exception.dart';
@@ -31,6 +33,24 @@ class LoginCubit extends Cubit<LoginState> {
       state.copyWith(
         password: password,
         isValid: Formz.validate([state.email, password]),
+      ),
+    );
+  }
+
+  void phoneChanged(String value) {
+    final phone = PhoneNumber.dirty(value);
+    emit(
+      state.copyWith(
+        phone: phone,
+        isValid: Formz.validate([phone]),
+      ),
+    );
+  }
+
+  void countryChanged(CountryCode value) {
+    emit(
+      state.copyWith(
+        code: value,
       ),
     );
   }
@@ -72,4 +92,6 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> signOut() async {
     await _authenticationRepository.logout();
   }
+
+  Future<void> loginWithPhone() async {}
 }

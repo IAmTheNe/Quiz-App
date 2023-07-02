@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:whizz/src/common/shared/shared_widget.dart';
+import 'package:whizz/src/common/widgets/shared_widget.dart';
 import 'package:whizz/src/features/auth/data/bloc/verify_email/verify_email_cubit.dart';
 import 'package:whizz/src/features/home/ui/home_screen.dart';
 import 'package:whizz/src/gen/assets.gen.dart';

@@ -5,7 +5,7 @@ import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/extensions/extension.dart';
-import 'package:whizz/src/common/shared/shared_widget.dart';
+import 'package:whizz/src/common/widgets/shared_widget.dart';
 import 'package:whizz/src/features/auth/data/bloc/login/login_cubit.dart';
 import 'package:whizz/src/features/auth/data/bloc/register/signup_cubit.dart';
 import 'package:whizz/src/gen/assets.gen.dart';

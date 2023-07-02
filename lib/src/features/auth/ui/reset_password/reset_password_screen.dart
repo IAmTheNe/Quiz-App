@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:formz/formz.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/extensions/extension.dart';
-import 'package:whizz/src/common/shared/shared_widget.dart';
+import 'package:whizz/src/common/widgets/shared_widget.dart';
 import 'package:whizz/src/features/auth/data/bloc/reset_password/reset_password_cubit.dart';
 import 'package:whizz/src/gen/colors.gen.dart';
 
