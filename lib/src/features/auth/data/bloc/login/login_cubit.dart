@@ -4,12 +4,11 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
+import 'package:whizz/src/features/auth/data/exceptions/auth_exception.dart';
 import 'package:whizz/src/features/auth/data/models/email.dart';
 import 'package:whizz/src/features/auth/data/models/password.dart';
 import 'package:whizz/src/features/auth/data/models/phone.dart';
 import 'package:whizz/src/features/auth/data/repositories/auth_repository.dart';
-
-import 'package:whizz/src/features/auth/data/exceptions/auth_exception.dart';
 
 part 'login_state.dart';
 
@@ -54,27 +53,6 @@ class LoginCubit extends Cubit<LoginState> {
         code: value,
       ),
     );
-  }
-
-  Future<void> loginWithCredentials() async {
-    if (!state.isValid) return;
-    emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
-    try {
-      await _authenticationRepository.loginWithEmailAndPassword(
-        email: state.email.value,
-        password: state.password.value,
-      );
-      emit(state.copyWith(status: FormzSubmissionStatus.success));
-    } on SignInWithEmailAndPasswordException catch (e) {
-      emit(state.copyWith(
-          errorMessage: e.message, status: FormzSubmissionStatus.failure));
-    } catch (e) {
-      emit(
-        state.copyWith(
-            status: FormzSubmissionStatus.failure,
-            errorMessage: 'Unknown Error'),
-      );
-    }
   }
 
   Future<void> loginWithGoogle() async {

@@ -69,30 +69,6 @@ class AuthenticationRepository {
       throw const SignInWithGoogleException();
     }
   }
-
-  /// The function `loginWithEmailAndPassword` attempts to sign in a user with their email and password
-  /// using Firebase Authentication, and throws an exception if there is an error.
-  ///
-  /// Args:
-  ///   email (String): A string representing the user's email address.
-  ///   password (String): The password parameter is a required string that represents the user's
-  /// password for authentication.
-  Future<void> loginWithEmailAndPassword({
-    required String email,
-    required String password,
-  }) async {
-    try {
-      await _firebaseAuth.signInWithEmailAndPassword(
-        email: email.trim(),
-        password: password,
-      );
-    } on firebase_auth.FirebaseAuthException catch (e) {
-      throw SignInWithEmailAndPasswordException.fromCode(e.code);
-    } catch (_) {
-      throw const SignInWithEmailAndPasswordException();
-    }
-  }
-
   /// The function `logout` signs out the user from both Firebase authentication and Google sign-in.
   Future<void> logout() async {
     try {
@@ -104,31 +80,6 @@ class AuthenticationRepository {
       throw LogoutException();
     }
   }
-
-  /// The function `signUp` attempts to create a new user account using the provided email and password,
-  /// and throws exceptions if there are any errors.
-  ///
-  /// Args:
-  ///   email (String): A required parameter of type String that represents the email address of the
-  /// user signing up.
-  ///   password (String): The password parameter is a required string that represents the user's
-  /// password for the sign-up process.
-  Future<void> signUp({
-    required String email,
-    required String password,
-  }) async {
-    try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-    } on firebase_auth.FirebaseAuthException catch (e) {
-      throw SignUpWithEmailAndPasswordException.fromCode(e.code);
-    } catch (_) {
-      throw const SignInWithEmailAndPasswordException();
-    }
-  }
-
   /// The function reloads the current user's data from Firebase Authentication.
   Future<void> reload() async {
     await _firebaseAuth.currentUser?.reload();
@@ -140,22 +91,6 @@ class AuthenticationRepository {
   /// The function sends an email verification to the current user if they are logged in.
   void sendEmailVerification() {
     _firebaseAuth.currentUser?.sendEmailVerification();
-  }
-
-  /// The function sends a password reset email to the specified email address using Firebase
-  /// Authentication.
-  ///
-  /// Args:
-  ///   email (String): The email parameter is a string that represents the email address of the user
-  /// who wants to reset their password.
-  Future<void> sendPasswordResetEmail(String email) async {
-    try {
-      await _firebaseAuth.sendPasswordResetEmail(email: email);
-    } on firebase_auth.FirebaseAuthException catch (e) {
-      throw PasswordResetEmailException.fromCode(e.code);
-    } catch (_) {
-      throw const PasswordResetEmailException();
-    }
   }
 
   Future<void> loginWithPhone(
@@ -191,7 +126,6 @@ class AuthenticationRepository {
         smsCode: otp,
       );
       await _firebaseAuth.signInWithCredential(credential);
-      print('Thành công');
     } catch (e) {
       log(e.toString());
     }
