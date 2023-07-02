@@ -1,13 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:whizz/src/features/auth/data/bloc/login/login_cubit.dart';
 import 'package:whizz/src/features/auth/data/models/user.dart';
 import 'package:whizz/src/features/auth/data/repositories/auth_repository.dart';
 import 'package:whizz/src/features/auth/ui/login/login_screen.dart';
+import 'package:whizz/src/features/auth/ui/login/otp_screen.dart';
 import 'package:whizz/src/features/auth/ui/reset_password/reset_password_screen.dart';
 import 'package:whizz/src/features/auth/ui/signup/signup_screen.dart';
 import 'package:whizz/src/features/auth/ui/verify_email/verify_email_screen.dart';
@@ -16,6 +15,7 @@ import 'package:whizz/src/features/home/ui/home_screen.dart';
 enum RouterPath {
   home,
   login,
+  otp,
   register,
   verifyEmail,
   resetPassword,
@@ -36,10 +36,10 @@ class AppRouter {
       final isLoggedIn = _authRepo.currentUser != User.empty;
       if (isLoggedIn) {
         if (state.matchedLocation == '/login') {
-          return '/verify';
+          return '/home';
         }
       } else {
-        if (state.matchedLocation == '/verify') {
+        if (state.matchedLocation == '/home') {
           return '/login';
         }
       }
@@ -50,9 +50,17 @@ class AppRouter {
       GoRoute(
         path: '/login',
         name: RouterPath.login.name,
-        builder: (_, state) => BlocProvider(
-          create: (_) => LoginCubit(_authRepo),
+        pageBuilder: (_, state) => MaterialPage(
+          key: state.pageKey,
           child: const LoginScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/otp',
+        name: RouterPath.otp.name,
+        pageBuilder: (_, state) => MaterialPage(
+          key: state.pageKey,
+          child: const OtpScreen(),
         ),
       ),
       GoRoute(

@@ -3,11 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:formz/formz.dart';
+import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/extensions/extension.dart';
 import 'package:whizz/src/common/widgets/shared_widget.dart';
 import 'package:whizz/src/features/auth/data/bloc/login/login_cubit.dart';
 import 'package:whizz/src/gen/assets.gen.dart';
+import 'package:whizz/src/router/app_router.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -65,11 +67,11 @@ class LoginScreen extends StatelessWidget {
                         ),
                         child: Row(
                           children: [
-                            Text(state.code.dialCode),
+                            state.code.flagImage(),
                             const SizedBox(
                               width: Constants.kPadding / 4,
                             ),
-                            state.code.flagImage(),
+                            Text(state.code.dialCode),
                             const Icon(Icons.arrow_drop_down),
                           ],
                         ),
@@ -94,7 +96,7 @@ class LoginScreen extends StatelessWidget {
                         Constants.kPadding.toDouble() / 2,
                       ),
                     ),
-                    child: TextFormField(
+                    child: TextField(
                       keyboardType: TextInputType.number,
                       onChanged: context.read<LoginCubit>().phoneChanged,
                       decoration: InputDecoration(
@@ -143,7 +145,11 @@ class LoginScreen extends StatelessWidget {
                 return state.status.isInProgress
                     ? const Center(child: CircularProgressIndicator.adaptive())
                     : MatchParentButton(
-                        onPressed: state.isValid ? () {} : null,
+                        onPressed: state.isValid
+                            ? () {
+                                context.pushNamed(RouterPath.otp.name);
+                              }
+                            : null,
                         label: 'Tiếp tục',
                       );
               },
