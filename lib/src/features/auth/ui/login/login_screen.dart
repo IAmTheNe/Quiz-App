@@ -3,13 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:formz/formz.dart';
-import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/extensions/extension.dart';
 import 'package:whizz/src/common/widgets/shared_widget.dart';
 import 'package:whizz/src/features/auth/data/bloc/login/login_cubit.dart';
 import 'package:whizz/src/gen/assets.gen.dart';
-import 'package:whizz/src/router/app_router.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -20,6 +18,13 @@ class LoginScreen extends StatelessWidget {
         context.read<LoginCubit>().countryChanged(value);
       }
     });
+  }
+
+  void loginWithPhone(BuildContext context, LoginState state) {
+    context.read<LoginCubit>().loginWithPhone(
+          context: context,
+          phoneNumber: '${state.code.dialCode}${state.phone.value}',
+        );
   }
 
   @override
@@ -147,7 +152,7 @@ class LoginScreen extends StatelessWidget {
                     : MatchParentButton(
                         onPressed: state.isValid
                             ? () {
-                                context.pushNamed(RouterPath.otp.name);
+                                loginWithPhone(context, state);
                               }
                             : null,
                         label: 'Tiếp tục',

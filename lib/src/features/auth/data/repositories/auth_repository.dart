@@ -1,11 +1,16 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:whizz/src/features/auth/data/exceptions/auth_exception.dart';
 import 'package:whizz/src/features/auth/data/extensions/auth_extension.dart';
 import 'package:whizz/src/features/auth/data/models/user.dart';
 import 'package:whizz/src/modules/cache.dart';
+import 'package:whizz/src/router/app_router.dart';
 
 class AuthenticationRepository {
   AuthenticationRepository({
@@ -153,15 +158,42 @@ class AuthenticationRepository {
     }
   }
 
-  Future<void> loginWithPhone(String phoneNumber) async {
-    _firebaseAuth.verifyPhoneNumber(
+  Future<void> loginWithPhone(
+    BuildContext context,
+    String phoneNumber,
+  ) async {
+    await _firebaseAuth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
       verificationCompleted: (credential) {
         _firebaseAuth.signInWithCredential(credential);
       },
-      verificationFailed: (_) {},
-      codeSent: (_, __) {},
+      verificationFailed: (e) {
+        log(e.code);
+      },
+      codeSent: (verificationId, forceResendingToken) async {
+        await context.pushNamed(
+          RouterPath.otp.name,
+          extra: (verificationId, forceResendingToken),
+        );
+      },
       codeAutoRetrievalTimeout: (_) {},
     );
+  }
+
+  Future<void> verifyOtp(
+    String verificationId,
+    String otp,
+  ) async {
+    try {
+      firebase_auth.PhoneAuthCredential credential =
+          firebase_auth.PhoneAuthProvider.credential(
+        verificationId: verificationId,
+        smsCode: otp,
+      );
+      await _firebaseAuth.signInWithCredential(credential);
+      print('Thành công');
+    } catch (e) {
+      log(e.toString());
+    }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:fl_country_code_picker/fl_country_code_picker.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
@@ -93,5 +94,29 @@ class LoginCubit extends Cubit<LoginState> {
     await _authenticationRepository.logout();
   }
 
-  Future<void> loginWithPhone() async {}
+  Future<void> loginWithPhone({
+    required BuildContext context,
+    required String phoneNumber,
+  }) async {
+    emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
+    await _authenticationRepository.loginWithPhone(
+      context,
+      phoneNumber,
+    );
+
+    emit(state.copyWith(status: FormzSubmissionStatus.success));
+  }
+
+  Future<void> verifyOtp({
+    required String otp,
+    required String verificationId,
+  }) async {
+    emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
+    await _authenticationRepository.verifyOtp(
+      verificationId,
+      otp,
+    );
+
+    emit(state.copyWith(status: FormzSubmissionStatus.success));
+  }
 }

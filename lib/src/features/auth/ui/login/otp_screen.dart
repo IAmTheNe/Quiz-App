@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,7 +9,16 @@ import 'package:whizz/src/common/widgets/custom_button.dart';
 import 'package:whizz/src/features/auth/data/bloc/login/login_cubit.dart';
 
 class OtpScreen extends StatelessWidget {
-  const OtpScreen({super.key});
+  const OtpScreen({super.key, required this.codeSent});
+
+  final (String, int) codeSent;
+
+  void verifyPin(BuildContext context, String pin) {
+    context.read<LoginCubit>().verifyOtp(
+          otp: pin,
+          verificationId: codeSent.$1,
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +51,11 @@ class OtpScreen extends StatelessWidget {
             ),
             SizedBox(
               width: 1.sw - (Constants.kPadding * 2),
-              child: const Pinput(
+              child: Pinput(
                 length: 6,
+                onCompleted: (pin) {
+                  verifyPin(context, pin);
+                },
               ),
             ),
             const Spacer(),
@@ -50,8 +63,8 @@ class OtpScreen extends StatelessWidget {
               children: [
                 const Text('Mã sẽ hết hiệu lực trong '),
                 TweenAnimationBuilder(
-                  tween: Tween<double>(begin: 60, end: 0),
-                  duration: const Duration(seconds: 60),
+                  tween: Tween<double>(begin: codeSent.$2.toDouble(), end: 0),
+                  duration: Duration(seconds: codeSent.$2),
                   builder: (context, value, child) {
                     return Text(
                       '${value.toInt()}s',

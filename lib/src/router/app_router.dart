@@ -60,7 +60,9 @@ class AppRouter {
         name: RouterPath.otp.name,
         pageBuilder: (_, state) => MaterialPage(
           key: state.pageKey,
-          child: const OtpScreen(),
+          child: OtpScreen(
+            codeSent: state.extra as (String, int),
+          ),
         ),
       ),
       GoRoute(
