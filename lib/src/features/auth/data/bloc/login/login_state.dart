@@ -7,7 +7,7 @@ class LoginState extends Equatable {
     this.phone = const PhoneNumber.pure(),
     this.status = FormzSubmissionStatus.initial,
     this.isValid = false,
-    this.code = const CountryCode(
+    this.countryCode = const CountryCode(
       name: 'Viet Nam',
       code: 'VN',
       dialCode: '+84',
@@ -20,7 +20,7 @@ class LoginState extends Equatable {
   final PhoneNumber phone;
   final FormzSubmissionStatus status;
   final bool isValid;
-  final CountryCode code;
+  final CountryCode countryCode;
   final String? errorMessage;
 
   @override
@@ -30,7 +30,7 @@ class LoginState extends Equatable {
         status,
         isValid,
         errorMessage,
-        code,
+        countryCode,
         phone,
       ];
 
@@ -40,7 +40,7 @@ class LoginState extends Equatable {
     PhoneNumber? phone,
     FormzSubmissionStatus? status,
     bool? isValid,
-    CountryCode? code,
+    CountryCode? countryCode,
     String? errorMessage,
   }) {
     return LoginState(
@@ -49,7 +49,7 @@ class LoginState extends Equatable {
       phone: phone ?? this.phone,
       status: status ?? this.status,
       isValid: isValid ?? this.isValid,
-      code: code ?? this.code,
+      countryCode: countryCode ?? this.countryCode,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }

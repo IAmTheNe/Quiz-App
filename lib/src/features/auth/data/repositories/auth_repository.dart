@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
@@ -69,6 +70,7 @@ class AuthenticationRepository {
       throw const SignInWithGoogleException();
     }
   }
+
   /// The function `logout` signs out the user from both Firebase authentication and Google sign-in.
   Future<void> logout() async {
     try {
@@ -80,6 +82,7 @@ class AuthenticationRepository {
       throw LogoutException();
     }
   }
+
   /// The function reloads the current user's data from Firebase Authentication.
   Future<void> reload() async {
     await _firebaseAuth.currentUser?.reload();
@@ -97,14 +100,11 @@ class AuthenticationRepository {
     BuildContext context,
     String phoneNumber,
   ) async {
+    final completer = Completer<firebase_auth.PhoneAuthCredential>();
     await _firebaseAuth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
-      verificationCompleted: (credential) {
-        _firebaseAuth.signInWithCredential(credential);
-      },
-      verificationFailed: (e) {
-        log(e.code);
-      },
+      verificationCompleted: completer.complete,
+      verificationFailed: completer.completeError,
       codeSent: (verificationId, forceResendingToken) async {
         await context.pushNamed(
           RouterPath.otp.name,
@@ -112,7 +112,17 @@ class AuthenticationRepository {
         );
       },
       codeAutoRetrievalTimeout: (_) {},
+      timeout: const Duration(seconds: 60),
     );
+
+    try {
+      final credential = await completer.future;
+      await _firebaseAuth.signInWithCredential(credential);
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      throw VerifyPhoneNumberException.fromCode(e.code);
+    } catch (_) {
+      throw const VerifyPhoneNumberException();
+    }
   }
 
   Future<void> verifyOtp(
@@ -126,8 +136,11 @@ class AuthenticationRepository {
         smsCode: otp,
       );
       await _firebaseAuth.signInWithCredential(credential);
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      throw VerifyOtpException.fromCode(e.code);
     } catch (e) {
       log(e.toString());
+      throw const VerifyOtpException();
     }
   }
 }

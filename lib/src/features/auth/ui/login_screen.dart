@@ -21,9 +21,10 @@ class LoginScreen extends StatelessWidget {
   }
 
   void loginWithPhone(BuildContext context, LoginState state) {
+    FocusScope.of(context).unfocus();
     context.read<LoginCubit>().loginWithPhone(
           context: context,
-          phoneNumber: '${state.code.dialCode}${state.phone.value}',
+          phoneNumber: '${state.countryCode.dialCode}${state.phone.value}',
         );
   }
 
@@ -33,169 +34,182 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Thử tài cùng Quizwhizz!',
-              style: Constants.textTitle700,
-            ),
-            Text(
-              'Đăng nhập / Đăng ký tài khoản ngay bây giờ',
-              style: Constants.textSubtitle,
-            ),
-            SizedBox(
-              height: Constants.kPadding.h * 2,
-            ),
-            Row(
-              children: [
-                BlocBuilder<LoginCubit, LoginState>(
-                  builder: (context, state) {
-                    return GestureDetector(
-                      onTap: () {
-                        showCountryPicker(context);
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 8,
-                          horizontal: 12,
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.grey,
+      body: BlocListener<LoginCubit, LoginState>(
+        listener: (context, state) {
+          // if (state.status.isInProgress) {
+          //   context.testShowLoadingDialog().then((ctx) {
+          //     if (state.status.isFailure || state.status.isSuccess) {
+          //       Navigator.pop(ctx);
+          //     }
+          //   });
+          // }
+        },
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Thử tài cùng Quizwhizz!',
+                style: Constants.textTitle700,
+              ),
+              Text(
+                'Đăng nhập / Đăng ký tài khoản ngay bây giờ',
+                style: Constants.textSubtitle,
+              ),
+              SizedBox(
+                height: Constants.kPadding.h * 2,
+              ),
+              Row(
+                children: [
+                  BlocBuilder<LoginCubit, LoginState>(
+                    builder: (context, state) {
+                      return GestureDetector(
+                        onTap: () {
+                          showCountryPicker(context);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 12,
                           ),
-                          borderRadius: BorderRadius.circular(
-                            Constants.kPadding.toDouble() / 2,
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            state.code.flagImage(),
-                            const SizedBox(
-                              width: Constants.kPadding / 4,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.grey,
                             ),
-                            Text(state.code.dialCode),
-                            const Icon(Icons.arrow_drop_down),
-                          ],
+                            borderRadius: BorderRadius.circular(
+                              Constants.kPadding.toDouble() / 2,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              state.countryCode.flagImage(),
+                              const SizedBox(
+                                width: Constants.kPadding / 4,
+                              ),
+                              Text(state.countryCode.dialCode),
+                              const Icon(Icons.arrow_drop_down),
+                            ],
+                          ),
                         ),
+                      );
+                    },
+                  ),
+                  const SizedBox(
+                    width: Constants.kPadding / 2,
+                  ),
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 8,
+                        horizontal: 12,
                       ),
-                    );
-                  },
-                ),
-                const SizedBox(
-                  width: Constants.kPadding / 2,
-                ),
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 8,
-                      horizontal: 12,
-                    ),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.grey,
-                      ),
-                      borderRadius: BorderRadius.circular(
-                        Constants.kPadding.toDouble() / 2,
-                      ),
-                    ),
-                    child: TextField(
-                      keyboardType: TextInputType.number,
-                      onChanged: context.read<LoginCubit>().phoneChanged,
-                      decoration: InputDecoration(
-                        isDense: true,
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.zero,
-                        hintText: 'Số điện thoại của bạn',
-                        hintStyle: Constants.textSubtitle.copyWith(
+                      decoration: BoxDecoration(
+                        border: Border.all(
                           color: Colors.grey,
                         ),
+                        borderRadius: BorderRadius.circular(
+                          Constants.kPadding.toDouble() / 2,
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const Spacer(),
-            const Text.rich(
-              TextSpan(
-                text: 'Tôi đồng ý với ',
-                children: [
-                  TextSpan(
-                    text: 'Điều kiện và Điều khoản',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      color: Colors.blue,
-                    ),
-                  ),
-                  TextSpan(
-                    text: ' liên quan đến việc sử dụng dịch vụ của ',
-                  ),
-                  TextSpan(
-                    text: 'Quizwhizz',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        onChanged: context.read<LoginCubit>().phoneChanged,
+                        decoration: InputDecoration(
+                          isDense: true,
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.zero,
+                          hintText: 'Số điện thoại của bạn',
+                          hintStyle: Constants.textSubtitle.copyWith(
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ],
               ),
-            ),
-            const SizedBox(
-              height: Constants.kPadding * 1.0,
-            ),
-            BlocBuilder<LoginCubit, LoginState>(
-              builder: (context, state) {
-                return state.status.isInProgress
-                    ? const Center(child: CircularProgressIndicator.adaptive())
-                    : MatchParentButton(
-                        onPressed: state.isValid
-                            ? () {
-                                loginWithPhone(context, state);
-                              }
-                            : null,
-                        label: 'Tiếp tục',
-                      );
-              },
-            ),
-            const Spacer(
-              flex: 2,
-            ),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Divider(),
-                Text('Hoặc đăng nhập bằng'),
-                Divider(),
-              ],
-            ),
-            const SizedBox(
-              height: Constants.kPadding / 2.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: context.read<LoginCubit>().loginWithGoogle,
-                  child: Assets.images.loginGoogle.image(
+              const Spacer(),
+              const Text.rich(
+                TextSpan(
+                  text: 'Tôi đồng ý với ',
+                  children: [
+                    TextSpan(
+                      text: 'Điều kiện và Điều khoản',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: Colors.blue,
+                      ),
+                    ),
+                    TextSpan(
+                      text: ' liên quan đến việc sử dụng dịch vụ của ',
+                    ),
+                    TextSpan(
+                      text: 'Quizwhizz',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: Constants.kPadding * 1.0,
+              ),
+              BlocBuilder<LoginCubit, LoginState>(
+                builder: (context, state) {
+                  return state.status.isInProgress
+                      ? const Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        )
+                      : MatchParentButton(
+                          onPressed: state.isValid
+                              ? () {
+                                  loginWithPhone(context, state);
+                                }
+                              : null,
+                          label: 'Tiếp tục',
+                        );
+                },
+              ),
+              const Spacer(
+                flex: 2,
+              ),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Divider(),
+                  Text('Hoặc đăng nhập bằng'),
+                  Divider(),
+                ],
+              ),
+              const SizedBox(
+                height: Constants.kPadding / 2.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: context.read<LoginCubit>().loginWithGoogle,
+                    child: Assets.images.loginGoogle.image(
+                      height: 36,
+                      width: 36,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: Constants.kPadding * 1.0,
+                  ),
+                  Assets.images.loginTwitter.image(
                     height: 36,
                     width: 36,
-                  ),
-                ),
-                const SizedBox(
-                  width: Constants.kPadding * 1.0,
-                ),
-                Assets.images.loginTwitter.image(
-                  height: 36,
-                  width: 36,
-                )
-              ],
-            ),
-            const SizedBox(
-              height: Constants.kPadding * 2.0,
-            ),
-          ],
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: Constants.kPadding * 2.0,
+              ),
+            ],
+          ),
         ),
       ),
     );

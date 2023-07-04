@@ -50,7 +50,7 @@ class LoginCubit extends Cubit<LoginState> {
   void countryChanged(CountryCode value) {
     emit(
       state.copyWith(
-        code: value,
+        countryCode: value,
       ),
     );
   }
@@ -69,6 +69,7 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   Future<void> signOut() async {
+    emit(const LoginState());
     await _authenticationRepository.logout();
   }
 
@@ -77,23 +78,23 @@ class LoginCubit extends Cubit<LoginState> {
     required String phoneNumber,
   }) async {
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
-    await _authenticationRepository.loginWithPhone(
-      context,
-      phoneNumber,
-    );
-
-    emit(state.copyWith(status: FormzSubmissionStatus.success));
-  }
-
-  Future<void> verifyOtp({
-    required String otp,
-    required String verificationId,
-  }) async {
-    emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
-    await _authenticationRepository.verifyOtp(
-      verificationId,
-      otp,
-    );
+    try {
+      await _authenticationRepository.loginWithPhone(
+        context,
+        phoneNumber,
+      );
+    } on VerifyPhoneNumberException catch (e) {
+      emit(
+        state.copyWith(
+          status: FormzSubmissionStatus.failure,
+          errorMessage: e.message,
+        ),
+      );
+    } catch (_) {
+      state.copyWith(
+        status: FormzSubmissionStatus.failure,
+      );
+    }
 
     emit(state.copyWith(status: FormzSubmissionStatus.success));
   }
