@@ -60,7 +60,7 @@ class LoginCubit extends Cubit<LoginState> {
     try {
       await _authenticationRepository.loginWithGoogle();
       emit(state.copyWith(status: FormzSubmissionStatus.success));
-    } on SignInWithGoogleException catch (e) {
+    } on SignInWithCredentialException catch (e) {
       emit(state.copyWith(
           errorMessage: e.message, status: FormzSubmissionStatus.failure));
     } catch (_) {
@@ -97,5 +97,19 @@ class LoginCubit extends Cubit<LoginState> {
     }
 
     emit(state.copyWith(status: FormzSubmissionStatus.success));
+  }
+
+  Future<void> loginWithTwitter() async {
+    emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
+    try {
+      await _authenticationRepository.loginWithTwitter();
+      emit(state.copyWith(status: FormzSubmissionStatus.success));
+    } on SignInWithCredentialException catch (e) {
+      emit(state.copyWith(
+          errorMessage: e.message, status: FormzSubmissionStatus.failure));
+    } catch (e) {
+      emit(state.copyWith(
+          errorMessage: e.toString(), status: FormzSubmissionStatus.failure));
+    }
   }
 }

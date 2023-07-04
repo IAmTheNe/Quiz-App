@@ -1,45 +1,45 @@
-class SignInWithGoogleException implements Exception {
-  const SignInWithGoogleException(
+class SignInWithCredentialException implements Exception {
+  const SignInWithCredentialException(
       [this.message = 'An unknown exception occurred.']);
 
   final String message;
 
-  factory SignInWithGoogleException.fromCode(String code) {
+  factory SignInWithCredentialException.fromCode(String code) {
     switch (code) {
       case 'account-exists-with-different-credential':
-        return const SignInWithGoogleException(
+        return const SignInWithCredentialException(
           'Account exists with different credentials.',
         );
       case 'invalid-credential':
-        return const SignInWithGoogleException(
+        return const SignInWithCredentialException(
           'The credential received is malformed or has expired.',
         );
       case 'operation-not-allowed':
-        return const SignInWithGoogleException(
-          'Operation is not allowed.  Please contact support.',
+        return const SignInWithCredentialException(
+          'Operation is not allowed. Please contact support.',
         );
       case 'user-disabled':
-        return const SignInWithGoogleException(
+        return const SignInWithCredentialException(
           'This user has been disabled. Please contact support for help.',
         );
       case 'user-not-found':
-        return const SignInWithGoogleException(
+        return const SignInWithCredentialException(
           'Email is not found, please create an account.',
         );
       case 'wrong-password':
-        return const SignInWithGoogleException(
+        return const SignInWithCredentialException(
           'Incorrect password, please try again.',
         );
       case 'invalid-verification-code':
-        return const SignInWithGoogleException(
+        return const SignInWithCredentialException(
           'The credential verification code received is invalid.',
         );
       case 'invalid-verification-id':
-        return const SignInWithGoogleException(
+        return const SignInWithCredentialException(
           'The credential verification ID received is invalid.',
         );
       default:
-        return const SignInWithGoogleException();
+        return const SignInWithCredentialException();
     }
   }
 }

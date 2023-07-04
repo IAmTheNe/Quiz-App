@@ -6,6 +6,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:twitter_login/twitter_login.dart';
+import 'package:whizz/src/env/env.dart';
 
 import 'package:whizz/src/features/auth/data/exceptions/auth_exception.dart';
 import 'package:whizz/src/features/auth/data/extensions/auth_extension.dart';
@@ -18,13 +20,21 @@ class AuthenticationRepository {
     CacheClient? cache,
     firebase_auth.FirebaseAuth? firebaseAuth,
     GoogleSignIn? googleSignIn,
+    TwitterLogin? twitterLogin,
   })  : _cache = cache ?? CacheClient(),
         _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
-        _googleSignIn = googleSignIn ?? GoogleSignIn();
+        _googleSignIn = googleSignIn ?? GoogleSignIn(),
+        _twitterLogin = twitterLogin ??
+            TwitterLogin(
+              apiKey: Env.apiKey,
+              apiSecretKey: Env.apiKeySecret,
+              redirectURI: "socialauth://",
+            );
 
   final CacheClient _cache;
   final firebase_auth.FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
+  final TwitterLogin _twitterLogin;
 
   /// Stream of [User] which will emit the current user when
   /// the authentication state changes.
@@ -65,9 +75,29 @@ class AuthenticationRepository {
         await _firebaseAuth.signInWithCredential(credential);
       }
     } on firebase_auth.FirebaseAuthException catch (e) {
-      throw SignInWithGoogleException(e.code);
+      throw SignInWithCredentialException(e.code);
     } catch (_) {
-      throw const SignInWithGoogleException();
+      throw const SignInWithCredentialException();
+    }
+  }
+
+  Future<void> loginWithTwitter() async {
+    final authResult = await _twitterLogin.loginV2();
+    if (authResult.status == TwitterLoginStatus.loggedIn) {
+      try {
+        final credential = firebase_auth.TwitterAuthProvider.credential(
+          accessToken: authResult.authToken!,
+          secret: authResult.authTokenSecret!,
+        );
+        await _firebaseAuth.signInWithCredential(credential);
+      } on firebase_auth.FirebaseAuthException catch (e) {
+        throw SignInWithCredentialException.fromCode(e.code);
+      } catch (e) {
+        log(e.toString());
+        throw const SignInWithCredentialException();
+      }
+    } else {
+      throw const SignInWithCredentialException('Không login được!');
     }
   }
 

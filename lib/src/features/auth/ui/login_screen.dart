@@ -36,13 +36,9 @@ class LoginScreen extends StatelessWidget {
       appBar: AppBar(),
       body: BlocListener<LoginCubit, LoginState>(
         listener: (context, state) {
-          // if (state.status.isInProgress) {
-          //   context.testShowLoadingDialog().then((ctx) {
-          //     if (state.status.isFailure || state.status.isSuccess) {
-          //       Navigator.pop(ctx);
-          //     }
-          //   });
-          // }
+          if (state.status.isFailure) {
+            context.showErrorSnackBar(state.errorMessage ?? 'Unknown Error!');
+          }
         },
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -199,9 +195,12 @@ class LoginScreen extends StatelessWidget {
                   const SizedBox(
                     width: Constants.kPadding * 1.0,
                   ),
-                  Assets.images.loginTwitter.image(
-                    height: 36,
-                    width: 36,
+                  GestureDetector(
+                    onTap: context.read<LoginCubit>().loginWithTwitter,
+                    child: Assets.images.loginTwitter.image(
+                      height: 36,
+                      width: 36,
+                    ),
                   )
                 ],
               ),
