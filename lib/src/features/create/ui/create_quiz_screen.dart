@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/widgets/quiz_textfield.dart';
-import 'package:whizz/src/features/create/data/bloc/create_quiz_cubit.dart';
+import 'package:whizz/src/features/create/data/bloc/create_quiz/create_quiz_cubit.dart';
+import 'package:whizz/src/router/app_router.dart';
 
 class CreateQuizScreen extends StatelessWidget {
   const CreateQuizScreen({super.key});
@@ -26,7 +28,9 @@ class CreateQuizScreen extends StatelessWidget {
           child: Column(
             children: [
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  context.pushNamed(RouterPath.addMedia.name);
+                },
                 child: const RainbowContainer(),
               ),
               const SizedBox(
@@ -157,9 +161,9 @@ class RainbowContainer extends StatelessWidget {
       child: const Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.add_a_photo),
+          Icon(Icons.image_outlined),
           SizedBox(height: Constants.kPadding / 4),
-          Text('Add cover image'),
+          Text('Tap to add cover image'),
         ],
       ),
     );

@@ -16,17 +16,15 @@ class CreateQuizRepository {
   final FirebaseFirestore _firestore;
 
   Future<void> createNewQuiz(Quiz quiz) async {
-    final uuid = Uuid();
+    const uuid = Uuid();
     final quizId = uuid.v4();
     final createdAt = DateTime.now();
 
-    print(quizId);
     final newQuiz = quiz.copyWith(
       id: quizId,
       createdAt: createdAt,
     );
 
-    print(newQuiz.toMap());
     await _firestore
         .collection(FirebaseDocumentConstants.user)
         .doc(_cache.read<User>(key: 'user')!.id)

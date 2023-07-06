@@ -8,7 +8,9 @@ import 'package:whizz/src/features/auth/data/models/user.dart';
 import 'package:whizz/src/features/auth/data/repositories/auth_repository.dart';
 import 'package:whizz/src/features/auth/ui/login_screen.dart';
 import 'package:whizz/src/features/auth/ui/otp_screen.dart';
-import 'package:whizz/src/features/create/data/bloc/create_quiz_cubit.dart';
+import 'package:whizz/src/features/create/data/bloc/create_quiz/create_quiz_cubit.dart';
+import 'package:whizz/src/features/create/data/bloc/fetch_unsplash/fetch_unsplash_bloc.dart';
+import 'package:whizz/src/features/create/ui/add_media_screen.dart';
 import 'package:whizz/src/features/create/ui/create_quiz_screen.dart';
 import 'package:whizz/src/features/discovery/ui/discovery_screen.dart';
 import 'package:whizz/src/features/home/ui/home_screen.dart';
@@ -23,6 +25,8 @@ enum RouterPath {
   discovery,
   play,
   create,
+  addMedia,
+  unsplash,
   profile,
   noConnection,
   error,
@@ -33,6 +37,8 @@ class AppRouter {
   static final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
   static final _authRepo = AuthenticationRepository();
+
+  static final _createCubit = CreateQuizCubit();
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -100,8 +106,25 @@ class AppRouter {
         pageBuilder: (_, state) => MaterialPage(
           key: state.pageKey,
           child: BlocProvider(
-            create: (_) => CreateQuizCubit(),
+            create: (_) => _createCubit,
             child: const CreateQuizScreen(),
+          ),
+        ),
+      ),
+      GoRoute(
+        path: '/add_media',
+        name: RouterPath.addMedia.name,
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (_, state) => MaterialPage(
+          key: state.pageKey,
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: _createCubit),
+              BlocProvider(
+                  create: (_) =>
+                      FetchUnsplashBloc()..add(const GetListPhotosEvent())),
+            ],
+            child: const AddMediaScreen(),
           ),
         ),
       ),
