@@ -17,7 +17,6 @@ class UnsplashImageRepository {
     return await _client.photos
         .random(
           count: 30,
-          orientation: PhotoOrientation.landscape,
         )
         .goAndGet();
   }
