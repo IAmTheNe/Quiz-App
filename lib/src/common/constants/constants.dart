@@ -5,6 +5,13 @@ import 'package:whizz/src/gen/colors.gen.dart';
 class Constants {
   static const primaryColor = Palettes.darkBrown;
 
+  static final sunsetGradient = LinearGradient(
+    colors: [
+      const Color(0xFFFFAFBD).withOpacity(.35),
+      const Color(0xFFffc3a0).withOpacity(.35),
+    ],
+  );
+
   static const kPadding = 16.0;
 
   static TextStyle textTitle700 = TextStyle(
@@ -20,4 +27,9 @@ class Constants {
   static final textSubtitle = TextStyle(
     fontSize: 12.sp,
   );
+}
+
+final class FirebaseDocumentConstants {
+  static const user = 'User';
+  static const quiz = 'Quiz';
 }

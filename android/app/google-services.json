@@ -58,6 +58,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "899488201348-lmgq7c17bt6tbe223n7rhl7j7hq3ksrs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tdtu.da2.g160.whizz",
+            "certificate_hash": "4e34ebf19e405af7933667a54e464c30bdd6e3cf"
+          }
+        },
+        {
           "client_id": "899488201348-pk1l1no9jeah8dd3e4crmosb1fk5f9tu.apps.googleusercontent.com",
           "client_type": 3
         }

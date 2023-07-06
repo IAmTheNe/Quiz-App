@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:whizz/src/features/auth/data/models/user.dart';
 import 'package:whizz/src/features/auth/data/repositories/auth_repository.dart';
 import 'package:whizz/src/features/auth/ui/login_screen.dart';
 import 'package:whizz/src/features/auth/ui/otp_screen.dart';
+import 'package:whizz/src/features/create/data/bloc/create_quiz_cubit.dart';
 import 'package:whizz/src/features/create/ui/create_quiz_screen.dart';
 import 'package:whizz/src/features/discovery/ui/discovery_screen.dart';
 import 'package:whizz/src/features/home/ui/home_screen.dart';
@@ -97,7 +99,10 @@ class AppRouter {
         parentNavigatorKey: _rootNavigatorKey,
         pageBuilder: (_, state) => MaterialPage(
           key: state.pageKey,
-          child: const CreateQuizScreen(),
+          child: BlocProvider(
+            create: (_) => CreateQuizCubit(),
+            child: const CreateQuizScreen(),
+          ),
         ),
       ),
       GoRoute(
