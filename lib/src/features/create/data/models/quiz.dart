@@ -7,13 +7,14 @@ import 'package:whizz/src/features/create/data/extensions/extension.dart';
 class Quiz extends Equatable {
   const Quiz({
     this.id,
-    this.title,
-    this.description,
+    this.title = '',
+    this.description = '',
     this.collectionId,
     this.imageUrl,
     this.visibility = QuizVisibility.public,
-    this.keyword,
+    this.keyword = const [],
     this.createdAt,
+    this.attachType = AttachType.local,
   });
 
   factory Quiz.fromQuiz(Quiz quiz) {
@@ -26,6 +27,7 @@ class Quiz extends Equatable {
       visibility: quiz.visibility,
       keyword: quiz.keyword,
       createdAt: quiz.createdAt,
+      attachType: quiz.attachType,
     );
   }
 
@@ -37,6 +39,7 @@ class Quiz extends Equatable {
   final QuizVisibility visibility;
   final List<String>? keyword;
   final DateTime? createdAt;
+  final AttachType attachType;
 
   Quiz copyWith({
     String? id,
@@ -47,6 +50,7 @@ class Quiz extends Equatable {
     QuizVisibility? visibility,
     List<String>? keyword,
     DateTime? createdAt,
+    AttachType? attachType,
   }) {
     return Quiz(
       id: id ?? this.id,
@@ -57,6 +61,7 @@ class Quiz extends Equatable {
       visibility: visibility ?? this.visibility,
       keyword: keyword ?? this.keyword,
       createdAt: createdAt ?? this.createdAt,
+      attachType: attachType ?? this.attachType,
     );
   }
 
@@ -70,6 +75,7 @@ class Quiz extends Equatable {
         visibility,
         keyword,
         createdAt,
+        attachType,
       ];
 
   Map<String, dynamic> toMap() {
@@ -112,4 +118,9 @@ class Quiz extends Equatable {
 enum QuizVisibility {
   public,
   private,
+}
+
+enum AttachType {
+  local,
+  online,
 }

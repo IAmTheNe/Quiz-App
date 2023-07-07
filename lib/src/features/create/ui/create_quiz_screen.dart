@@ -4,10 +4,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/widgets/quiz_textfield.dart';
 import 'package:whizz/src/features/create/data/bloc/create_quiz/create_quiz_cubit.dart';
 import 'package:whizz/src/features/create/data/bloc/fetch_unsplash/fetch_unsplash_bloc.dart';
+import 'package:whizz/src/features/create/data/models/quiz.dart';
 import 'package:whizz/src/features/create/ui/add_media_screen.dart';
 
 class CreateQuizScreen extends StatelessWidget {
@@ -36,10 +38,10 @@ class CreateQuizScreen extends StatelessWidget {
                     onTap: () {
                       navigator(context);
                     },
-                    child: state.imagePath != null
+                    child: state.quiz.imageUrl != null
                         ? ImageCover(
-                            url: state.imagePath!,
-                            attachType: state.attach!,
+                            url: state.quiz.imageUrl!,
+                            attachType: state.quiz.attachType,
                           )
                         : const RainbowContainer(),
                   );
@@ -129,7 +131,8 @@ class CreateQuizScreen extends StatelessWidget {
                               ? () async {
                                   await context
                                       .read<CreateQuizCubit>()
-                                      .createQuiz();
+                                      .createQuiz()
+                                      .then((_) => context.pop());
                                 }
                               : null,
                           style: ElevatedButton.styleFrom(
@@ -153,16 +156,15 @@ class CreateQuizScreen extends StatelessWidget {
   }
 
   void navigator(BuildContext context) {
-     Navigator.of(context).push(
+    Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) {
           return MultiBlocProvider(
             providers: [
-              BlocProvider.value(
-                  value: context.read<CreateQuizCubit>()),
+              BlocProvider.value(value: context.read<CreateQuizCubit>()),
               BlocProvider(
-                  create: (_) => FetchUnsplashBloc()
-                    ..add(const GetListPhotosEvent())),
+                  create: (_) =>
+                      FetchUnsplashBloc()..add(const GetListPhotosEvent())),
             ],
             child: const AddMediaScreen(),
           );

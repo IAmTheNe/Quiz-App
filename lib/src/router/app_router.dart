@@ -38,8 +38,6 @@ class AppRouter {
 
   static final _authRepo = AuthenticationRepository();
 
-  static final _createCubit = CreateQuizCubit();
-
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
     initialLocation: '/login',

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whizz/src/common/modules/pick_image.dart';
@@ -17,14 +15,18 @@ class CreateQuizCubit extends Cubit<CreateQuizState> {
 
   void nameChanged(String value) {
     emit(state.copyWith(
-      title: value,
+      quiz: state.quiz.copyWith(
+        title: value,
+      ),
       isValid: value.isNotEmpty,
     ));
   }
 
   void descriptionChanged(String value) {
     emit(state.copyWith(
-      description: value,
+      quiz: state.quiz.copyWith(
+        description: value,
+      ),
     ));
   }
 
@@ -32,48 +34,46 @@ class CreateQuizCubit extends Cubit<CreateQuizState> {
     final visibility =
         value == 'private' ? QuizVisibility.private : QuizVisibility.public;
     emit(state.copyWith(
-      visibility: visibility,
+      quiz: state.quiz.copyWith(
+        visibility: visibility,
+      ),
     ));
   }
 
   Future<void> createQuiz() async {
     emit(state.copyWith(isLoading: true));
-    final quiz = Quiz(
-      title: state.title,
-      description: state.description,
-      visibility: state.visibility,
-    );
-
-    await _quizRepository.createNewQuiz(quiz);
-    emit(state.copyWith(isLoading: false));
+    final quiz = state.quiz;
+    try {
+      await _quizRepository.createNewQuiz(quiz);
+      emit(state.copyWith(isLoading: false));
+    } catch (e) {
+      emit(state.copyWith(isLoading: false));
+    }
   }
 
   Future<void> onPickImage() async {
     final image = await PickImage.pickImage();
     emit(state.copyWith(
-      imagePath: image!.path,
-      attach: AttachType.local,
+      quiz: state.quiz.copyWith(
+        imageUrl: image!.path,
+      ),
     ));
   }
 
   Future<void> onTakePhoto() async {
     final image = await PickImage.takePhoto();
     emit(state.copyWith(
-      imagePath: image!.path,
-      attach: AttachType.local,
-    ));
+        quiz: state.quiz.copyWith(
+      attachType: AttachType.local,
+      imageUrl: image!.path,
+    )));
   }
 
   Future<void> onSelectedOnlineImage(String url) async {
     emit(state.copyWith(
-      imagePath: url,
-      attach: AttachType.online,
-    ));
+        quiz: state.quiz.copyWith(
+      attachType: AttachType.online,
+      imageUrl: url,
+    )));
   }
-
-  bool get isValidLocalAttach =>
-      state.imagePath != null && state.attach == AttachType.local;
-
-  bool get isValidOnlineAttach =>
-      state.imagePath != null && state.attach == AttachType.online;
 }

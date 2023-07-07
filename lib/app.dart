@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
               seedColor: Constants.primaryColor,
             ),
             useMaterial3: true,
+            platform: TargetPlatform.iOS,
           ),
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
