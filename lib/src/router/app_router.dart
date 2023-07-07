@@ -105,8 +105,13 @@ class AppRouter {
         parentNavigatorKey: _rootNavigatorKey,
         pageBuilder: (_, state) => MaterialPage(
           key: state.pageKey,
-          child: BlocProvider.value(
-            value: _createCubit,
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                  create: (_) =>
+                      FetchUnsplashBloc()..add(const GetListPhotosEvent())),
+              BlocProvider(create: (_) => CreateQuizCubit()),
+            ],
             child: const CreateQuizScreen(),
           ),
         ),
@@ -117,15 +122,7 @@ class AppRouter {
         parentNavigatorKey: _rootNavigatorKey,
         pageBuilder: (_, state) => MaterialPage(
           key: state.pageKey,
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider.value(value: _createCubit),
-              BlocProvider(
-                  create: (_) =>
-                      FetchUnsplashBloc()..add(const GetListPhotosEvent())),
-            ],
-            child: const AddMediaScreen(),
-          ),
+          child: const AddMediaScreen(),
         ),
       ),
       GoRoute(

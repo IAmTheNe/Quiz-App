@@ -1,13 +1,14 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/widgets/quiz_textfield.dart';
 import 'package:whizz/src/features/create/data/bloc/create_quiz/create_quiz_cubit.dart';
-import 'package:whizz/src/router/app_router.dart';
+import 'package:whizz/src/features/create/data/bloc/fetch_unsplash/fetch_unsplash_bloc.dart';
+import 'package:whizz/src/features/create/ui/add_media_screen.dart';
 
 class CreateQuizScreen extends StatelessWidget {
   const CreateQuizScreen({super.key});
@@ -30,16 +31,20 @@ class CreateQuizScreen extends StatelessWidget {
           child: Column(
             children: [
               BlocBuilder<CreateQuizCubit, CreateQuizState>(
-                  builder: (context, state) {
-                return GestureDetector(
-                  onTap: () {
-                    context.pushNamed(RouterPath.addMedia.name);
-                  },
-                  child: state.file != null
-                      ? ImageCover(file: state.file!)
-                      : const RainbowContainer(),
-                );
-              }),
+                builder: (context, state) {
+                  return GestureDetector(
+                    onTap: () {
+                      navigator(context);
+                    },
+                    child: state.imagePath != null
+                        ? ImageCover(
+                            url: state.imagePath!,
+                            attachType: state.attach!,
+                          )
+                        : const RainbowContainer(),
+                  );
+                },
+              ),
               const SizedBox(
                 height: Constants.kPadding,
               ),
@@ -146,6 +151,25 @@ class CreateQuizScreen extends StatelessWidget {
       ),
     );
   }
+
+  void navigator(BuildContext context) {
+     Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) {
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider.value(
+                  value: context.read<CreateQuizCubit>()),
+              BlocProvider(
+                  create: (_) => FetchUnsplashBloc()
+                    ..add(const GetListPhotosEvent())),
+            ],
+            child: const AddMediaScreen(),
+          );
+        },
+      ),
+    );
+  }
 }
 
 class RainbowContainer extends StatelessWidget {
@@ -180,24 +204,45 @@ class RainbowContainer extends StatelessWidget {
 class ImageCover extends StatelessWidget {
   const ImageCover({
     super.key,
-    required this.file,
+    required this.url,
+    required this.attachType,
   });
 
-  final File file;
+  final String url;
+  final AttachType attachType;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      height: 200,
-      decoration: BoxDecoration(
-        // color: Colors.black26,
-        borderRadius: const BorderRadius.all(
-          Radius.circular(Constants.kPadding),
-        ),
-        gradient: Constants.sunsetGradient,
-        image: DecorationImage(image: FileImage(file), fit: BoxFit.cover),
-      ),
-    );
+    return attachType == AttachType.online
+        ? Container(
+            alignment: Alignment.center,
+            height: 200,
+            decoration: BoxDecoration(
+              // color: Colors.black26,
+              borderRadius: const BorderRadius.all(
+                Radius.circular(Constants.kPadding),
+              ),
+              gradient: Constants.sunsetGradient,
+              image: DecorationImage(
+                image: CachedNetworkImageProvider(url),
+                fit: BoxFit.cover,
+              ),
+            ),
+          )
+        : Container(
+            alignment: Alignment.center,
+            height: 200,
+            decoration: BoxDecoration(
+              // color: Colors.black26,
+              borderRadius: const BorderRadius.all(
+                Radius.circular(Constants.kPadding),
+              ),
+              gradient: Constants.sunsetGradient,
+              image: DecorationImage(
+                image: FileImage(File(url)),
+                fit: BoxFit.cover,
+              ),
+            ),
+          );
   }
 }

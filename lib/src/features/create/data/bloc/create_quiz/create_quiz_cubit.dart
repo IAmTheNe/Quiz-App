@@ -50,11 +50,30 @@ class CreateQuizCubit extends Cubit<CreateQuizState> {
 
   Future<void> onPickImage() async {
     final image = await PickImage.pickImage();
-    emit(state.copyWith(file: image));
+    emit(state.copyWith(
+      imagePath: image!.path,
+      attach: AttachType.local,
+    ));
   }
 
   Future<void> onTakePhoto() async {
     final image = await PickImage.takePhoto();
-    emit(state.copyWith(file: image));
+    emit(state.copyWith(
+      imagePath: image!.path,
+      attach: AttachType.local,
+    ));
   }
+
+  Future<void> onSelectedOnlineImage(String url) async {
+    emit(state.copyWith(
+      imagePath: url,
+      attach: AttachType.online,
+    ));
+  }
+
+  bool get isValidLocalAttach =>
+      state.imagePath != null && state.attach == AttachType.local;
+
+  bool get isValidOnlineAttach =>
+      state.imagePath != null && state.attach == AttachType.online;
 }

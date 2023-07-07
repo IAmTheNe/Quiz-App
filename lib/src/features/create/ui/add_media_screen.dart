@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/features/create/data/bloc/create_quiz/create_quiz_cubit.dart';
 import 'package:whizz/src/features/create/data/bloc/fetch_unsplash/fetch_unsplash_bloc.dart';
-import 'package:whizz/src/router/app_router.dart';
 
 class AddMediaScreen extends StatelessWidget {
   const AddMediaScreen({super.key});
@@ -65,56 +64,66 @@ class AddMediaScreen extends StatelessWidget {
             const SizedBox(
               height: Constants.kPadding,
             ),
-            // BlocBuilder<FetchUnsplashBloc, FetchUnsplashState>(
-            //   builder: (context, state) {
-            //     if (state is LoadingFetchState) {
-            //       return const Center(
-            //         child: CircularProgressIndicator.adaptive(),
-            //       );
-            //     }
-            //     if (state is SuccessFetchState) {
-            //       return Expanded(
-            //         child: MasonryGridView.builder(
-            //           itemCount: state.photos.length,
-            //           gridDelegate:
-            //               const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-            //             crossAxisCount: 2,
-            //           ),
-            //           mainAxisSpacing: Constants.kPadding / 4,
-            //           crossAxisSpacing: Constants.kPadding / 4,
-            //           itemBuilder: (context, index) {
-            //             return ClipRRect(
-            //               borderRadius:
-            //                   BorderRadius.circular(Constants.kPadding / 4),
-            //               child: CachedNetworkImage(
-            //                 imageUrl: state.photos[index].urls.raw.toString(),
-            //                 filterQuality: FilterQuality.high,
-            //                 progressIndicatorBuilder: (context, url, download) {
-            //                   if (download.progress != null) {
-            //                     final percent = download.progress! * 100;
-            //                     return Container(
-            //                       alignment: Alignment.center,
-            //                       height: 200,
-            //                       color: Colors.grey.shade300,
-            //                       child: Text('${percent.toInt()}%'),
-            //                     );
-            //                   }
-            //                   return Container(
-            //                     height: 200,
-            //                     color: Colors.grey.shade300,
-            //                   );
-            //                 },
-            //               ),
-            //             );
-            //           },
-            //         ),
-            //       );
-            //     }
-            //     return Container(
-            //       height: 220,
-            //     );
-            //   },
-            // ),
+            BlocBuilder<FetchUnsplashBloc, FetchUnsplashState>(
+              builder: (context, state) {
+                if (state is LoadingFetchState) {
+                  return const Center(
+                    child: CircularProgressIndicator.adaptive(),
+                  );
+                }
+                if (state is SuccessFetchState) {
+                  return Expanded(
+                    child: MasonryGridView.builder(
+                      itemCount: state.photos.length,
+                      gridDelegate:
+                          const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                      ),
+                      mainAxisSpacing: Constants.kPadding / 4,
+                      crossAxisSpacing: Constants.kPadding / 4,
+                      itemBuilder: (context, index) {
+                        final url = state.photos[index].urls.raw.toString();
+                        return GestureDetector(
+                          onTap: () {
+                            context
+                                .read<CreateQuizCubit>()
+                                .onSelectedOnlineImage(url)
+                                .then((_) => context.pop());
+                          },
+                          child: ClipRRect(
+                            borderRadius:
+                                BorderRadius.circular(Constants.kPadding / 4),
+                            child: CachedNetworkImage(
+                              imageUrl: url,
+                              filterQuality: FilterQuality.high,
+                              progressIndicatorBuilder:
+                                  (context, url, download) {
+                                if (download.progress != null) {
+                                  final percent = download.progress! * 100;
+                                  return Container(
+                                    alignment: Alignment.center,
+                                    height: 200,
+                                    color: Colors.grey.shade300,
+                                    child: Text('${percent.toInt()}%'),
+                                  );
+                                }
+                                return Container(
+                                  height: 200,
+                                  color: Colors.grey.shade300,
+                                );
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                }
+                return Container(
+                  height: 220,
+                );
+              },
+            ),
           ],
         ),
       ),
