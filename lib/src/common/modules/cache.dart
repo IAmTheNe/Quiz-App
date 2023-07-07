@@ -1,18 +1,18 @@
 /// An in-memory cache client.
-class CacheClient {
+class InMemoryCache {
   // CacheClient() : _cache = <String, Object>{};
 
   // final Map<String, Object> _cache;
 
-  static final CacheClient _instance = CacheClient._();
+  static final InMemoryCache _instance = InMemoryCache._();
 
-  factory CacheClient() {
+  factory InMemoryCache() {
     return _instance;
   }
 
   final Map<String, Object> _cache;
 
-  CacheClient._() : _cache = <String, Object>{};
+  InMemoryCache._() : _cache = <String, Object>{};
 
   /// Writes the provide [key], [value] pair to the in-memory cache.
   void write<T extends Object>({required String key, required T value}) {

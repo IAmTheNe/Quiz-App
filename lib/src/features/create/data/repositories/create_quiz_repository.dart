@@ -3,16 +3,16 @@ import 'package:uuid/uuid.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/features/auth/data/models/user.dart';
 import 'package:whizz/src/features/create/data/models/quiz.dart';
-import 'package:whizz/src/modules/cache.dart';
+import 'package:whizz/src/common/modules/cache.dart';
 
 class CreateQuizRepository {
   CreateQuizRepository({
-    CacheClient? cache,
+    InMemoryCache? cache,
     FirebaseFirestore? firestore,
-  })  : _cache = cache ?? CacheClient(),
+  })  : _cache = cache ?? InMemoryCache(),
         _firestore = firestore ?? FirebaseFirestore.instance;
 
-  final CacheClient _cache;
+  final InMemoryCache _cache;
   final FirebaseFirestore _firestore;
 
   Future<void> createNewQuiz(Quiz quiz) async {

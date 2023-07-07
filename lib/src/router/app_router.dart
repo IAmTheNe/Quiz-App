@@ -105,8 +105,8 @@ class AppRouter {
         parentNavigatorKey: _rootNavigatorKey,
         pageBuilder: (_, state) => MaterialPage(
           key: state.pageKey,
-          child: BlocProvider(
-            create: (_) => _createCubit,
+          child: BlocProvider.value(
+            value: _createCubit,
             child: const CreateQuizScreen(),
           ),
         ),

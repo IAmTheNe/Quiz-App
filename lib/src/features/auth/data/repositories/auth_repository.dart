@@ -12,16 +12,16 @@ import 'package:whizz/src/env/env.dart';
 import 'package:whizz/src/features/auth/data/exceptions/auth_exception.dart';
 import 'package:whizz/src/features/auth/data/extensions/auth_extension.dart';
 import 'package:whizz/src/features/auth/data/models/user.dart';
-import 'package:whizz/src/modules/cache.dart';
+import 'package:whizz/src/common/modules/cache.dart';
 import 'package:whizz/src/router/app_router.dart';
 
 class AuthenticationRepository {
   AuthenticationRepository({
-    CacheClient? cache,
+    InMemoryCache? cache,
     firebase_auth.FirebaseAuth? firebaseAuth,
     GoogleSignIn? googleSignIn,
     TwitterLogin? twitterLogin,
-  })  : _cache = cache ?? CacheClient(),
+  })  : _cache = cache ?? InMemoryCache(),
         _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
         _googleSignIn = googleSignIn ?? GoogleSignIn(),
         _twitterLogin = twitterLogin ??
@@ -31,7 +31,7 @@ class AuthenticationRepository {
               redirectURI: "socialauth://",
             );
 
-  final CacheClient _cache;
+  final InMemoryCache _cache;
   final firebase_auth.FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
   final TwitterLogin _twitterLogin;

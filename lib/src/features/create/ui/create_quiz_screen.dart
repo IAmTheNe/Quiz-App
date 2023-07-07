@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,12 +29,17 @@ class CreateQuizScreen extends StatelessWidget {
           padding: const EdgeInsets.all(Constants.kPadding),
           child: Column(
             children: [
-              GestureDetector(
-                onTap: () {
-                  context.pushNamed(RouterPath.addMedia.name);
-                },
-                child: const RainbowContainer(),
-              ),
+              BlocBuilder<CreateQuizCubit, CreateQuizState>(
+                  builder: (context, state) {
+                return GestureDetector(
+                  onTap: () {
+                    context.pushNamed(RouterPath.addMedia.name);
+                  },
+                  child: state.file != null
+                      ? ImageCover(file: state.file!)
+                      : const RainbowContainer(),
+                );
+              }),
               const SizedBox(
                 height: Constants.kPadding,
               ),
@@ -165,6 +172,31 @@ class RainbowContainer extends StatelessWidget {
           SizedBox(height: Constants.kPadding / 4),
           Text('Tap to add cover image'),
         ],
+      ),
+    );
+  }
+}
+
+class ImageCover extends StatelessWidget {
+  const ImageCover({
+    super.key,
+    required this.file,
+  });
+
+  final File file;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      height: 200,
+      decoration: BoxDecoration(
+        // color: Colors.black26,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(Constants.kPadding),
+        ),
+        gradient: Constants.sunsetGradient,
+        image: DecorationImage(image: FileImage(file), fit: BoxFit.cover),
       ),
     );
   }

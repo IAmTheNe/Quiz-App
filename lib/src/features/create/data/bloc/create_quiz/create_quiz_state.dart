@@ -6,6 +6,7 @@ class CreateQuizState extends Equatable {
     this.description = '',
     this.visibility = QuizVisibility.public,
     this.keywords = const [],
+    this.file,
     this.isValid = false,
     this.isLoading = false,
   });
@@ -14,6 +15,7 @@ class CreateQuizState extends Equatable {
   final String description;
   final QuizVisibility visibility;
   final List<String>? keywords;
+  final File? file;
   final bool isValid;
   final bool isLoading;
 
@@ -22,6 +24,7 @@ class CreateQuizState extends Equatable {
         title,
         description,
         keywords,
+        file,
         isValid,
         visibility,
         isLoading,
@@ -31,6 +34,7 @@ class CreateQuizState extends Equatable {
     String? title,
     String? description,
     List<String>? keywords,
+    File? file,
     bool? isValid,
     QuizVisibility? visibility,
     bool? isLoading,
@@ -39,6 +43,7 @@ class CreateQuizState extends Equatable {
       title: title ?? this.title,
       description: description ?? this.description,
       keywords: keywords ?? this.keywords,
+      file: file ?? this.file,
       isValid: isValid ?? this.isValid,
       visibility: visibility ?? this.visibility,
       isLoading: isLoading ?? this.isLoading,
