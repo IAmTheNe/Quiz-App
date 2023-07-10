@@ -1,30 +1,40 @@
-import 'dart:io';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/widgets/quiz_textfield.dart';
-import 'package:whizz/src/features/create/data/bloc/create_quiz/create_quiz_cubit.dart';
-import 'package:whizz/src/features/create/data/bloc/fetch_unsplash/fetch_unsplash_bloc.dart';
+import 'package:whizz/src/features/create/data/bloc/create_quiz_cubit.dart';
 import 'package:whizz/src/features/create/data/models/quiz.dart';
-import 'package:whizz/src/features/create/ui/add_media_screen.dart';
+import 'package:whizz/src/features/create/presentation/widgets/image_cover.dart';
+import 'package:whizz/src/features/create/presentation/widgets/popup_menu.dart';
+import 'package:whizz/src/features/create/presentation/widgets/rainbow_container.dart';
+import 'package:whizz/src/router/app_router.dart';
 
 class CreateQuizScreen extends StatelessWidget {
   const CreateQuizScreen({super.key});
+
+  void intent(BuildContext context) async {
+    final result =
+        await context.pushNamed<(String, AttachType)>(RouterPath.media.name);
+
+    if (result?.$1 != null) {
+      // ignore: use_build_context_synchronously
+      context.read<CreateQuizCubit>().attachmentChanged(result);
+    }
+  }
+
+  void createQuiz(BuildContext context) {
+    context.read<CreateQuizCubit>().createQuiz().then((_) => context.pop());
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create Quiz'),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.more_horiz_rounded),
-          ),
+        actions: const [
+          CreateOptionsPopupMenu(),
         ],
       ),
       body: SingleChildScrollView(
@@ -36,7 +46,7 @@ class CreateQuizScreen extends StatelessWidget {
                 builder: (context, state) {
                   return GestureDetector(
                     onTap: () {
-                      navigator(context);
+                      intent(context);
                     },
                     child: state.quiz.imageUrl != null
                         ? ImageCover(
@@ -127,14 +137,8 @@ class CreateQuizScreen extends StatelessWidget {
                     ? const CircularProgressIndicator.adaptive()
                     : Expanded(
                         child: ElevatedButton(
-                          onPressed: state.isValid
-                              ? () async {
-                                  await context
-                                      .read<CreateQuizCubit>()
-                                      .createQuiz()
-                                      .then((_) => context.pop());
-                                }
-                              : null,
+                          onPressed:
+                              state.isValid ? () => createQuiz(context) : null,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             elevation: 4,
@@ -153,98 +157,5 @@ class CreateQuizScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void navigator(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) {
-          return MultiBlocProvider(
-            providers: [
-              BlocProvider.value(value: context.read<CreateQuizCubit>()),
-              BlocProvider(
-                  create: (_) =>
-                      FetchUnsplashBloc()..add(const GetListPhotosEvent())),
-            ],
-            child: const AddMediaScreen(),
-          );
-        },
-      ),
-    );
-  }
-}
-
-class RainbowContainer extends StatelessWidget {
-  const RainbowContainer({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      height: 200,
-      decoration: BoxDecoration(
-        // color: Colors.black26,
-        borderRadius: const BorderRadius.all(
-          Radius.circular(Constants.kPadding),
-        ),
-        gradient: Constants.sunsetGradient,
-      ),
-      child: const Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.image_outlined),
-          SizedBox(height: Constants.kPadding / 4),
-          Text('Tap to add cover image'),
-        ],
-      ),
-    );
-  }
-}
-
-class ImageCover extends StatelessWidget {
-  const ImageCover({
-    super.key,
-    required this.url,
-    required this.attachType,
-  });
-
-  final String url;
-  final AttachType attachType;
-
-  @override
-  Widget build(BuildContext context) {
-    return attachType == AttachType.online
-        ? Container(
-            alignment: Alignment.center,
-            height: 200,
-            decoration: BoxDecoration(
-              // color: Colors.black26,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(Constants.kPadding),
-              ),
-              gradient: Constants.sunsetGradient,
-              image: DecorationImage(
-                image: CachedNetworkImageProvider(url),
-                fit: BoxFit.cover,
-              ),
-            ),
-          )
-        : Container(
-            alignment: Alignment.center,
-            height: 200,
-            decoration: BoxDecoration(
-              // color: Colors.black26,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(Constants.kPadding),
-              ),
-              gradient: Constants.sunsetGradient,
-              image: DecorationImage(
-                image: FileImage(File(url)),
-                fit: BoxFit.cover,
-              ),
-            ),
-          );
   }
 }

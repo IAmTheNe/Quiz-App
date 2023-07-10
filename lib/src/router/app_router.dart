@@ -6,16 +6,16 @@ import 'package:go_router/go_router.dart';
 
 import 'package:whizz/src/features/auth/data/models/user.dart';
 import 'package:whizz/src/features/auth/data/repositories/auth_repository.dart';
-import 'package:whizz/src/features/auth/ui/login_screen.dart';
-import 'package:whizz/src/features/auth/ui/otp_screen.dart';
-import 'package:whizz/src/features/create/data/bloc/create_quiz/create_quiz_cubit.dart';
-import 'package:whizz/src/features/create/data/bloc/fetch_unsplash/fetch_unsplash_bloc.dart';
-import 'package:whizz/src/features/create/ui/add_media_screen.dart';
-import 'package:whizz/src/features/create/ui/create_quiz_screen.dart';
-import 'package:whizz/src/features/discovery/ui/discovery_screen.dart';
-import 'package:whizz/src/features/home/ui/home_screen.dart';
-import 'package:whizz/src/features/play/ui/play_screen.dart';
-import 'package:whizz/src/features/profile/ui/profile_screen.dart';
+import 'package:whizz/src/features/auth/presentation/login_screen.dart';
+import 'package:whizz/src/features/auth/presentation/otp_screen.dart';
+import 'package:whizz/src/features/create/data/bloc/create_quiz_cubit.dart';
+import 'package:whizz/src/features/create/presentation/screens/create_quiz_screen.dart';
+import 'package:whizz/src/features/discovery/presentation/discovery_screen.dart';
+import 'package:whizz/src/features/home/presentation/home_screen.dart';
+import 'package:whizz/src/features/media/data/bloc/online_media_bloc.dart';
+import 'package:whizz/src/features/media/presentation/screens/media_screen.dart';
+import 'package:whizz/src/features/play/presentation/play_screen.dart';
+import 'package:whizz/src/features/profile/presentation/profile_screen.dart';
 import 'package:whizz/src/router/scaffold_with_bottom_nav_bar.dart';
 
 enum RouterPath {
@@ -25,7 +25,7 @@ enum RouterPath {
   discovery,
   play,
   create,
-  addMedia,
+  media,
   unsplash,
   profile,
   noConnection,
@@ -107,7 +107,7 @@ class AppRouter {
             providers: [
               BlocProvider(
                   create: (_) =>
-                      FetchUnsplashBloc()..add(const GetListPhotosEvent())),
+                      OnlineMediaBloc()..add(const GetListPhotosEvent())),
               BlocProvider(create: (_) => CreateQuizCubit()),
             ],
             child: const CreateQuizScreen(),
@@ -115,12 +115,15 @@ class AppRouter {
         ),
       ),
       GoRoute(
-        path: '/add_media',
-        name: RouterPath.addMedia.name,
+        path: '/media',
+        name: RouterPath.media.name,
         parentNavigatorKey: _rootNavigatorKey,
         pageBuilder: (_, state) => MaterialPage(
           key: state.pageKey,
-          child: const AddMediaScreen(),
+          child: BlocProvider(
+            create: (_) => OnlineMediaBloc()..add(const GetListPhotosEvent()),
+            child: const MediaScreen(),
+          ),
         ),
       ),
       GoRoute(

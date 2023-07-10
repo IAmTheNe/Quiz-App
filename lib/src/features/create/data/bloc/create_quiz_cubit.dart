@@ -40,6 +40,15 @@ class CreateQuizCubit extends Cubit<CreateQuizState> {
     ));
   }
 
+  void attachmentChanged((String, AttachType)? value) {
+    emit(state.copyWith(
+      quiz: state.quiz.copyWith(
+        imageUrl: value?.$1,
+        attachType: value?.$2,
+      )
+    ));
+  }
+
   Future<void> createQuiz() async {
     emit(state.copyWith(isLoading: true));
     final quiz = state.quiz;

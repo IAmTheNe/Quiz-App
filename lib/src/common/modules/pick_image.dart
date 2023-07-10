@@ -56,3 +56,9 @@ class PickImage {
     return video;
   }
 }
+
+enum Attachment {
+  gallery,
+  camera,
+  online,
+}
