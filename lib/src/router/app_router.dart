@@ -11,11 +11,11 @@ import 'package:whizz/src/features/auth/presentation/otp_screen.dart';
 import 'package:whizz/src/features/create/data/bloc/create_quiz_cubit.dart';
 import 'package:whizz/src/features/create/presentation/screens/create_quiz_screen.dart';
 import 'package:whizz/src/features/discovery/presentation/discovery_screen.dart';
-import 'package:whizz/src/features/home/presentation/home_screen.dart';
+import 'package:whizz/src/features/home/presentation/screens/home_screen.dart';
 import 'package:whizz/src/features/media/data/bloc/online_media_bloc.dart';
 import 'package:whizz/src/features/media/presentation/screens/media_screen.dart';
 import 'package:whizz/src/features/play/presentation/play_screen.dart';
-import 'package:whizz/src/features/profile/presentation/profile_screen.dart';
+import 'package:whizz/src/features/settings/presentation/screens/settings_screen.dart';
 import 'package:whizz/src/router/scaffold_with_bottom_nav_bar.dart';
 
 enum RouterPath {
@@ -27,7 +27,7 @@ enum RouterPath {
   create,
   media,
   unsplash,
-  profile,
+  settings,
   noConnection,
   error,
 }
@@ -49,7 +49,8 @@ class AppRouter {
           return '/home';
         }
       } else {
-        if (state.matchedLocation == '/home') {
+        if (state.matchedLocation == '/home' ||
+            state.matchedLocation == '/settings') {
           return '/login';
         }
       }
@@ -88,11 +89,11 @@ class AppRouter {
             ),
           ),
           GoRoute(
-            path: '/profile',
-            name: RouterPath.profile.name,
+            path: '/settings',
+            name: RouterPath.settings.name,
             pageBuilder: (_, state) => NoTransitionPage(
               key: state.pageKey,
-              child: const ProfileScreen(),
+              child: const SettingsScreen(),
             ),
           ),
         ],

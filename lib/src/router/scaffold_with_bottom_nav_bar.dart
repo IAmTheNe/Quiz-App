@@ -42,7 +42,7 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
         context.pushNamed(RouterPath.create.name);
         break;
       case 4:
-        context.goNamed(RouterPath.profile.name);
+        context.goNamed(RouterPath.settings.name);
         break;
       default:
         context.goNamed(RouterPath.home.name);
@@ -75,8 +75,8 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
             label: 'Create',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            label: 'Profile',
+            icon: Icon(Icons.settings),
+            label: 'Settings',
           ),
         ],
       ),
