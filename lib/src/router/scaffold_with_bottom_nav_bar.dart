@@ -39,7 +39,7 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
         context.goNamed(RouterPath.play.name);
         break;
       case 3:
-        context.pushNamed(RouterPath.create.name);
+        context.pushNamed(RouterPath.quiz.name);
         break;
       case 4:
         context.goNamed(RouterPath.settings.name);

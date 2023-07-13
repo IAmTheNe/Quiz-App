@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whizz/src/common/modules/pick_image.dart';
-import 'package:whizz/src/features/create/data/models/quiz.dart';
-import 'package:whizz/src/features/create/data/repositories/create_quiz_repository.dart';
+import 'package:whizz/src/features/quiz/data/models/quiz.dart';
+import 'package:whizz/src/features/quiz/data/repositories/create_quiz_repository.dart';
 
 part 'create_quiz_state.dart';
 
@@ -42,11 +42,10 @@ class CreateQuizCubit extends Cubit<CreateQuizState> {
 
   void attachmentChanged((String, AttachType)? value) {
     emit(state.copyWith(
-      quiz: state.quiz.copyWith(
-        imageUrl: value?.$1,
-        attachType: value?.$2,
-      )
-    ));
+        quiz: state.quiz.copyWith(
+      imageUrl: value?.$1,
+      attachType: value?.$2,
+    )));
   }
 
   Future<void> createQuiz() async {

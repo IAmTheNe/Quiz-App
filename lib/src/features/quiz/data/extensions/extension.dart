@@ -1,0 +1,39 @@
+import 'package:whizz/src/features/quiz/data/models/question.dart';
+import 'package:whizz/src/features/quiz/data/models/quiz.dart';
+
+extension EnumX on String {
+  QuizVisibility convertQuizVisibitity() {
+    switch (this) {
+      case 'private':
+        return QuizVisibility.private;
+      case 'public':
+        return QuizVisibility.public;
+      default:
+        return QuizVisibility.public;
+    }
+  }
+
+  AttachType convertAttachType() {
+    switch (this) {
+      case 'local':
+        return AttachType.local;
+      case 'onlie':
+        return AttachType.online;
+      default:
+        return AttachType.local;
+    }
+  }
+
+  QuestionType convertQuestionType() {
+    switch (this) {
+      case 'choice':
+        return QuestionType.choice;
+      case 'poll':
+        return QuestionType.poll;
+      case 'yesNo':
+        return QuestionType.yesNo;
+      default:
+        return QuestionType.choice;
+    }
+  }
+}

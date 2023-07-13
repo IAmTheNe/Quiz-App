@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:whizz/src/common/constants/constants.dart';
-import 'package:whizz/src/features/create/data/models/quiz.dart';
+import 'package:whizz/src/features/quiz/data/models/quiz.dart';
 
 class ImageCover extends StatelessWidget {
   const ImageCover({

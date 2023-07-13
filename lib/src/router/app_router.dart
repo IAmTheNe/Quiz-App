@@ -8,13 +8,14 @@ import 'package:whizz/src/features/auth/data/models/user.dart';
 import 'package:whizz/src/features/auth/data/repositories/auth_repository.dart';
 import 'package:whizz/src/features/auth/presentation/login_screen.dart';
 import 'package:whizz/src/features/auth/presentation/otp_screen.dart';
-import 'package:whizz/src/features/create/data/bloc/create_quiz_cubit.dart';
-import 'package:whizz/src/features/create/presentation/screens/create_quiz_screen.dart';
 import 'package:whizz/src/features/discovery/presentation/discovery_screen.dart';
 import 'package:whizz/src/features/home/presentation/screens/home_screen.dart';
 import 'package:whizz/src/features/media/data/bloc/online_media_bloc.dart';
 import 'package:whizz/src/features/media/presentation/screens/media_screen.dart';
 import 'package:whizz/src/features/play/presentation/play_screen.dart';
+import 'package:whizz/src/features/quiz/data/bloc/create_quiz_cubit.dart';
+import 'package:whizz/src/features/quiz/presentation/screens/create_question_screen.dart';
+import 'package:whizz/src/features/quiz/presentation/screens/create_quiz_screen.dart';
 import 'package:whizz/src/features/settings/presentation/screens/settings_screen.dart';
 import 'package:whizz/src/router/scaffold_with_bottom_nav_bar.dart';
 
@@ -24,7 +25,8 @@ enum RouterPath {
   otp,
   discovery,
   play,
-  create,
+  quiz,
+  question,
   media,
   unsplash,
   settings,
@@ -37,6 +39,8 @@ class AppRouter {
   static final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
   static final _authRepo = AuthenticationRepository();
+
+  static final _quizCubit = CreateQuizCubit();
 
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
@@ -99,8 +103,8 @@ class AppRouter {
         ],
       ),
       GoRoute(
-        path: '/create',
-        name: RouterPath.create.name,
+        path: '/quiz',
+        name: RouterPath.quiz.name,
         parentNavigatorKey: _rootNavigatorKey,
         pageBuilder: (_, state) => MaterialPage(
           key: state.pageKey,
@@ -109,9 +113,21 @@ class AppRouter {
               BlocProvider(
                   create: (_) =>
                       OnlineMediaBloc()..add(const GetListPhotosEvent())),
-              BlocProvider(create: (_) => CreateQuizCubit()),
+              BlocProvider.value(value: _quizCubit),
             ],
             child: const CreateQuizScreen(),
+          ),
+        ),
+      ),
+      GoRoute(
+        path: '/question',
+        name: RouterPath.question.name,
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (_, state) => MaterialPage(
+          key: state.pageKey,
+          child: BlocProvider.value(
+            value: _quizCubit,
+            child: const CreateQuestionScreen(),
           ),
         ),
       ),

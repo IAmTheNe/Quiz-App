@@ -45,7 +45,6 @@ class QuizFormField extends StatelessWidget {
         minLines: 1,
         maxLines: maxLines ?? 1,
         maxLength: maxLength,
-        
         decoration: InputDecoration(
           hintText: hintText,
           suffixIcon: suffixIcon,

@@ -4,11 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/widgets/quiz_textfield.dart';
-import 'package:whizz/src/features/create/data/bloc/create_quiz_cubit.dart';
-import 'package:whizz/src/features/create/data/models/quiz.dart';
-import 'package:whizz/src/features/create/presentation/widgets/image_cover.dart';
-import 'package:whizz/src/features/create/presentation/widgets/popup_menu.dart';
-import 'package:whizz/src/features/create/presentation/widgets/rainbow_container.dart';
+import 'package:whizz/src/features/quiz/data/bloc/create_quiz_cubit.dart';
+import 'package:whizz/src/features/quiz/data/models/quiz.dart';
+import 'package:whizz/src/features/quiz/presentation/widgets/image_cover.dart';
+import 'package:whizz/src/features/quiz/presentation/popups/popup_menu.dart';
+import 'package:whizz/src/features/quiz/presentation/widgets/rainbow_container.dart';
+
 import 'package:whizz/src/router/app_router.dart';
 
 class CreateQuizScreen extends StatelessWidget {
@@ -114,7 +115,9 @@ class CreateQuizScreen extends StatelessWidget {
           children: [
             Expanded(
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.pushNamed(RouterPath.question.name);
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Constants.primaryColor,
                   elevation: 4,
