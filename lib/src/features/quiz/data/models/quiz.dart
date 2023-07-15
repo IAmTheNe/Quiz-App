@@ -97,14 +97,14 @@ class Quiz extends Equatable {
       imageUrl: map['imageUrl'] != null ? map['imageUrl'] as String : null,
       visibility: (map['visibility'] as String).convertQuizVisibitity(),
       keyword: map['keyword'] != null
-          ? List<String>.from((map['keyword'] as List<String>))
+          ? List<String>.from((map['keyword'] as List<dynamic>))
           : null,
       createdAt: map['createdAt'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int)
           : null,
       attachType: (map['attachType'] as String).convertAttachType(),
       questions: List<Question>.from(
-        (map['questions'] as List<int>).map<Question>(
+        (map['questions'] as List<dynamic>).map<Question>(
           (x) => Question.fromMap(x as Map<String, dynamic>),
         ),
       ),

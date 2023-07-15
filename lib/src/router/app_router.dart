@@ -13,7 +13,9 @@ import 'package:whizz/src/features/home/presentation/screens/home_screen.dart';
 import 'package:whizz/src/features/media/data/bloc/online_media_bloc.dart';
 import 'package:whizz/src/features/media/presentation/screens/media_screen.dart';
 import 'package:whizz/src/features/play/presentation/play_screen.dart';
-import 'package:whizz/src/features/quiz/data/bloc/create_quiz_cubit.dart';
+import 'package:whizz/src/features/profile/data/bloc/profile_cubit.dart';
+import 'package:whizz/src/features/profile/presentation/screens/profile_screen.dart';
+import 'package:whizz/src/features/quiz/data/bloc/quiz_cubit.dart';
 import 'package:whizz/src/features/quiz/presentation/screens/create_question_screen.dart';
 import 'package:whizz/src/features/quiz/presentation/screens/create_quiz_screen.dart';
 import 'package:whizz/src/features/settings/presentation/screens/settings_screen.dart';
@@ -32,6 +34,7 @@ enum RouterPath {
   settings,
   noConnection,
   error,
+  profile,
 }
 
 class AppRouter {
@@ -112,7 +115,7 @@ class AppRouter {
                   create: (_) =>
                       OnlineMediaBloc()..add(const GetListPhotosEvent())),
               BlocProvider(
-                create: (_) => CreateQuizCubit(),
+                create: (_) => QuizCubit(),
               ),
             ],
             child: const CreateQuizScreen(),
@@ -126,7 +129,7 @@ class AppRouter {
         pageBuilder: (_, state) => MaterialPage(
           key: state.pageKey,
           child: BlocProvider.value(
-            value: state.extra! as CreateQuizCubit,
+            value: state.extra! as QuizCubit,
             child: const CreateQuestionScreen(),
           ),
         ),
@@ -158,6 +161,18 @@ class AppRouter {
           key: state.pageKey,
           child: OtpScreen(
             codeSent: state.extra as (String, int),
+          ),
+        ),
+      ),
+      GoRoute(
+        path: '/profile',
+        name: RouterPath.profile.name,
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (_, state) => MaterialPage(
+          key: state.pageKey,
+          child: BlocProvider(
+            create: (_) => ProfileCubit(),
+            child: const ProfileScreen(),
           ),
         ),
       ),

@@ -6,16 +6,16 @@ import 'package:whizz/src/common/modules/pick_image.dart';
 import 'package:whizz/src/features/quiz/data/models/answer.dart';
 import 'package:whizz/src/features/quiz/data/models/question.dart';
 import 'package:whizz/src/features/quiz/data/models/quiz.dart';
-import 'package:whizz/src/features/quiz/data/repositories/create_quiz_repository.dart';
+import 'package:whizz/src/features/quiz/data/repositories/quiz_repository.dart';
 
-part 'create_quiz_state.dart';
+part 'quiz_state.dart';
 
-class CreateQuizCubit extends Cubit<CreateQuizState> {
-  CreateQuizCubit({CreateQuizRepository? quizRepository})
-      : _quizRepository = quizRepository ?? CreateQuizRepository(),
-        super(const CreateQuizState());
+class QuizCubit extends Cubit<QuizState> {
+  QuizCubit({QuizRepository? quizRepository})
+      : _quizRepository = quizRepository ?? QuizRepository(),
+        super(const QuizState());
 
-  final CreateQuizRepository _quizRepository;
+  final QuizRepository _quizRepository;
 
   void nameChanged(String value) {
     emit(state.copyWith(

@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/widgets/quiz_textfield.dart';
-import 'package:whizz/src/features/quiz/data/bloc/create_quiz_cubit.dart';
+import 'package:whizz/src/features/quiz/data/bloc/quiz_cubit.dart';
 import 'package:whizz/src/features/quiz/data/models/quiz.dart';
 import 'package:whizz/src/features/quiz/presentation/widgets/image_cover.dart';
 import 'package:whizz/src/features/quiz/presentation/popups/popup_menu.dart';
@@ -21,12 +21,12 @@ class CreateQuizScreen extends StatelessWidget {
 
     if (result?.$1 != null) {
       // ignore: use_build_context_synchronously
-      context.read<CreateQuizCubit>().attachmentChanged(result);
+      context.read<QuizCubit>().attachmentChanged(result);
     }
   }
 
   void createQuiz(BuildContext context) {
-    context.read<CreateQuizCubit>().createQuiz().then((_) => context.pop());
+    context.read<QuizCubit>().createQuiz().then((_) => context.pop());
   }
 
   @override
@@ -41,8 +41,7 @@ class CreateQuizScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(Constants.kPadding),
-          child: BlocBuilder<CreateQuizCubit, CreateQuizState>(
-              builder: (context, state) {
+          child: BlocBuilder<QuizCubit, QuizState>(builder: (context, state) {
             return Column(
               children: [
                 GestureDetector(
@@ -63,7 +62,7 @@ class CreateQuizScreen extends StatelessWidget {
                   hintText: 'Name',
                   initialValue: state.quiz.title,
                   maxLength: 50,
-                  onChanged: context.read<CreateQuizCubit>().nameChanged,
+                  onChanged: context.read<QuizCubit>().nameChanged,
                 ),
                 const SizedBox(
                   height: Constants.kPadding,
@@ -72,7 +71,7 @@ class CreateQuizScreen extends StatelessWidget {
                   hintText: 'Description',
                   maxLines: 6,
                   maxLength: 500,
-                  onChanged: context.read<CreateQuizCubit>().descriptionChanged,
+                  onChanged: context.read<QuizCubit>().descriptionChanged,
                 ),
                 const SizedBox(
                   height: Constants.kPadding,
@@ -87,9 +86,7 @@ class CreateQuizScreen extends StatelessWidget {
                 ),
                 QuizDropDownField(
                   onChanged: (val) {
-                    context
-                        .read<CreateQuizCubit>()
-                        .visibilityChanged(val as String);
+                    context.read<QuizCubit>().visibilityChanged(val as String);
                   },
                   label: const Text('Visibility'),
                   items: const ['Public', 'Private'],
@@ -107,7 +104,7 @@ class CreateQuizScreen extends StatelessWidget {
           }),
         ),
       ),
-      bottomNavigationBar: BlocBuilder<CreateQuizCubit, CreateQuizState>(
+      bottomNavigationBar: BlocBuilder<QuizCubit, QuizState>(
         builder: (context, state) {
           return Container(
             padding: const EdgeInsets.all(Constants.kPadding),
@@ -119,11 +116,11 @@ class CreateQuizScreen extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       if (state.quiz.questions.isEmpty) {
-                        context.read<CreateQuizCubit>().createNewQuestion();
+                        context.read<QuizCubit>().createNewQuestion();
                       }
                       context.pushNamed(
                         RouterPath.question.name,
-                        extra: context.read<CreateQuizCubit>(),
+                        extra: context.read<QuizCubit>(),
                       );
                     },
                     style: ElevatedButton.styleFrom(

@@ -9,6 +9,7 @@ extension FirebaseUser on firebase_auth.User {
       email: email,
       name: displayName,
       avatar: photoURL,
+      phoneNumber: phoneNumber,
     );
   }
 }

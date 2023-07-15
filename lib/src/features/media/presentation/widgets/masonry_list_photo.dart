@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/features/media/data/bloc/online_media_bloc.dart';
+import 'package:whizz/src/features/quiz/data/models/quiz.dart';
 
 class MasonryListPhotos extends StatelessWidget {
   const MasonryListPhotos({
@@ -24,7 +26,12 @@ class MasonryListPhotos extends StatelessWidget {
       itemBuilder: (context, index) {
         final url = state.photos[index].urls.raw.toString();
         return GestureDetector(
-          onTap: () {},
+          onTap: () {
+            context.pop((
+              url,
+              AttachType.online,
+            ));
+          },
           child: ClipRRect(
             borderRadius: BorderRadius.circular(Constants.kPadding / 4),
             child: CachedNetworkImage(

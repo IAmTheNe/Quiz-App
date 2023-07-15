@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whizz/src/common/constants/constants.dart';
-import 'package:whizz/src/features/quiz/data/bloc/create_quiz_cubit.dart';
+import 'package:whizz/src/features/quiz/data/bloc/quiz_cubit.dart';
 import 'package:whizz/src/features/quiz/data/models/answer.dart';
 import 'package:whizz/src/features/quiz/presentation/dialogs/options_builder.dart';
 
@@ -39,10 +39,10 @@ class QuizAnswers extends StatelessWidget with OptionsSelector {
               context: context,
               answer: answers[index],
               onChanged: (val) => context
-                  .read<CreateQuizCubit>()
+                  .read<QuizCubit>()
                   .questionAnswerChanged(answer: val, index: index),
               onToggled: (val) => context
-                  .read<CreateQuizCubit>()
+                  .read<QuizCubit>()
                   .questionAnswerStatusChanged(index: index, isCorrect: val),
             );
           },

@@ -29,7 +29,7 @@ class Question extends Equatable {
       'duration': duration,
       'point': point,
       'type': type.name,
-      'answers': answers,
+      'answers': answers.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -41,7 +41,7 @@ class Question extends Equatable {
       point: map['point'] != null ? map['point'] as int : null,
       type: (map['type'] as String).convertQuestionType(),
       answers: List<Answer>.from(
-        (map['answers'] as List<int>).map<Answer>(
+        (map['answers'] as List<dynamic>).map<Answer>(
           (x) => Answer.fromMap(x as Map<String, dynamic>),
         ),
       ),
@@ -63,7 +63,7 @@ class Question extends Equatable {
         answers,
       ];
 
-  copyWith({
+  Question copyWith({
     String? id,
     String? name,
     int? duration,

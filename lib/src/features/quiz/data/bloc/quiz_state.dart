@@ -1,7 +1,7 @@
-part of 'create_quiz_cubit.dart';
+part of 'quiz_cubit.dart';
 
-class CreateQuizState extends Equatable {
-  const CreateQuizState({
+class QuizState extends Equatable {
+  const QuizState({
     this.quiz = const Quiz(),
     this.isValid = false,
     this.isLoading = false,
@@ -21,13 +21,13 @@ class CreateQuizState extends Equatable {
         index,
       ];
 
-  CreateQuizState copyWith({
+  QuizState copyWith({
     Quiz? quiz,
     bool? isValid,
     bool? isLoading,
     int? index,
   }) {
-    return CreateQuizState(
+    return QuizState(
       quiz: quiz ?? this.quiz,
       isValid: isValid ?? this.isValid,
       isLoading: isLoading ?? this.isLoading,

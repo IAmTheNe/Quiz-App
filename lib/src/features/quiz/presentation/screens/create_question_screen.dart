@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
-import 'package:whizz/src/features/quiz/data/bloc/create_quiz_cubit.dart';
+import 'package:whizz/src/features/quiz/data/bloc/quiz_cubit.dart';
 import 'package:whizz/src/features/quiz/data/models/quiz.dart';
 import 'package:whizz/src/features/quiz/presentation/dialogs/options_builder.dart';
 import 'package:whizz/src/features/quiz/presentation/widgets/image_cover.dart';
@@ -21,7 +21,7 @@ class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
 
     if (result?.$1 != null) {
       // ignore: use_build_context_synchronously
-      context.read<CreateQuizCubit>().attachmentChanged(result);
+      context.read<QuizCubit>().attachmentChanged(result);
     }
   }
 
@@ -34,7 +34,7 @@ class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
       ),
       body: Padding(
         padding: const EdgeInsets.all(Constants.kPadding),
-        child: BlocBuilder<CreateQuizCubit, CreateQuizState>(
+        child: BlocBuilder<QuizCubit, QuizState>(
           builder: (context, state) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,7 +84,7 @@ class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
                       initialValue: state.quiz.questions[state.index].name,
                       onChanged: (val) {
                         context
-                            .read<CreateQuizCubit>()
+                            .read<QuizCubit>()
                             .questionNameChanged(name: val);
                       },
                     );
@@ -136,7 +136,7 @@ class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
                     ),
                     IconButton.filled(
                       onPressed: () {
-                        context.read<CreateQuizCubit>().createNewQuestion();
+                        context.read<QuizCubit>().createNewQuestion();
                       },
                       style: IconButton.styleFrom(),
                       icon: const Icon(

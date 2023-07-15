@@ -9,8 +9,8 @@ import 'package:whizz/src/common/modules/cache.dart';
 import 'package:whizz/src/features/auth/data/models/user.dart';
 import 'package:whizz/src/features/quiz/data/models/quiz.dart';
 
-class CreateQuizRepository {
-  CreateQuizRepository({
+class QuizRepository {
+  QuizRepository({
     InMemoryCache? cache,
     FirebaseFirestore? firestore,
     FirebaseStorage? storage,
@@ -31,7 +31,7 @@ class CreateQuizRepository {
 
     if (quiz.attachType == AttachType.local) {
       final file = File(quiz.imageUrl!);
-      url = await getDownloadUrl(path: 'quiz/$quizId', file: file);
+      url = await _getDownloadUrl(path: 'quiz/$quizId', file: file);
     }
 
     final newQuiz = quiz.copyWith(
@@ -48,7 +48,23 @@ class CreateQuizRepository {
         .set(newQuiz.toMap());
   }
 
-  Future<String> getDownloadUrl({
+  Future<List<Quiz>> fetchAllQuizzes() async {
+    final quiz = <Quiz>[];
+    await _firestore
+        .collection(FirebaseDocumentConstants.user)
+        .doc(_cache.read<User>(key: 'user')!.id)
+        .collection(FirebaseDocumentConstants.quiz)
+        .get()
+        .then((querySnapshot) {
+      for (final quizzes in querySnapshot.docs) {
+        quiz.add(Quiz.fromMap(quizzes.data()));
+      }
+    });
+
+    return quiz;
+  }
+
+  Future<String> _getDownloadUrl({
     required String path,
     required File file,
   }) async {

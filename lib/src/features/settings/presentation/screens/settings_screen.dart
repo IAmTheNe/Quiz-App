@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:whizz/src/features/auth/data/bloc/login/login_cubit.dart';
 import 'package:whizz/src/features/settings/data/enum/menu_title.dart';
 import 'package:whizz/src/features/settings/data/mockup/settings_mockup.dart';
 import 'package:whizz/src/features/settings/data/models/menu_setting.dart';
+import 'package:whizz/src/router/app_router.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -53,6 +55,8 @@ Future<void>? onTap(BuildContext context, MenuTitle index) {
           );
         },
       );
+    case MenuTitle.info:
+      return context.pushNamed(RouterPath.profile.name);
     default:
       return null;
   }
