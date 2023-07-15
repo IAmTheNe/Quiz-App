@@ -43,6 +43,16 @@ Future<void>? onTap(BuildContext context, MenuTitle index) {
   switch (index) {
     case MenuTitle.logout:
       return context.read<LoginCubit>().signOut();
+    case MenuTitle.about:
+      return showDialog(
+        context: context,
+        builder: (context) {
+          return const AboutDialog(
+            applicationName: 'Quizwhizz',
+            applicationVersion: 'version 0.0.1_20230713',
+          );
+        },
+      );
     default:
       return null;
   }

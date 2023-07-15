@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whizz/src/common/constants/constants.dart';
+import 'package:whizz/src/features/quiz/data/bloc/create_quiz_cubit.dart';
+import 'package:whizz/src/features/quiz/data/models/answer.dart';
 import 'package:whizz/src/features/quiz/presentation/dialogs/options_builder.dart';
 
 class QuizAnswers extends StatelessWidget with OptionsSelector {
-  const QuizAnswers({super.key});
+  const QuizAnswers({
+    super.key,
+    required this.answers,
+  });
+
+  final List<Answer> answers;
 
   final listColors = const [
     Color(0xFFe35454),
@@ -27,7 +35,16 @@ class QuizAnswers extends StatelessWidget with OptionsSelector {
       itemBuilder: (context, index) {
         return GestureDetector(
           onTap: () {
-            showAnswer(context: context);
+            showAnswer(
+              context: context,
+              answer: answers[index],
+              onChanged: (val) => context
+                  .read<CreateQuizCubit>()
+                  .questionAnswerChanged(answer: val, index: index),
+              onToggled: (val) => context
+                  .read<CreateQuizCubit>()
+                  .questionAnswerStatusChanged(index: index, isCorrect: val),
+            );
           },
           child: Container(
             alignment: Alignment.center,
@@ -37,7 +54,9 @@ class QuizAnswers extends StatelessWidget with OptionsSelector {
               borderRadius: BorderRadius.circular(16),
             ),
             child: Text(
-              'Add answer',
+              answers[index].answer.isNotEmpty
+                  ? answers[index].answer
+                  : 'Add answer',
               style: Constants.textSubtitle.copyWith(
                 color: Colors.white,
                 fontWeight: FontWeight.w700,

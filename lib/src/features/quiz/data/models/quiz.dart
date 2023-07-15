@@ -16,7 +16,7 @@ class Quiz extends Equatable {
     this.visibility = QuizVisibility.public,
     this.keyword = const [],
     this.createdAt,
-    this.attachType = AttachType.local,
+    this.attachType = AttachType.none,
     this.questions = const [],
   });
 
@@ -29,7 +29,7 @@ class Quiz extends Equatable {
   final List<String>? keyword;
   final DateTime? createdAt;
   final AttachType attachType;
-  final List<Question>? questions;
+  final List<Question> questions;
 
   Quiz copyWith({
     String? id,
@@ -71,42 +71,6 @@ class Quiz extends Equatable {
         questions,
       ];
 
-  // Map<String, dynamic> toMap() {
-  //   return <String, dynamic>{
-  //     'id': id,
-  //     'title': title,
-  //     'description': description,
-  //     if (collectionId != null) 'collectionId': collectionId,
-  //     if (imageUrl != null) 'imageUrl': imageUrl,
-  //     'visibility': visibility.name,
-  //     if (keyword != null) 'keyword': keyword,
-  //     'createdAt': createdAt?.millisecondsSinceEpoch ??
-  //         DateTime.now().millisecondsSinceEpoch,
-  //   };
-  // }
-
-  // factory Quiz.fromMap(Map<String, dynamic> map) {
-  //   return Quiz(
-  //     id: map['id'] as String,
-  //     title: map['title'] as String,
-  //     description:
-  //         map['description'] != null ? map['description'] as String : null,
-  //     collectionId:
-  //         map['collectionId'] != null ? map['collectionId'] as String : null,
-  //     imageUrl: map['imageUrl'] != null ? map['imageUrl'] as String : null,
-  //     visibility: (map['visibility'] as String).toEnum(),
-  //     keyword: map['keyword'] != null
-  //         ? List<String>.from((map['keyword'] as List<String>))
-  //         : null,
-  //     createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
-  //   );
-  // }
-
-  // String toJson() => json.encode(toMap());
-
-  // factory Quiz.fromJson(String source) =>
-  //     Quiz.fromMap(json.decode(source) as Map<String, dynamic>);
-
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
@@ -118,7 +82,7 @@ class Quiz extends Equatable {
       'keyword': keyword,
       'createdAt': createdAt?.millisecondsSinceEpoch,
       'attachType': attachType.name,
-      'questions': questions?.map((x) => x.toMap()).toList(),
+      'questions': questions.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -139,13 +103,11 @@ class Quiz extends Equatable {
           ? DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int)
           : null,
       attachType: (map['attachType'] as String).convertAttachType(),
-      questions: map['questions'] != null
-          ? List<Question>.from(
-              (map['questions'] as List<int>).map<Question?>(
-                (x) => Question.fromMap(x as Map<String, dynamic>),
-              ),
-            )
-          : null,
+      questions: List<Question>.from(
+        (map['questions'] as List<int>).map<Question>(
+          (x) => Question.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
     );
   }
 
@@ -161,6 +123,7 @@ enum QuizVisibility {
 }
 
 enum AttachType {
+  none,
   local,
   online,
 }

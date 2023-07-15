@@ -41,102 +41,108 @@ class CreateQuizScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(Constants.kPadding),
-          child: Column(
-            children: [
-              BlocBuilder<CreateQuizCubit, CreateQuizState>(
-                builder: (context, state) {
-                  return GestureDetector(
-                    onTap: () {
-                      intent(context);
-                    },
-                    child: state.quiz.imageUrl != null
-                        ? ImageCover(
-                            url: state.quiz.imageUrl!,
-                            attachType: state.quiz.attachType,
-                          )
-                        : const RainbowContainer(),
-                  );
-                },
-              ),
-              const SizedBox(
-                height: Constants.kPadding,
-              ),
-              QuizFormField(
-                hintText: 'Name',
-                maxLength: 50,
-                onChanged: context.read<CreateQuizCubit>().nameChanged,
-              ),
-              const SizedBox(
-                height: Constants.kPadding,
-              ),
-              QuizFormField(
-                hintText: 'Description',
-                maxLines: 6,
-                maxLength: 500,
-                onChanged: context.read<CreateQuizCubit>().descriptionChanged,
-              ),
-              const SizedBox(
-                height: Constants.kPadding,
-              ),
-              QuizDropDownField(
-                onChanged: (val) {},
-                label: const Text('Collection'),
-                items: const ['Holiday', 'Games', 'Sports', 'Music'],
-              ),
-              const SizedBox(
-                height: Constants.kPadding,
-              ),
-              QuizDropDownField(
-                onChanged: (val) {
-                  context
-                      .read<CreateQuizCubit>()
-                      .visibilityChanged(val as String);
-                },
-                label: const Text('Visibility'),
-                items: const ['Public', 'Private'],
-              ),
-              const SizedBox(
-                height: Constants.kPadding,
-              ),
-              const QuizFormField(
-                hintText: 'Keyword',
-                maxLines: 6,
-                maxLength: 1000,
-              ),
-            ],
-          ),
+          child: BlocBuilder<CreateQuizCubit, CreateQuizState>(
+              builder: (context, state) {
+            return Column(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    intent(context);
+                  },
+                  child: state.quiz.imageUrl != null
+                      ? ImageCover(
+                          url: state.quiz.imageUrl!,
+                          attachType: state.quiz.attachType,
+                        )
+                      : const RainbowContainer(),
+                ),
+                const SizedBox(
+                  height: Constants.kPadding,
+                ),
+                QuizFormField(
+                  hintText: 'Name',
+                  initialValue: state.quiz.title,
+                  maxLength: 50,
+                  onChanged: context.read<CreateQuizCubit>().nameChanged,
+                ),
+                const SizedBox(
+                  height: Constants.kPadding,
+                ),
+                QuizFormField(
+                  hintText: 'Description',
+                  maxLines: 6,
+                  maxLength: 500,
+                  onChanged: context.read<CreateQuizCubit>().descriptionChanged,
+                ),
+                const SizedBox(
+                  height: Constants.kPadding,
+                ),
+                QuizDropDownField(
+                  onChanged: (val) {},
+                  label: const Text('Collection'),
+                  items: const ['Holiday', 'Games', 'Sports', 'Music'],
+                ),
+                const SizedBox(
+                  height: Constants.kPadding,
+                ),
+                QuizDropDownField(
+                  onChanged: (val) {
+                    context
+                        .read<CreateQuizCubit>()
+                        .visibilityChanged(val as String);
+                  },
+                  label: const Text('Visibility'),
+                  items: const ['Public', 'Private'],
+                ),
+                const SizedBox(
+                  height: Constants.kPadding,
+                ),
+                const QuizFormField(
+                  hintText: 'Keyword',
+                  maxLines: 6,
+                  maxLength: 1000,
+                ),
+              ],
+            );
+          }),
         ),
       ),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(Constants.kPadding),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Expanded(
-              child: ElevatedButton(
-                onPressed: () {
-                  context.pushNamed(RouterPath.question.name);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Constants.primaryColor,
-                  elevation: 4,
-                ),
-                child: Text(
-                  'Add Question',
-                  style: Constants.textHeading.copyWith(
-                    color: Colors.white,
-                    fontSize: 14.sp,
+      bottomNavigationBar: BlocBuilder<CreateQuizCubit, CreateQuizState>(
+        builder: (context, state) {
+          return Container(
+            padding: const EdgeInsets.all(Constants.kPadding),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (state.quiz.questions.isEmpty) {
+                        context.read<CreateQuizCubit>().createNewQuestion();
+                      }
+                      context.pushNamed(
+                        RouterPath.question.name,
+                        extra: context.read<CreateQuizCubit>(),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Constants.primaryColor,
+                      elevation: 4,
+                    ),
+                    child: Text(
+                      'Add Question',
+                      style: Constants.textHeading.copyWith(
+                        color: Colors.white,
+                        fontSize: 14.sp,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            const SizedBox(
-              width: Constants.kPadding,
-            ),
-            BlocBuilder<CreateQuizCubit, CreateQuizState>(
-              builder: (context, state) {
-                return state.isLoading
+                const SizedBox(
+                  width: Constants.kPadding,
+                ),
+                state.isLoading
                     ? const CircularProgressIndicator.adaptive()
                     : Expanded(
                         child: ElevatedButton(
@@ -153,11 +159,11 @@ class CreateQuizScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                      );
-              },
+                      ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

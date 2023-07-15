@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
+import 'package:whizz/src/features/quiz/data/models/answer.dart';
 
 mixin OptionsSelector {
   void showInputTitle({
     required BuildContext context,
-    void Function()? onPressed,
+    required String initialValue,
+    void Function(String)? onChanged,
   }) {
     showDialog(
       context: context,
-      barrierDismissible: true,
+      barrierDismissible: false,
       useRootNavigator: true,
       builder: (context) {
         return AlertDialog(
@@ -18,6 +20,8 @@ mixin OptionsSelector {
             maxLength: 150,
             maxLines: 3,
             minLines: 1,
+            initialValue: initialValue,
+            onChanged: onChanged,
             style: Constants.textSubtitle,
           ),
           actions: [
@@ -25,10 +29,6 @@ mixin OptionsSelector {
               onPressed: () {
                 context.pop();
               },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: onPressed,
               child: const Text('OK'),
             ),
           ],
@@ -39,6 +39,9 @@ mixin OptionsSelector {
 
   void showAnswer({
     required BuildContext context,
+    required Answer answer,
+    void Function(String)? onChanged,
+    void Function(bool)? onToggled,
   }) {
     showDialog(
       context: context,
@@ -52,15 +55,15 @@ mixin OptionsSelector {
                 maxLength: 150,
                 maxLines: 3,
                 minLines: 1,
+                initialValue: answer.answer,
                 style: Constants.textSubtitle,
+                onChanged: onChanged,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  const Text('Correct answer'),
-                  const SizedBox(width: Constants.kPadding / 2),
-                  Switch(value: false, onChanged: (val) {}),
-                ],
+              SwitchListTile(
+                value: answer.isCorrect,
+                dense: true,
+                onChanged: onToggled,
+                title: const Text('Correct answer'),
               ),
             ],
           ),
@@ -69,10 +72,6 @@ mixin OptionsSelector {
               onPressed: () {
                 context.pop();
               },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {},
               child: const Text('OK'),
             ),
           ],

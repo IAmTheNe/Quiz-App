@@ -4,6 +4,7 @@ import 'package:whizz/src/common/constants/constants.dart';
 class QuizFormField extends StatelessWidget {
   const QuizFormField({
     super.key,
+    this.initialValue,
     this.keyboardType,
     this.onChanged,
     this.hintText,
@@ -14,6 +15,7 @@ class QuizFormField extends StatelessWidget {
     this.label,
   });
 
+  final String? initialValue;
   final TextInputType? keyboardType;
   final void Function(String)? onChanged;
   final String? hintText;
@@ -40,6 +42,7 @@ class QuizFormField extends StatelessWidget {
       ),
       child: TextFormField(
         keyboardType: keyboardType,
+        initialValue: initialValue,
         onChanged: onChanged,
         style: Constants.textSubtitle,
         minLines: 1,

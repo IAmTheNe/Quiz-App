@@ -28,17 +28,18 @@ class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('Create Question'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(Constants.kPadding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            BlocBuilder<CreateQuizCubit, CreateQuizState>(
-              builder: (context, state) {
-                return Stack(
+        child: BlocBuilder<CreateQuizCubit, CreateQuizState>(
+          builder: (context, state) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Stack(
                   children: [
                     GestureDetector(
                       onTap: () {
@@ -72,51 +73,82 @@ class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
                       ),
                     ),
                   ],
-                );
-              },
-            ),
-            const SizedBox(
-              height: Constants.kPadding / 2,
-            ),
-            GestureDetector(
-              onTap: () {
-                showInputTitle(context: context);
-              },
-              child: Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(Constants.kPadding / 2),
-                width: double.infinity,
-                constraints: BoxConstraints(
-                  maxHeight: .08.sh,
-                  minHeight: .05.sh,
                 ),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF6d5ff6),
-                  borderRadius: BorderRadius.circular(Constants.kPadding),
+                const SizedBox(
+                  height: Constants.kPadding / 2,
                 ),
-                child: Text(
-                  'Add title',
-                  style: Constants.textSubtitle.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
+                GestureDetector(
+                  onTap: () {
+                    showInputTitle(
+                      context: context,
+                      initialValue: state.quiz.questions[state.index].name,
+                      onChanged: (val) {
+                        context
+                            .read<CreateQuizCubit>()
+                            .questionNameChanged(name: val);
+                      },
+                    );
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.all(Constants.kPadding / 2),
+                    width: double.infinity,
+                    constraints: BoxConstraints(
+                      maxHeight: .08.sh,
+                      minHeight: .05.sh,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF6d5ff6),
+                      borderRadius: BorderRadius.circular(Constants.kPadding),
+                    ),
+                    child: Text(
+                      state.quiz.questions[state.index].name.isEmpty
+                          ? 'Add title'
+                          : state.quiz.questions[state.index].name,
+                      style: Constants.textSubtitle.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      maxLines: null,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.visible,
+                    ),
                   ),
-                  maxLines: null,
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.visible,
                 ),
-              ),
-            ),
-            const SizedBox(
-              height: Constants.kPadding / 2,
-            ),
-            const Expanded(
-              child: QuizAnswers(),
-            ),
-            const SizedBox(
-              height: Constants.kPadding / 2,
-            ),
-            const PreviewQuestionCard(),
-          ],
+                const SizedBox(
+                  height: Constants.kPadding / 2,
+                ),
+                Expanded(
+                  child: QuizAnswers(
+                    answers: state.quiz.questions[state.index].answers,
+                  ),
+                ),
+                const SizedBox(
+                  height: Constants.kPadding / 2,
+                ),
+                Row(
+                  children: [
+                    PreviewQuestionCard(
+                      questions: state.quiz.questions,
+                    ),
+                    const SizedBox(
+                      width: Constants.kPadding,
+                    ),
+                    IconButton.filled(
+                      onPressed: () {
+                        context.read<CreateQuizCubit>().createNewQuestion();
+                      },
+                      style: IconButton.styleFrom(),
+                      icon: const Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            );
+          },
         ),
       ),
     );

@@ -40,8 +40,6 @@ class AppRouter {
 
   static final _authRepo = AuthenticationRepository();
 
-  static final _quizCubit = CreateQuizCubit();
-
   static final GoRouter _router = GoRouter(
     debugLogDiagnostics: true,
     initialLocation: '/login',
@@ -113,7 +111,9 @@ class AppRouter {
               BlocProvider(
                   create: (_) =>
                       OnlineMediaBloc()..add(const GetListPhotosEvent())),
-              BlocProvider.value(value: _quizCubit),
+              BlocProvider(
+                create: (_) => CreateQuizCubit(),
+              ),
             ],
             child: const CreateQuizScreen(),
           ),
@@ -126,7 +126,7 @@ class AppRouter {
         pageBuilder: (_, state) => MaterialPage(
           key: state.pageKey,
           child: BlocProvider.value(
-            value: _quizCubit,
+            value: state.extra! as CreateQuizCubit,
             child: const CreateQuestionScreen(),
           ),
         ),

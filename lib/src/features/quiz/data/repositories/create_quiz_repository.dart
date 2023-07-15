@@ -27,7 +27,7 @@ class CreateQuizRepository {
     final quizId = uuid.v4();
     final createdAt = DateTime.now();
 
-    String url = quiz.imageUrl!;
+    String url = quiz.imageUrl ?? '';
 
     if (quiz.attachType == AttachType.local) {
       final file = File(quiz.imageUrl!);

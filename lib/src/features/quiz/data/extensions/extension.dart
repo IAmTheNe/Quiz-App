@@ -20,7 +20,7 @@ extension EnumX on String {
       case 'onlie':
         return AttachType.online;
       default:
-        return AttachType.local;
+        return AttachType.none;
     }
   }
 
