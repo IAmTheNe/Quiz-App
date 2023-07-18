@@ -4,31 +4,30 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 
 import 'package:whizz/src/features/quiz/data/extensions/extension.dart';
+import 'package:whizz/src/features/quiz/data/models/media.dart';
 import 'package:whizz/src/features/quiz/data/models/question.dart';
 
 class Quiz extends Equatable {
   const Quiz({
-    this.id,
+    this.id = '',
     this.title = '',
     this.description = '',
     this.collectionId,
-    this.imageUrl,
     this.visibility = QuizVisibility.public,
     this.keyword = const [],
     this.createdAt,
-    this.attachType = AttachType.none,
     this.questions = const [],
+    this.media = const Media(),
   });
 
-  final String? id;
-  final String? title;
+  final String id;
+  final String title;
   final String? description;
   final String? collectionId;
-  final String? imageUrl;
   final QuizVisibility visibility;
-  final List<String>? keyword;
+  final List<String> keyword;
   final DateTime? createdAt;
-  final AttachType attachType;
+  final Media media;
   final List<Question> questions;
 
   Quiz copyWith({
@@ -36,24 +35,22 @@ class Quiz extends Equatable {
     String? title,
     String? description,
     String? collectionId,
-    String? imageUrl,
     QuizVisibility? visibility,
     List<String>? keyword,
     DateTime? createdAt,
-    AttachType? attachType,
     List<Question>? questions,
+    Media? media,
   }) {
     return Quiz(
       id: id ?? this.id,
       title: title ?? this.title,
       description: description ?? this.description,
       collectionId: collectionId ?? this.collectionId,
-      imageUrl: imageUrl ?? this.imageUrl,
       visibility: visibility ?? this.visibility,
       keyword: keyword ?? this.keyword,
       createdAt: createdAt ?? this.createdAt,
-      attachType: attachType ?? this.attachType,
       questions: questions ?? this.questions,
+      media: media ?? this.media,
     );
   }
 
@@ -63,11 +60,10 @@ class Quiz extends Equatable {
         title,
         description,
         collectionId,
-        imageUrl,
         visibility,
         keyword,
         createdAt,
-        attachType,
+        media,
         questions,
       ];
 
@@ -77,36 +73,35 @@ class Quiz extends Equatable {
       'title': title,
       'description': description,
       'collectionId': collectionId,
-      'imageUrl': imageUrl,
       'visibility': visibility.name,
       'keyword': keyword,
       'createdAt': createdAt?.millisecondsSinceEpoch,
-      'attachType': attachType.name,
       'questions': questions.map((x) => x.toMap()).toList(),
+      'imageUrl': media.imageUrl,
     };
   }
 
   factory Quiz.fromMap(Map<String, dynamic> map) {
     return Quiz(
-      id: map['id'] != null ? map['id'] as String : null,
-      title: map['title'] != null ? map['title'] as String : null,
+      id: map['id'] as String,
+      title: map['title'] as String,
       description:
           map['description'] != null ? map['description'] as String : null,
       collectionId:
           map['collectionId'] != null ? map['collectionId'] as String : null,
-      imageUrl: map['imageUrl'] != null ? map['imageUrl'] as String : null,
       visibility: (map['visibility'] as String).convertQuizVisibitity(),
-      keyword: map['keyword'] != null
-          ? List<String>.from((map['keyword'] as List<dynamic>))
-          : null,
+      keyword: List<String>.from((map['keyword'] as List<dynamic>)),
       createdAt: map['createdAt'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int)
           : null,
-      attachType: (map['attachType'] as String).convertAttachType(),
       questions: List<Question>.from(
         (map['questions'] as List<dynamic>).map<Question>(
           (x) => Question.fromMap(x as Map<String, dynamic>),
         ),
+      ),
+      media: Media(
+        imageUrl: map['imageUrl'] != null ? map['imageUrl'] as String : null,
+        type: AttachType.online,
       ),
     );
   }

@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:whizz/src/features/quiz/data/extensions/extension.dart';
 import 'package:whizz/src/features/quiz/data/models/answer.dart';
+import 'package:whizz/src/features/quiz/data/models/media.dart';
+import 'package:whizz/src/features/quiz/data/models/quiz.dart';
 
 class Question extends Equatable {
   const Question({
@@ -13,14 +15,18 @@ class Question extends Equatable {
     this.point = 0,
     this.type = QuestionType.choice,
     this.answers = const [],
+    this.media = const Media(
+      type: AttachType.none,
+    ),
   });
 
-  final String? id;
+  final String id;
   final String name;
   final int? duration;
   final int? point;
   final QuestionType type;
   final List<Answer> answers;
+  final Media media;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -30,12 +36,13 @@ class Question extends Equatable {
       'point': point,
       'type': type.name,
       'answers': answers.map((x) => x.toMap()).toList(),
+      'imageUrl': media.imageUrl,
     };
   }
 
   factory Question.fromMap(Map<String, dynamic> map) {
     return Question(
-      id: map['id'] != null ? map['id'] as String : null,
+      id: map['id'] as String,
       name: map['name'] as String,
       duration: map['duration'] != null ? map['duration'] as int : null,
       point: map['point'] != null ? map['point'] as int : null,
@@ -44,6 +51,10 @@ class Question extends Equatable {
         (map['answers'] as List<dynamic>).map<Answer>(
           (x) => Answer.fromMap(x as Map<String, dynamic>),
         ),
+      ),
+      media: Media(
+        imageUrl: map['imageUrl'] != null ? map['imageUrl'] as String : null,
+        type: AttachType.online,
       ),
     );
   }
@@ -61,6 +72,7 @@ class Question extends Equatable {
         point,
         type,
         answers,
+        media,
       ];
 
   Question copyWith({
@@ -70,6 +82,7 @@ class Question extends Equatable {
     int? point,
     QuestionType? type,
     List<Answer>? answers,
+    Media? media,
   }) {
     return Question(
       id: id ?? this.id,
@@ -78,6 +91,7 @@ class Question extends Equatable {
       point: point ?? this.point,
       type: type ?? this.type,
       answers: answers ?? this.answers,
+      media: media ?? this.media,
     );
   }
 }

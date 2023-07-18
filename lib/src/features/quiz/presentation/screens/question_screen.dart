@@ -22,12 +22,7 @@ class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
 
     if (result?.$1 != null) {
       // ignore: use_build_context_synchronously
-      context.read<QuizCubit>().questionMediaChanged(
-            media: Media(
-              imageUrl: result?.$1,
-              type: result!.$2,
-            ),
-          );
+      context.read<QuizCubit>().attachmentChanged(result);
     }
   }
 
@@ -37,12 +32,6 @@ class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('Create Question'),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.delete),
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(Constants.kPadding),
@@ -57,14 +46,11 @@ class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
                       onTap: () {
                         intent(context);
                       },
-                      child: state.quiz.questions[state.index].media.imageUrl !=
-                              null
+                      child: state.quiz.media.imageUrl != null
                           ? ImageCover(
                               media: Media(
-                                imageUrl: state
-                                    .quiz.questions[state.index].media.imageUrl,
-                                type: state
-                                    .quiz.questions[state.index].media.type,
+                                imageUrl: state.quiz.media.imageUrl,
+                                type: state.quiz.media.type,
                               ),
                             )
                           : const RainbowContainer(),

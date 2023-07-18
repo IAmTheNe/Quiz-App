@@ -16,8 +16,11 @@ import 'package:whizz/src/features/play/presentation/play_screen.dart';
 import 'package:whizz/src/features/profile/data/bloc/profile_cubit.dart';
 import 'package:whizz/src/features/profile/presentation/screens/profile_screen.dart';
 import 'package:whizz/src/features/quiz/data/bloc/quiz_cubit.dart';
+import 'package:whizz/src/features/quiz/data/models/quiz.dart';
 import 'package:whizz/src/features/quiz/presentation/screens/create_question_screen.dart';
 import 'package:whizz/src/features/quiz/presentation/screens/create_quiz_screen.dart';
+import 'package:whizz/src/features/quiz/presentation/screens/edit_quiz_screen.dart';
+import 'package:whizz/src/features/quiz/presentation/screens/question_detail_screen.dart';
 import 'package:whizz/src/features/settings/presentation/screens/settings_screen.dart';
 import 'package:whizz/src/router/scaffold_with_bottom_nav_bar.dart';
 
@@ -28,6 +31,8 @@ enum RouterPath {
   discovery,
   play,
   quiz,
+  quizDetail,
+  quizEdit,
   question,
   media,
   unsplash,
@@ -111,14 +116,41 @@ class AppRouter {
           key: state.pageKey,
           child: MultiBlocProvider(
             providers: [
-              BlocProvider(
-                  create: (_) =>
-                      OnlineMediaBloc()..add(const GetListPhotosEvent())),
+              // BlocProvider(
+              //     create: (_) =>
+              //         OnlineMediaBloc()..add(const GetListPhotosEvent())),
               BlocProvider(
                 create: (_) => QuizCubit(),
               ),
             ],
             child: const CreateQuizScreen(),
+          ),
+        ),
+        routes: [
+          GoRoute(
+            path: ':id',
+            name: RouterPath.quizDetail.name,
+            parentNavigatorKey: _rootNavigatorKey,
+            pageBuilder: (context, state) => MaterialPage(
+              key: state.pageKey,
+              child: QuestionDetailScreen(
+                quiz: state.extra! as Quiz,
+              ),
+            ),
+          ),
+        ],
+      ),
+      GoRoute(
+        path: '/quiz_edit',
+        name: RouterPath.quizEdit.name,
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (_, state) => MaterialPage(
+          key: state.pageKey,
+          child: BlocProvider(
+            create: (_) => QuizCubit(),
+            child: EditQuizScreen(
+              quiz: state.extra! as Quiz,
+            ),
           ),
         ),
       ),

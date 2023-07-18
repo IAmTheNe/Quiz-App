@@ -62,16 +62,17 @@ mixin OptionsSelector {
               SwitchListTile(
                 value: answer.isCorrect,
                 dense: true,
-                onChanged: onToggled,
+                onChanged: (val) {
+                  onToggled!(val);
+                  context.pop();
+                },
                 title: const Text('Correct answer'),
               ),
             ],
           ),
           actions: [
             TextButton(
-              onPressed: () {
-                context.pop();
-              },
+              onPressed: context.pop,
               child: const Text('OK'),
             ),
           ],

@@ -41,30 +41,51 @@ class QuizAnswers extends StatelessWidget with OptionsSelector {
               onChanged: (val) => context
                   .read<QuizCubit>()
                   .questionAnswerChanged(answer: val, index: index),
-              onToggled: (val) => context
-                  .read<QuizCubit>()
-                  .questionAnswerStatusChanged(index: index, isCorrect: val),
+              onToggled: (val) {
+                context
+                    .read<QuizCubit>()
+                    .questionAnswerStatusChanged(index: index, isCorrect: val);
+              },
             );
           },
-          child: Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.all(Constants.kPadding / 2),
-            decoration: BoxDecoration(
-              color: listColors[index],
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Text(
-              answers[index].answer.isNotEmpty
-                  ? answers[index].answer
-                  : 'Add answer',
-              style: Constants.textSubtitle.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.w700,
+          child: Stack(
+            children: [
+              Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(Constants.kPadding / 2),
+                decoration: BoxDecoration(
+                  color: listColors[index],
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Text(
+                  answers[index].answer.isNotEmpty
+                      ? answers[index].answer
+                      : 'Add answer',
+                  style: Constants.textSubtitle.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  maxLines: null,
+                  textAlign: TextAlign.justify,
+                  overflow: TextOverflow.visible,
+                ),
               ),
-              maxLines: null,
-              textAlign: TextAlign.justify,
-              overflow: TextOverflow.visible,
-            ),
+              if (answers[index].isCorrect)
+                const Positioned(
+                  top: 0,
+                  right: 0,
+                  child: CircleAvatar(
+                    backgroundColor: Colors.green,
+                    radius: 8,
+                    child: FittedBox(
+                      child: Icon(
+                        Icons.check,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+            ],
           ),
         );
       },

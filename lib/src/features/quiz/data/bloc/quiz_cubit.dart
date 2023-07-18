@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whizz/src/common/modules/pick_image.dart';
 import 'package:whizz/src/features/quiz/data/models/answer.dart';
+import 'package:whizz/src/features/quiz/data/models/media.dart';
 import 'package:whizz/src/features/quiz/data/models/question.dart';
 import 'package:whizz/src/features/quiz/data/models/quiz.dart';
 import 'package:whizz/src/features/quiz/data/repositories/quiz_repository.dart';
@@ -47,8 +48,10 @@ class QuizCubit extends Cubit<QuizState> {
   void attachmentChanged((String, AttachType)? value) {
     emit(state.copyWith(
         quiz: state.quiz.copyWith(
-      imageUrl: value?.$1,
-      attachType: value?.$2,
+      media: Media(
+        imageUrl: value?.$1,
+        type: value!.$2,
+      ),
     )));
   }
 
@@ -66,28 +69,44 @@ class QuizCubit extends Cubit<QuizState> {
 
   Future<void> onPickImage() async {
     final image = await PickImage.pickImage();
-    emit(state.copyWith(
-      quiz: state.quiz.copyWith(
-        imageUrl: image!.path,
+    emit(
+      state.copyWith(
+        quiz: state.quiz.copyWith(
+          // imageUrl: image!.path,
+          media: Media(
+            imageUrl: image!.path,
+            type: AttachType.local,
+          ),
+        ),
       ),
-    ));
+    );
   }
 
   Future<void> onTakePhoto() async {
     final image = await PickImage.takePhoto();
-    emit(state.copyWith(
+    emit(
+      state.copyWith(
         quiz: state.quiz.copyWith(
-      attachType: AttachType.local,
-      imageUrl: image!.path,
-    )));
+          media: Media(
+            imageUrl: image!.path,
+            type: AttachType.local,
+          ),
+        ),
+      ),
+    );
   }
 
   Future<void> onSelectedOnlineImage(String url) async {
-    emit(state.copyWith(
+    emit(
+      state.copyWith(
         quiz: state.quiz.copyWith(
-      attachType: AttachType.online,
-      imageUrl: url,
-    )));
+          media: Media(
+            imageUrl: url,
+            type: AttachType.online,
+          ),
+        ),
+      ),
+    );
   }
 
   void indexChanged(int index) {
@@ -100,6 +119,23 @@ class QuizCubit extends Cubit<QuizState> {
     final updatedList = List<Question>.from(state.quiz.questions);
     updatedList[state.index] = updatedList[state.index].copyWith(
       name: name,
+    );
+
+    emit(
+      state.copyWith(
+        quiz: state.quiz.copyWith(
+          questions: updatedList,
+        ),
+      ),
+    );
+  }
+
+  void questionMediaChanged({
+    required Media media,
+  }) {
+    final updatedList = List<Question>.from(state.quiz.questions);
+    updatedList[state.index] = updatedList[state.index].copyWith(
+      media: media,
     );
 
     emit(
@@ -135,7 +171,7 @@ class QuizCubit extends Cubit<QuizState> {
 
   void questionAnswerStatusChanged({
     required int index,
-    bool isCorrect = false,
+    required bool isCorrect,
   }) {
     final updateListQuestion = List<Question>.from(state.quiz.questions);
 
@@ -143,7 +179,7 @@ class QuizCubit extends Cubit<QuizState> {
         List<Answer>.from(updateListQuestion[state.index].answers);
 
     updateListAnswer[index] = updateListAnswer[index].copyWith(
-      isCorrect: isCorrect,
+      isCorrect: !updateListAnswer[index].isCorrect,
     );
 
     updateListQuestion[state.index] = updateListQuestion[state.index].copyWith(

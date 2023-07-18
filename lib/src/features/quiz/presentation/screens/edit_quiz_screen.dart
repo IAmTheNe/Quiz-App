@@ -13,8 +13,13 @@ import 'package:whizz/src/features/quiz/presentation/widgets/rainbow_container.d
 
 import 'package:whizz/src/router/app_router.dart';
 
-class CreateQuizScreen extends StatelessWidget {
-  const CreateQuizScreen({super.key});
+class EditQuizScreen extends StatelessWidget {
+  const EditQuizScreen({
+    super.key,
+    required this.quiz,
+  });
+
+  final Quiz quiz;
 
   void intent(BuildContext context) async {
     final result =
@@ -34,7 +39,7 @@ class CreateQuizScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Quiz'),
+        title: const Text('Edit Quiz'),
         actions: const [
           CreateOptionsPopupMenu(),
         ],
@@ -42,69 +47,68 @@ class CreateQuizScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(Constants.kPadding),
-          child: BlocBuilder<QuizCubit, QuizState>(builder: (context, state) {
-            return Column(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    intent(context);
-                  },
-                  child: state.quiz.media.imageUrl != null
-                      ? ImageCover(
-                          media: Media(
-                            imageUrl: state.quiz.media.imageUrl,
-                            type: state.quiz.media.type,
-                          ),
-                        )
-                      : const RainbowContainer(),
-                ),
-                const SizedBox(
-                  height: Constants.kPadding,
-                ),
-                QuizFormField(
-                  hintText: 'Name',
-                  initialValue: state.quiz.title,
-                  maxLength: 50,
-                  onChanged: context.read<QuizCubit>().nameChanged,
-                ),
-                const SizedBox(
-                  height: Constants.kPadding,
-                ),
-                QuizFormField(
-                  hintText: 'Description',
-                  maxLines: 6,
-                  maxLength: 500,
-                  onChanged: context.read<QuizCubit>().descriptionChanged,
-                ),
-                const SizedBox(
-                  height: Constants.kPadding,
-                ),
-                QuizDropDownField(
-                  onChanged: (val) {},
-                  label: const Text('Collection'),
-                  items: const ['Holiday', 'Games', 'Sports', 'Music'],
-                ),
-                const SizedBox(
-                  height: Constants.kPadding,
-                ),
-                QuizDropDownField(
-                  onChanged: (val) {
-                    context.read<QuizCubit>().visibilityChanged(val as String);
-                  },
-                  label: const Text('Visibility'),
-                  items: const ['Public', 'Private'],
-                ),
-                const SizedBox(
-                  height: Constants.kPadding,
-                ),
-                const QuizFormField(
-                  hintText: 'Keyword',
-                  maxLines: 6,
-                  maxLength: 1000,
-                ),
-              ],
-            );
-          }),
+          child: Column(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  intent(context);
+                },
+                child: quiz.media.imageUrl != null
+                    ? ImageCover(
+                        media: Media(
+                          imageUrl: quiz.media.imageUrl,
+                          type: quiz.media.type,
+                        ),
+                      )
+                    : const RainbowContainer(),
+              ),
+              const SizedBox(
+                height: Constants.kPadding,
+              ),
+              QuizFormField(
+                hintText: 'Name',
+                initialValue: quiz.title,
+                maxLength: 50,
+                onChanged: context.read<QuizCubit>().nameChanged,
+              ),
+              const SizedBox(
+                height: Constants.kPadding,
+              ),
+              QuizFormField(
+                hintText: 'Description',
+                initialValue: quiz.description,
+                maxLines: 6,
+                maxLength: 500,
+                onChanged: context.read<QuizCubit>().descriptionChanged,
+              ),
+              const SizedBox(
+                height: Constants.kPadding,
+              ),
+              QuizDropDownField(
+                onChanged: (val) {},
+                label: const Text('Collection'),
+                items: const ['Holiday', 'Games', 'Sports', 'Music'],
+              ),
+              const SizedBox(
+                height: Constants.kPadding,
+              ),
+              QuizDropDownField(
+                onChanged: (val) {
+                  context.read<QuizCubit>().visibilityChanged(val as String);
+                },
+                label: const Text('Visibility'),
+                items: const ['Public', 'Private'],
+              ),
+              const SizedBox(
+                height: Constants.kPadding,
+              ),
+              const QuizFormField(
+                hintText: 'Keyword',
+                maxLines: 6,
+                maxLength: 1000,
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: BlocBuilder<QuizCubit, QuizState>(
@@ -118,13 +122,13 @@ class CreateQuizScreen extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      if (state.quiz.questions.isEmpty) {
-                        context.read<QuizCubit>().createNewQuestion();
-                      }
-                      context.pushNamed(
-                        RouterPath.question.name,
-                        extra: context.read<QuizCubit>(),
-                      );
+                      // if (state.quiz.questions.isEmpty) {
+                      //   context.read<QuizCubit>().createNewQuestion();
+                      // }
+                      // context.pushNamed(
+                      //   RouterPath.question.name,
+                      //   extra: context.read<QuizCubit>(),
+                      // );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Constants.primaryColor,

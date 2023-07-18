@@ -7,6 +7,7 @@ import 'package:uuid/uuid.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/modules/cache.dart';
 import 'package:whizz/src/features/auth/data/models/user.dart';
+import 'package:whizz/src/features/quiz/data/models/media.dart';
 import 'package:whizz/src/features/quiz/data/models/quiz.dart';
 
 class QuizRepository {
@@ -27,17 +28,19 @@ class QuizRepository {
     final quizId = uuid.v4();
     final createdAt = DateTime.now();
 
-    String url = quiz.imageUrl ?? '';
+    String url = quiz.media.imageUrl ?? '';
 
-    if (quiz.attachType == AttachType.local) {
-      final file = File(quiz.imageUrl!);
+    if (quiz.media.type == AttachType.local) {
+      final file = File(quiz.media.imageUrl!);
       url = await _getDownloadUrl(path: 'quiz/$quizId', file: file);
     }
 
     final newQuiz = quiz.copyWith(
       id: quizId,
       createdAt: createdAt,
-      imageUrl: url,
+      media: Media(
+        imageUrl: url,
+      ),
     );
 
     await _firestore
