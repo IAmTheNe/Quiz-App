@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/features/quiz/data/models/quiz.dart';
+import 'package:whizz/src/features/quiz/presentation/widgets/image_cover.dart';
 import 'package:whizz/src/router/app_router.dart';
 
 class QuestionDetailScreen extends StatelessWidget {
@@ -48,7 +49,8 @@ class QuestionDetailScreen extends StatelessWidget {
                     color: Colors.grey.shade700,
                     image: quiz.media.imageUrl != null
                         ? DecorationImage(
-                            image: CachedNetworkImageProvider(quiz.media.imageUrl!),
+                            image: CachedNetworkImageProvider(
+                                quiz.media.imageUrl!),
                             fit: BoxFit.cover,
                           )
                         : null,
@@ -101,13 +103,8 @@ class QuestionDetailScreen extends StatelessWidget {
                           Expanded(
                             child: AspectRatio(
                               aspectRatio: 4 / 3,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.amber,
-                                  borderRadius:
-                                      BorderRadius.circular(Constants.kPadding),
-                                ),
-                              ),
+                              child: ImageCover(
+                                  media: quiz.questions[index].media),
                             ),
                           ),
                           const SizedBox(

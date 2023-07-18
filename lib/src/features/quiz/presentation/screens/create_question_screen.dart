@@ -10,7 +10,6 @@ import 'package:whizz/src/features/quiz/presentation/dialogs/options_builder.dar
 import 'package:whizz/src/features/quiz/presentation/widgets/image_cover.dart';
 import 'package:whizz/src/features/quiz/presentation/widgets/preview_question_card.dart';
 import 'package:whizz/src/features/quiz/presentation/widgets/quiz_answers.dart';
-import 'package:whizz/src/features/quiz/presentation/widgets/rainbow_container.dart';
 import 'package:whizz/src/router/app_router.dart';
 
 class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
@@ -57,17 +56,8 @@ class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
                       onTap: () {
                         intent(context);
                       },
-                      child: state.quiz.questions[state.index].media.imageUrl !=
-                              null
-                          ? ImageCover(
-                              media: Media(
-                                imageUrl: state
-                                    .quiz.questions[state.index].media.imageUrl,
-                                type: state
-                                    .quiz.questions[state.index].media.type,
-                              ),
-                            )
-                          : const RainbowContainer(),
+                      child: ImageCover(
+                          media: state.quiz.questions[state.index].media),
                     ),
                     Positioned(
                       bottom: Constants.kPadding / 2,

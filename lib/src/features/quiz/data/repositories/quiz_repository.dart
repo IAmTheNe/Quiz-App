@@ -28,19 +28,31 @@ class QuizRepository {
     final quizId = uuid.v4();
     final createdAt = DateTime.now();
 
-    String url = quiz.media.imageUrl ?? '';
+    String quizImageUrl = await _getDownloadUrl(
+      path: 'path/$quizId/',
+      media: quiz.media,
+    );
 
-    if (quiz.media.type == AttachType.local) {
-      final file = File(quiz.media.imageUrl!);
-      url = await _getDownloadUrl(path: 'quiz/$quizId', file: file);
-    }
+    final updatedQuestionList = await Future.wait(
+      quiz.questions.map(
+        (question) => _getDownloadUrl(
+          path: 'path/$quizId/${question.id}/',
+          media: question.media,
+        ).then(
+          (imageUrl) => question.copyWith(
+            media: question.media.copyWith(imageUrl: imageUrl),
+          ),
+        ),
+      ),
+    );
 
     final newQuiz = quiz.copyWith(
       id: quizId,
       createdAt: createdAt,
       media: Media(
-        imageUrl: url,
+        imageUrl: quizImageUrl,
       ),
+      questions: updatedQuestionList,
     );
 
     await _firestore
@@ -69,8 +81,11 @@ class QuizRepository {
 
   Future<String> _getDownloadUrl({
     required String path,
-    required File file,
+    required Media media,
   }) async {
+    if (media.type == AttachType.online) return media.imageUrl!;
+
+    final file = File(media.imageUrl!);
     final uploadTask = _storage.ref().child(path).putFile(file);
     final snapshot = await uploadTask;
     final downloadUrl = await snapshot.ref.getDownloadURL();

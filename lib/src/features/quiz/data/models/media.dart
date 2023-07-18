@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+
 import 'package:whizz/src/features/quiz/data/models/quiz.dart';
 
 class Media {
@@ -8,4 +10,14 @@ class Media {
 
   final String? imageUrl;
   final AttachType type;
+
+  Media copyWith({
+    String? imageUrl,
+    AttachType? type,
+  }) {
+    return Media(
+      imageUrl: imageUrl ?? this.imageUrl,
+      type: type ?? this.type,
+    );
+  }
 }

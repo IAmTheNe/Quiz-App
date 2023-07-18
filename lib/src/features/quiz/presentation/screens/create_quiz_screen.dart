@@ -5,11 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/widgets/quiz_textfield.dart';
 import 'package:whizz/src/features/quiz/data/bloc/quiz_cubit.dart';
-import 'package:whizz/src/features/quiz/data/models/media.dart';
 import 'package:whizz/src/features/quiz/data/models/quiz.dart';
 import 'package:whizz/src/features/quiz/presentation/widgets/image_cover.dart';
 import 'package:whizz/src/features/quiz/presentation/popups/popup_menu.dart';
-import 'package:whizz/src/features/quiz/presentation/widgets/rainbow_container.dart';
 
 import 'package:whizz/src/router/app_router.dart';
 
@@ -42,69 +40,66 @@ class CreateQuizScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(Constants.kPadding),
-          child: BlocBuilder<QuizCubit, QuizState>(builder: (context, state) {
-            return Column(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    intent(context);
-                  },
-                  child: state.quiz.media.imageUrl != null
-                      ? ImageCover(
-                          media: Media(
-                            imageUrl: state.quiz.media.imageUrl,
-                            type: state.quiz.media.type,
-                          ),
-                        )
-                      : const RainbowContainer(),
-                ),
-                const SizedBox(
-                  height: Constants.kPadding,
-                ),
-                QuizFormField(
-                  hintText: 'Name',
-                  initialValue: state.quiz.title,
-                  maxLength: 50,
-                  onChanged: context.read<QuizCubit>().nameChanged,
-                ),
-                const SizedBox(
-                  height: Constants.kPadding,
-                ),
-                QuizFormField(
-                  hintText: 'Description',
-                  maxLines: 6,
-                  maxLength: 500,
-                  onChanged: context.read<QuizCubit>().descriptionChanged,
-                ),
-                const SizedBox(
-                  height: Constants.kPadding,
-                ),
-                QuizDropDownField(
-                  onChanged: (val) {},
-                  label: const Text('Collection'),
-                  items: const ['Holiday', 'Games', 'Sports', 'Music'],
-                ),
-                const SizedBox(
-                  height: Constants.kPadding,
-                ),
-                QuizDropDownField(
-                  onChanged: (val) {
-                    context.read<QuizCubit>().visibilityChanged(val as String);
-                  },
-                  label: const Text('Visibility'),
-                  items: const ['Public', 'Private'],
-                ),
-                const SizedBox(
-                  height: Constants.kPadding,
-                ),
-                const QuizFormField(
-                  hintText: 'Keyword',
-                  maxLines: 6,
-                  maxLength: 1000,
-                ),
-              ],
-            );
-          }),
+          child: BlocBuilder<QuizCubit, QuizState>(
+            builder: (context, state) {
+              return Column(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      intent(context);
+                    },
+                    child: ImageCover(media: state.quiz.media),
+                  ),
+                  const SizedBox(
+                    height: Constants.kPadding,
+                  ),
+                  QuizFormField(
+                    hintText: 'Name',
+                    initialValue: state.quiz.title,
+                    maxLength: 50,
+                    onChanged: context.read<QuizCubit>().nameChanged,
+                  ),
+                  const SizedBox(
+                    height: Constants.kPadding,
+                  ),
+                  QuizFormField(
+                    hintText: 'Description',
+                    maxLines: 6,
+                    maxLength: 500,
+                    onChanged: context.read<QuizCubit>().descriptionChanged,
+                  ),
+                  const SizedBox(
+                    height: Constants.kPadding,
+                  ),
+                  QuizDropDownField(
+                    onChanged: (val) {},
+                    label: const Text('Collection'),
+                    items: const ['Holiday', 'Games', 'Sports', 'Music'],
+                  ),
+                  const SizedBox(
+                    height: Constants.kPadding,
+                  ),
+                  QuizDropDownField(
+                    onChanged: (val) {
+                      context
+                          .read<QuizCubit>()
+                          .visibilityChanged(val as String);
+                    },
+                    label: const Text('Visibility'),
+                    items: const ['Public', 'Private'],
+                  ),
+                  const SizedBox(
+                    height: Constants.kPadding,
+                  ),
+                  const QuizFormField(
+                    hintText: 'Keyword',
+                    maxLines: 6,
+                    maxLength: 1000,
+                  ),
+                ],
+              );
+            },
+          ),
         ),
       ),
       bottomNavigationBar: BlocBuilder<QuizCubit, QuizState>(
