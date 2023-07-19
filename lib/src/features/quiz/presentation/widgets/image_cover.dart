@@ -17,6 +17,7 @@ class ImageCover extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(media.imageUrl?.isEmpty);
     return switch (media.type) {
       AttachType.online => AspectRatio(
           aspectRatio: 4 / 3,

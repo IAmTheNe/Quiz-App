@@ -1,34 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
+import 'package:whizz/src/common/extensions/extension.dart';
 import 'package:whizz/src/features/quiz/data/bloc/quiz_cubit.dart';
-import 'package:whizz/src/features/quiz/data/models/media.dart';
-import 'package:whizz/src/features/quiz/data/models/quiz.dart';
+import 'package:whizz/src/features/quiz/data/controllers/quiz_controller.dart';
 import 'package:whizz/src/features/quiz/presentation/dialogs/options_builder.dart';
 import 'package:whizz/src/features/quiz/presentation/widgets/image_cover.dart';
 import 'package:whizz/src/features/quiz/presentation/widgets/preview_question_card.dart';
 import 'package:whizz/src/features/quiz/presentation/widgets/quiz_answers.dart';
-import 'package:whizz/src/router/app_router.dart';
 
 class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
   const CreateQuestionScreen({super.key});
-
-  void intent(BuildContext context) async {
-    final result =
-        await context.pushNamed<(String, AttachType)>(RouterPath.media.name);
-
-    if (result?.$1 != null) {
-      // ignore: use_build_context_synchronously
-      context.read<QuizCubit>().questionMediaChanged(
-            media: Media(
-              imageUrl: result?.$1,
-              type: result!.$2,
-            ),
-          );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +21,15 @@ class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
         title: const Text('Create Question'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              context.showConfirmDialog(
+                title: 'Are you sure?',
+                description:
+                    'Do you want to delete this question? This process cannot be undone.',
+                onNegativeButton: () {},
+                onPositiveButton: context.read<QuizCubit>().removeQuestion,
+              );
+            },
             icon: const Icon(Icons.delete),
           ),
         ],
@@ -54,7 +45,10 @@ class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        intent(context);
+                        QuizController.intent(
+                            context: context,
+                            onResult:
+                                context.read<QuizCubit>().questionMediaChanged);
                       },
                       child: ImageCover(
                           media: state.quiz.questions[state.index].media),

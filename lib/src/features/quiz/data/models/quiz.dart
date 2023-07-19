@@ -101,7 +101,7 @@ class Quiz extends Equatable {
       ),
       media: Media(
         imageUrl: map['imageUrl'] != null ? map['imageUrl'] as String : null,
-        type: AttachType.online,
+        type: (map['imageUrl'] as String).isEmpty ? AttachType.none : AttachType.online,
       ),
     );
   }

@@ -1,8 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import 'package:whizz/src/common/constants/constants.dart';
+import 'package:whizz/src/common/extensions/extension.dart';
 import 'package:whizz/src/features/quiz/data/models/quiz.dart';
+import 'package:whizz/src/features/quiz/presentation/widgets/image_cover.dart';
 import 'package:whizz/src/router/app_router.dart';
 
 class QuizCard extends StatelessWidget {
@@ -25,22 +27,7 @@ class QuizCard extends StatelessWidget {
           Expanded(
             child: Stack(
               children: [
-                AspectRatio(
-                  aspectRatio: 4 / 3,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade700,
-                      image: quiz.media.imageUrl != null
-                          ? DecorationImage(
-                              image: CachedNetworkImageProvider(
-                                  quiz.media.imageUrl!),
-                              fit: BoxFit.cover,
-                            )
-                          : null,
-                      borderRadius: BorderRadius.circular(Constants.kPadding),
-                    ),
-                  ),
-                ),
+                ImageCover(media: quiz.media),
                 Positioned(
                   right: 0,
                   child: Container(
@@ -75,7 +62,7 @@ class QuizCard extends StatelessWidget {
                   style: Constants.textTitle700,
                 ),
                 Text(
-                  '${quiz.createdAt!.millisecondsSinceEpoch}',
+                  quiz.createdAt!.millisecondsSinceEpoch.countDay(),
                   style: Constants.textSubtitle.copyWith(
                     color: Colors.grey.shade700,
                   ),

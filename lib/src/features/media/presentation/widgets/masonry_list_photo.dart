@@ -4,6 +4,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/features/media/data/bloc/online_media_bloc.dart';
+import 'package:whizz/src/features/quiz/data/models/media.dart';
 import 'package:whizz/src/features/quiz/data/models/quiz.dart';
 
 class MasonryListPhotos extends StatelessWidget {
@@ -27,9 +28,9 @@ class MasonryListPhotos extends StatelessWidget {
         final url = state.photos[index].urls.raw.toString();
         return GestureDetector(
           onTap: () {
-            context.pop((
-              url,
-              AttachType.online,
+            context.pop(Media(
+              imageUrl: url,
+              type: AttachType.online,
             ));
           },
           child: ClipRRect(

@@ -1,6 +1,8 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 extension BuildContextX on BuildContext {
   void showErrorSnackBar(String message, {Duration? duration}) {
@@ -44,5 +46,46 @@ extension BuildContextX on BuildContext {
     );
 
     return code;
+  }
+
+  void showConfirmDialog({
+    required String title,
+    String? description,
+    required VoidCallback? onNegativeButton,
+    required VoidCallback? onPositiveButton,
+  }) {
+    AwesomeDialog(
+      context: this,
+      title: title,
+      desc: description,
+      animType: AnimType.SCALE,
+      dialogType: DialogType.QUESTION,
+      btnCancelOnPress: onNegativeButton,
+      btnOkOnPress: onPositiveButton,
+    ).show();
+  }
+
+  void showSuccessDialog({
+    required String title,
+    String? description,
+  }) {
+    AwesomeDialog(
+      context: this,
+      title: title,
+      desc: description,
+      animType: AnimType.SCALE,
+      dialogType: DialogType.SUCCES,
+      btnOkOnPress: pop,
+    ).show();
+  }
+}
+
+extension DateTimeFormat on int {
+  String countDay() {
+    final remains =
+        DateTime.now().difference(DateTime.fromMillisecondsSinceEpoch(this));
+
+    if (remains.inDays == 0) return 'Today';
+    return '${remains.inDays.toString()} days ago';
   }
 }

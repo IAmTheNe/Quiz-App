@@ -84,6 +84,7 @@ class QuizRepository {
     required Media media,
   }) async {
     if (media.type == AttachType.online) return media.imageUrl!;
+    if (media.type == AttachType.none) return '';
 
     final file = File(media.imageUrl!);
     final uploadTask = _storage.ref().child(path).putFile(file);

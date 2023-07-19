@@ -8,6 +8,7 @@ import 'package:whizz/src/common/modules/pick_image.dart';
 import 'package:whizz/src/features/media/data/bloc/online_media_bloc.dart';
 import 'package:whizz/src/features/media/presentation/widgets/custom_square_button.dart';
 import 'package:whizz/src/features/media/presentation/widgets/masonry_list_photo.dart';
+import 'package:whizz/src/features/quiz/data/models/media.dart';
 import 'package:whizz/src/features/quiz/data/models/quiz.dart';
 
 class MediaScreen extends StatelessWidget {
@@ -20,9 +21,9 @@ class MediaScreen extends StatelessWidget {
     onPick.then(
       (file) {
         if (file != null) {
-          context.pop((
-            file.path,
-            AttachType.local,
+          context.pop(Media(
+            imageUrl: file.path,
+            type: AttachType.local,
           ));
         }
       },

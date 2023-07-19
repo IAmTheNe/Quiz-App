@@ -2,37 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+
 import 'package:whizz/src/common/constants/constants.dart';
+import 'package:whizz/src/common/extensions/extension.dart';
 import 'package:whizz/src/common/widgets/quiz_textfield.dart';
 import 'package:whizz/src/features/quiz/data/bloc/quiz_cubit.dart';
-import 'package:whizz/src/features/quiz/data/models/quiz.dart';
-import 'package:whizz/src/features/quiz/presentation/widgets/image_cover.dart';
+import 'package:whizz/src/features/quiz/data/controllers/quiz_controller.dart';
 import 'package:whizz/src/features/quiz/presentation/popups/popup_menu.dart';
-
+import 'package:whizz/src/features/quiz/presentation/widgets/image_cover.dart';
 import 'package:whizz/src/router/app_router.dart';
 
 class CreateQuizScreen extends StatelessWidget {
   const CreateQuizScreen({super.key});
-
-  void intent(BuildContext context) async {
-    final result =
-        await context.pushNamed<(String, AttachType)>(RouterPath.media.name);
-
-    if (result?.$1 != null) {
-      // ignore: use_build_context_synchronously
-      context.read<QuizCubit>().attachmentChanged(result);
-    }
-  }
-
-  void createQuiz(BuildContext context) {
-    context.read<QuizCubit>().createQuiz().then((_) => context.pop());
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create Quiz'),
+        leading: IconButton(
+          onPressed: () {
+            context.showConfirmDialog(
+              title: 'Discard changes?',
+              description: 'Changes you made won\'t be saved!',
+              onPositiveButton: context.pop,
+              onNegativeButton: () {},
+            );
+          },
+          icon: const Icon(Icons.arrow_back_ios_new),
+        ),
         actions: const [
           CreateOptionsPopupMenu(),
         ],
@@ -46,7 +44,10 @@ class CreateQuizScreen extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      intent(context);
+                      QuizController.intent(
+                        context: context,
+                        onResult: context.read<QuizCubit>().attachmentChanged,
+                      );
                     },
                     child: ImageCover(media: state.quiz.media),
                   ),
@@ -141,8 +142,10 @@ class CreateQuizScreen extends StatelessWidget {
                     ? const CircularProgressIndicator.adaptive()
                     : Expanded(
                         child: ElevatedButton(
-                          onPressed:
-                              state.isValid ? () => createQuiz(context) : null,
+                          onPressed: state.isValid
+                              ? () =>
+                                  QuizController.createQuiz(context: context)
+                              : null,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             elevation: 4,

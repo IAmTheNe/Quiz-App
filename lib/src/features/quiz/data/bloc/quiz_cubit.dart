@@ -45,13 +45,10 @@ class QuizCubit extends Cubit<QuizState> {
     ));
   }
 
-  void attachmentChanged((String, AttachType)? value) {
+  void attachmentChanged(Media value) {
     emit(state.copyWith(
         quiz: state.quiz.copyWith(
-      media: Media(
-        imageUrl: value?.$1,
-        type: value!.$2,
-      ),
+      media: value,
     )));
   }
 
@@ -130,9 +127,7 @@ class QuizCubit extends Cubit<QuizState> {
     );
   }
 
-  void questionMediaChanged({
-    required Media media,
-  }) {
+  void questionMediaChanged(Media media) {
     final updatedList = List<Question>.from(state.quiz.questions);
     updatedList[state.index] = updatedList[state.index].copyWith(
       media: media,
@@ -200,11 +195,24 @@ class QuizCubit extends Cubit<QuizState> {
     emit(
       state.copyWith(
         quiz: state.quiz.copyWith(
-          questions: state.quiz.questions.isNotEmpty
-              ? [...state.quiz.questions, question]
-              : [question],
+          questions: List.from(state.quiz.questions)..add(question),
         ),
         index: state.quiz.questions.length,
+      ),
+    );
+  }
+
+  void removeQuestion() {
+    // final question = Question(
+    //   id: DateTime.now().millisecondsSinceEpoch.toString(),
+    //   answers: List.generate(4, (_) => const Answer.empty()),
+    // );
+    emit(
+      state.copyWith(
+        quiz: state.quiz.copyWith(
+          questions: List.from(state.quiz.questions)..removeAt(state.index),
+        ),
+        index: 0,
       ),
     );
   }

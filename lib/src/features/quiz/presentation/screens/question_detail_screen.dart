@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -19,7 +18,6 @@ class QuestionDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(quiz.title),
         actions: [
           IconButton(
             onPressed: () {
@@ -44,19 +42,20 @@ class QuestionDetailScreen extends StatelessWidget {
             children: [
               AspectRatio(
                 aspectRatio: 3 / 2,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade700,
-                    image: quiz.media.imageUrl != null
-                        ? DecorationImage(
-                            image: CachedNetworkImageProvider(
-                                quiz.media.imageUrl!),
-                            fit: BoxFit.cover,
-                          )
-                        : null,
-                    borderRadius: BorderRadius.circular(Constants.kPadding),
-                  ),
-                ),
+                // child: Container(
+                //   decoration: BoxDecoration(
+                //     color: Colors.grey.shade700,
+                //     image: quiz.media.imageUrl != null
+                //         ? DecorationImage(
+                //             image: CachedNetworkImageProvider(
+                //                 quiz.media.imageUrl!),
+                //             fit: BoxFit.cover,
+                //           )
+                //         : null,
+                //     borderRadius: BorderRadius.circular(Constants.kPadding),
+                //   ),
+                // ),
+                child: ImageCover(media: quiz.media),
               ),
               const SizedBox(
                 height: Constants.kPadding / 2,
@@ -65,6 +64,7 @@ class QuestionDetailScreen extends StatelessWidget {
                 quiz.title,
                 style: Constants.textHeading.copyWith(
                   fontSize: 22.sp,
+                  color: Colors.red,
                 ),
               ),
               const SizedBox(
@@ -72,7 +72,9 @@ class QuestionDetailScreen extends StatelessWidget {
               ),
               Text(
                 'Description',
-                style: Constants.textTitle700,
+                style: Constants.textTitle700.copyWith(
+                  color: Constants.primaryColor,
+                ),
               ),
               const SizedBox(
                 height: Constants.kPadding / 2,
@@ -86,7 +88,9 @@ class QuestionDetailScreen extends StatelessWidget {
               ),
               Text(
                 '${quiz.questions.length} question',
-                style: Constants.textTitle700,
+                style: Constants.textTitle700.copyWith(
+                  color: Constants.primaryColor,
+                ),
               ),
               const SizedBox(
                 height: Constants.kPadding / 2,
@@ -116,7 +120,9 @@ class QuestionDetailScreen extends StatelessWidget {
                               children: [
                                 Text(
                                   quiz.questions[index].name,
-                                  style: Constants.textTitle700,
+                                  style: Constants.textTitle700.copyWith(
+                                    color: Colors.blue,
+                                  ),
                                 ),
                               ],
                             ),

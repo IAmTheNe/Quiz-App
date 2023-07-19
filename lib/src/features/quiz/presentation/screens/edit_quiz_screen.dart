@@ -22,12 +22,11 @@ class EditQuizScreen extends StatelessWidget {
   final Quiz quiz;
 
   void intent(BuildContext context) async {
-    final result =
-        await context.pushNamed<(String, AttachType)>(RouterPath.media.name);
+    final result = await context.pushNamed<Media>(RouterPath.media.name);
 
-    if (result?.$1 != null) {
+    if (result?.imageUrl != null) {
       // ignore: use_build_context_synchronously
-      context.read<QuizCubit>().attachmentChanged(result);
+      context.read<QuizCubit>().attachmentChanged(result!);
     }
   }
 
