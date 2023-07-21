@@ -83,24 +83,24 @@ class EditQuizScreen extends StatelessWidget {
               const SizedBox(
                 height: Constants.kPadding,
               ),
-              QuizDropDownField(
-                onChanged: (val) {},
-                label: const Text('Collection'),
-                items: const ['Holiday', 'Games', 'Sports', 'Music'],
-              ),
-              const SizedBox(
-                height: Constants.kPadding,
-              ),
-              QuizDropDownField(
-                onChanged: (val) {
-                  context.read<QuizCubit>().visibilityChanged(val as String);
-                },
-                label: const Text('Visibility'),
-                items: const ['Public', 'Private'],
-              ),
-              const SizedBox(
-                height: Constants.kPadding,
-              ),
+              // QuizDropDownField(
+              //   onChanged: (val) {},
+              //   label: const Text('Collection'),
+              //   items: const ['Holiday', 'Games', 'Sports', 'Music'],
+              // ),
+              // const SizedBox(
+              //   height: Constants.kPadding,
+              // ),
+              // QuizDropDownField(
+              //   onChanged: (val) {
+              //     context.read<QuizCubit>().visibilityChanged(val as String);
+              //   },
+              //   label: const Text('Visibility'),
+              //   items: const ['Public', 'Private'],
+              // ),
+              // const SizedBox(
+              //   height: Constants.kPadding,
+              // ),
               const QuizFormField(
                 hintText: 'Keyword',
                 maxLines: 6,

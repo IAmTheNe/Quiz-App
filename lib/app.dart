@@ -6,6 +6,7 @@ import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/features/auth/data/bloc/login/login_cubit.dart';
 import 'package:whizz/src/features/auth/data/bloc/otp/otp_cubit.dart';
 import 'package:whizz/src/features/auth/data/repositories/auth_repository.dart';
+import 'package:whizz/src/features/media/data/bloc/online_media_bloc.dart';
 import 'package:whizz/src/gen/fonts.gen.dart';
 import 'package:whizz/src/router/app_router.dart';
 
@@ -19,6 +20,8 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => LoginCubit(AuthenticationRepository())),
         BlocProvider(create: (_) => OtpCubit(AuthenticationRepository())),
+        BlocProvider(
+            create: (_) => OnlineMediaBloc()..add(const GetListPhotosEvent()))
       ],
       child: ScreenUtilInit(
         builder: (context, child) => MaterialApp.router(

@@ -48,7 +48,7 @@ extension BuildContextX on BuildContext {
     return code;
   }
 
-  void showConfirmDialog({
+  showConfirmDialog({
     required String title,
     String? description,
     required VoidCallback? onNegativeButton,
@@ -87,5 +87,16 @@ extension DateTimeFormat on int {
 
     if (remains.inDays == 0) return 'Today';
     return '${remains.inDays.toString()} days ago';
+  }
+}
+
+extension F on String {
+  String toCapitalize() {
+    return replaceAllMapped(RegExp(r'[A-Z]'), (match) => ' ${match.group(0)}')
+        .toLowerCase()
+        .replaceAllMapped(
+          RegExp(r'\b\w'),
+          (match) => match.group(0)!.toUpperCase(),
+        );
   }
 }

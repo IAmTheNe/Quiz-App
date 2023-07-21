@@ -75,7 +75,7 @@ class CreateQuizScreen extends StatelessWidget {
                   QuizDropDownField(
                     onChanged: (val) {},
                     label: const Text('Collection'),
-                    items: const ['Holiday', 'Games', 'Sports', 'Music'],
+                    items: ListEnum.collections,
                   ),
                   const SizedBox(
                     height: Constants.kPadding,
@@ -87,15 +87,7 @@ class CreateQuizScreen extends StatelessWidget {
                           .visibilityChanged(val as String);
                     },
                     label: const Text('Visibility'),
-                    items: const ['Public', 'Private'],
-                  ),
-                  const SizedBox(
-                    height: Constants.kPadding,
-                  ),
-                  const QuizFormField(
-                    hintText: 'Keyword',
-                    maxLines: 6,
-                    maxLength: 1000,
+                    items: ListEnum.visibility,
                   ),
                 ],
               );

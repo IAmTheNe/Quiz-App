@@ -27,7 +27,10 @@ class QuizCard extends StatelessWidget {
           Expanded(
             child: Stack(
               children: [
-                ImageCover(media: quiz.media),
+                ImageCover(
+                  media: quiz.media,
+                  isPreview: true,
+                ),
                 Positioned(
                   right: 0,
                   child: Container(

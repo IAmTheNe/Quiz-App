@@ -42,20 +42,10 @@ class QuestionDetailScreen extends StatelessWidget {
             children: [
               AspectRatio(
                 aspectRatio: 3 / 2,
-                // child: Container(
-                //   decoration: BoxDecoration(
-                //     color: Colors.grey.shade700,
-                //     image: quiz.media.imageUrl != null
-                //         ? DecorationImage(
-                //             image: CachedNetworkImageProvider(
-                //                 quiz.media.imageUrl!),
-                //             fit: BoxFit.cover,
-                //           )
-                //         : null,
-                //     borderRadius: BorderRadius.circular(Constants.kPadding),
-                //   ),
-                // ),
-                child: ImageCover(media: quiz.media),
+                child: ImageCover(
+                  media: quiz.media,
+                  isPreview: true,
+                ),
               ),
               const SizedBox(
                 height: Constants.kPadding / 2,
@@ -108,7 +98,9 @@ class QuestionDetailScreen extends StatelessWidget {
                             child: AspectRatio(
                               aspectRatio: 4 / 3,
                               child: ImageCover(
-                                  media: quiz.questions[index].media),
+                                media: quiz.questions[index].media,
+                                isPreview: true,
+                              ),
                             ),
                           ),
                           const SizedBox(

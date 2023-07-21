@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:whizz/src/common/constants/constants.dart';
+import 'package:whizz/src/common/extensions/extension.dart';
 
 class QuizFormField extends StatelessWidget {
   const QuizFormField({
@@ -73,7 +74,7 @@ class QuizDropDownField extends StatelessWidget {
   final void Function(Object?)? onChanged;
   final Widget? label;
 
-  final List<String> items;
+  final List<Enum> items;
 
   @override
   Widget build(BuildContext context) {
@@ -94,13 +95,13 @@ class QuizDropDownField extends StatelessWidget {
         items: items
             .map<DropdownMenuItem<String>>(
               (val) => DropdownMenuItem(
-                value: val,
-                child: Text(val),
+                value: val.name,
+                child: Text(val.name.toCapitalize()),
               ),
             )
             .toList(),
         onChanged: onChanged,
-        value: items[0],
+        value: items[0].name,
         decoration: InputDecoration(
           isDense: true,
           contentPadding: EdgeInsets.zero,

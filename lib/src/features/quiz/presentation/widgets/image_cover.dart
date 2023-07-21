@@ -11,13 +11,14 @@ class ImageCover extends StatelessWidget {
   const ImageCover({
     super.key,
     required this.media,
+    this.isPreview = false,
   });
 
   final Media media;
+  final bool isPreview;
 
   @override
   Widget build(BuildContext context) {
-    print(media.imageUrl?.isEmpty);
     return switch (media.type) {
       AttachType.online => AspectRatio(
           aspectRatio: 4 / 3,
@@ -53,7 +54,7 @@ class ImageCover extends StatelessWidget {
             ),
           ),
         ),
-      _ => const RainbowContainer(),
+      _ => RainbowContainer(isPreview: isPreview),
     };
   }
 }

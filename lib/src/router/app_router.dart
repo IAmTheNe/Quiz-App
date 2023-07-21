@@ -10,7 +10,6 @@ import 'package:whizz/src/features/auth/presentation/login_screen.dart';
 import 'package:whizz/src/features/auth/presentation/otp_screen.dart';
 import 'package:whizz/src/features/discovery/presentation/discovery_screen.dart';
 import 'package:whizz/src/features/home/presentation/screens/home_screen.dart';
-import 'package:whizz/src/features/media/data/bloc/online_media_bloc.dart';
 import 'package:whizz/src/features/media/presentation/screens/media_screen.dart';
 import 'package:whizz/src/features/play/presentation/play_screen.dart';
 import 'package:whizz/src/features/profile/data/bloc/profile_cubit.dart';
@@ -172,10 +171,7 @@ class AppRouter {
         parentNavigatorKey: _rootNavigatorKey,
         pageBuilder: (_, state) => MaterialPage(
           key: state.pageKey,
-          child: BlocProvider(
-            create: (_) => OnlineMediaBloc()..add(const GetListPhotosEvent()),
-            child: const MediaScreen(),
-          ),
+          child: const MediaScreen(),
         ),
       ),
       GoRoute(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:whizz/src/common/extensions/extension.dart';
 import 'package:whizz/src/features/auth/data/bloc/login/login_cubit.dart';
 import 'package:whizz/src/features/settings/data/enum/menu_title.dart';
 import 'package:whizz/src/features/settings/data/mockup/settings_mockup.dart';
@@ -44,7 +45,12 @@ class SettingsScreen extends StatelessWidget {
 Future<void>? onTap(BuildContext context, MenuTitle index) {
   switch (index) {
     case MenuTitle.logout:
-      return context.read<LoginCubit>().signOut();
+      return context.showConfirmDialog(
+        title: 'Are you sure?',
+        description: 'Do you want to logout?',
+        onNegativeButton: () {},
+        onPositiveButton: context.read<LoginCubit>().signOut,
+      );
     case MenuTitle.about:
       return showDialog(
         context: context,

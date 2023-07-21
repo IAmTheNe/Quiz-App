@@ -4,7 +4,10 @@ import 'package:whizz/src/common/constants/constants.dart';
 class RainbowContainer extends StatelessWidget {
   const RainbowContainer({
     super.key,
+    this.isPreview = false,
   });
+
+  final bool isPreview;
 
   @override
   Widget build(BuildContext context) {
@@ -19,14 +22,16 @@ class RainbowContainer extends StatelessWidget {
           ),
           gradient: Constants.sunsetGradient,
         ),
-        child: const Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.image_outlined),
-            SizedBox(height: Constants.kPadding / 4),
-            Text('Tap to add cover image'),
-          ],
-        ),
+        child: !isPreview
+            ? const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.image_outlined),
+                  SizedBox(height: Constants.kPadding / 4),
+                  Text('Tap to add cover image'),
+                ],
+              )
+            : null,
       ),
     );
   }

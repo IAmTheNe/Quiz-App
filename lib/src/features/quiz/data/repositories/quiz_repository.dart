@@ -29,14 +29,14 @@ class QuizRepository {
     final createdAt = DateTime.now();
 
     String quizImageUrl = await _getDownloadUrl(
-      path: 'path/$quizId/',
+      path: 'quiz/$quizId/cover.jpg',
       media: quiz.media,
     );
 
     final updatedQuestionList = await Future.wait(
       quiz.questions.map(
         (question) => _getDownloadUrl(
-          path: 'path/$quizId/${question.id}/',
+          path: 'quiz/$quizId/${question.id}/',
           media: question.media,
         ).then(
           (imageUrl) => question.copyWith(

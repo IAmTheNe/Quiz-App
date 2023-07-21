@@ -33,3 +33,39 @@ final class FirebaseDocumentConstants {
   static const user = 'User';
   static const quiz = 'Quiz';
 }
+
+final class ListEnum {
+  static final collections = <Collection>[
+    Collection.holiday,
+    Collection.sports,
+    Collection.education,
+    Collection.games,
+    Collection.art,
+    Collection.healthy,
+    Collection.foodAndBevarage,
+    Collection.lifeStyle,
+    Collection.galaxy,
+  ];
+
+  static final visibility = <Visible>[
+    Visible.public,
+    Visible.private,
+  ];
+}
+
+enum Visible {
+  public,
+  private,
+}
+
+enum Collection {
+  holiday,
+  sports,
+  education,
+  games,
+  art,
+  healthy,
+  foodAndBevarage,
+  lifeStyle,
+  galaxy,
+}
