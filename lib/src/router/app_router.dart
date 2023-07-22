@@ -14,7 +14,7 @@ import 'package:whizz/src/features/media/presentation/screens/media_screen.dart'
 import 'package:whizz/src/features/play/presentation/play_screen.dart';
 import 'package:whizz/src/features/profile/data/bloc/profile_cubit.dart';
 import 'package:whizz/src/features/profile/presentation/screens/profile_screen.dart';
-import 'package:whizz/src/features/quiz/data/bloc/quiz_cubit.dart';
+import 'package:whizz/src/features/quiz/data/bloc/quiz_bloc.dart';
 import 'package:whizz/src/features/quiz/data/models/quiz.dart';
 import 'package:whizz/src/features/quiz/presentation/screens/create_question_screen.dart';
 import 'package:whizz/src/features/quiz/presentation/screens/create_quiz_screen.dart';
@@ -115,11 +115,8 @@ class AppRouter {
           key: state.pageKey,
           child: MultiBlocProvider(
             providers: [
-              // BlocProvider(
-              //     create: (_) =>
-              //         OnlineMediaBloc()..add(const GetListPhotosEvent())),
               BlocProvider(
-                create: (_) => QuizCubit(),
+                create: (_) => QuizBloc(),
               ),
             ],
             child: const CreateQuizScreen(),
@@ -145,11 +142,9 @@ class AppRouter {
         parentNavigatorKey: _rootNavigatorKey,
         pageBuilder: (_, state) => MaterialPage(
           key: state.pageKey,
-          child: BlocProvider(
-            create: (_) => QuizCubit(),
-            child: EditQuizScreen(
-              quiz: state.extra! as Quiz,
-            ),
+          child: BlocProvider.value(
+            value: state.extra! as QuizBloc,
+            child: const EditQuizScreen(),
           ),
         ),
       ),
@@ -160,7 +155,7 @@ class AppRouter {
         pageBuilder: (_, state) => MaterialPage(
           key: state.pageKey,
           child: BlocProvider.value(
-            value: state.extra! as QuizCubit,
+            value: state.extra! as QuizBloc,
             child: const CreateQuestionScreen(),
           ),
         ),
@@ -198,8 +193,11 @@ class AppRouter {
         parentNavigatorKey: _rootNavigatorKey,
         pageBuilder: (_, state) => MaterialPage(
           key: state.pageKey,
-          child: BlocProvider(
-            create: (_) => ProfileCubit(),
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (_) => ProfileCubit()),
+              BlocProvider(create: (_) => QuizBloc()),
+            ],
             child: const ProfileScreen(),
           ),
         ),

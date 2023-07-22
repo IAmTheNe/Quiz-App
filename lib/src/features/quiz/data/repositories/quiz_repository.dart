@@ -25,7 +25,7 @@ class QuizRepository {
 
   Future<void> createNewQuiz(Quiz quiz) async {
     const uuid = Uuid();
-    final quizId = uuid.v4();
+    final quizId = quiz.id.isNotEmpty ? quiz.id : uuid.v4();
     final createdAt = DateTime.now();
 
     String quizImageUrl = await _getDownloadUrl(
@@ -77,6 +77,22 @@ class QuizRepository {
     });
 
     return quiz;
+  }
+
+  Stream<List<Quiz>> fetchAllQuizzes2() {
+    return _firestore
+        .collection(FirebaseDocumentConstants.user)
+        .doc(_cache.read<User>(key: 'user')!.id)
+        .collection(FirebaseDocumentConstants.quiz)
+        .snapshots()
+        .asyncMap((event) {
+      final quiz = <Quiz>[];
+      for (final doc in event.docs) {
+        quiz.add(Quiz.fromMap(doc.data()));
+      }
+
+      return quiz;
+    });
   }
 
   Future<String> _getDownloadUrl({

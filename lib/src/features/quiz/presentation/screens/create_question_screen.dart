@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/extensions/extension.dart';
-import 'package:whizz/src/features/quiz/data/bloc/quiz_cubit.dart';
-import 'package:whizz/src/features/quiz/data/controllers/quiz_controller.dart';
+import 'package:whizz/src/features/quiz/data/bloc/quiz_bloc.dart';
 import 'package:whizz/src/features/quiz/presentation/dialogs/options_builder.dart';
 import 'package:whizz/src/features/quiz/presentation/widgets/image_cover.dart';
 import 'package:whizz/src/features/quiz/presentation/widgets/preview_question_card.dart';
@@ -27,7 +27,9 @@ class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
                 description:
                     'Do you want to delete this question? This process cannot be undone.',
                 onNegativeButton: () {},
-                onPositiveButton: context.read<QuizCubit>().removeQuestion,
+                onPositiveButton: () => context
+                    .read<QuizBloc>()
+                    .add(const OnRemoveCurrentQuestion()),
               );
             },
             icon: const Icon(Icons.delete),
@@ -36,7 +38,7 @@ class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
       ),
       body: Padding(
         padding: const EdgeInsets.all(Constants.kPadding),
-        child: BlocBuilder<QuizCubit, QuizState>(
+        child: BlocBuilder<QuizBloc, QuizState>(
           builder: (context, state) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,13 +47,13 @@ class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        QuizController.intent(
-                            context: context,
-                            onResult:
-                                context.read<QuizCubit>().questionMediaChanged);
+                        context
+                            .read<QuizBloc>()
+                            .add(OnQuestionMediaChanged(context));
                       },
                       child: ImageCover(
-                          media: state.quiz.questions[state.index].media),
+                        media: state.quiz.questions[state.index].media,
+                      ),
                     ),
                     Positioned(
                       bottom: Constants.kPadding / 2,
@@ -83,11 +85,9 @@ class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
                     showInputTitle(
                       context: context,
                       initialValue: state.quiz.questions[state.index].name,
-                      onChanged: (val) {
-                        context
-                            .read<QuizCubit>()
-                            .questionNameChanged(name: val);
-                      },
+                      onChanged: (name) => context
+                          .read<QuizBloc>()
+                          .add(OnQuestionNameChanged(name)),
                     );
                   },
                   child: Container(
@@ -137,7 +137,9 @@ class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
                     ),
                     IconButton.filled(
                       onPressed: () {
-                        context.read<QuizCubit>().createNewQuestion();
+                        context
+                            .read<QuizBloc>()
+                            .add(OnCreateNewQuestion(context));
                       },
                       style: IconButton.styleFrom(),
                       icon: const Icon(

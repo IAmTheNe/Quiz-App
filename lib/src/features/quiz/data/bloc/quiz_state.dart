@@ -1,36 +1,37 @@
-part of 'quiz_cubit.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+part of 'quiz_bloc.dart';
 
-class QuizState extends Equatable {
+final class QuizState extends Equatable {
   const QuizState({
     this.quiz = const Quiz(),
-    this.isValid = false,
     this.isLoading = false,
-    this.index = -1,
+    this.isValid = false,
+    this.index = 0,
   });
 
-  final bool isValid;
-  final bool isLoading;
   final Quiz quiz;
+  final bool isLoading;
+  final bool isValid;
   final int index;
 
   @override
   List<Object?> get props => [
         quiz,
-        isValid,
         isLoading,
+        isValid,
         index,
       ];
 
   QuizState copyWith({
     Quiz? quiz,
-    bool? isValid,
     bool? isLoading,
+    bool? isValid,
     int? index,
   }) {
     return QuizState(
       quiz: quiz ?? this.quiz,
-      isValid: isValid ?? this.isValid,
       isLoading: isLoading ?? this.isLoading,
+      isValid: isValid ?? this.isValid,
       index: index ?? this.index,
     );
   }

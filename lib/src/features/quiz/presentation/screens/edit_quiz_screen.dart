@@ -2,43 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:whizz/src/common/constants/constants.dart';
-import 'package:whizz/src/common/widgets/quiz_textfield.dart';
-import 'package:whizz/src/features/quiz/data/bloc/quiz_cubit.dart';
-import 'package:whizz/src/features/quiz/data/models/media.dart';
-import 'package:whizz/src/features/quiz/data/models/quiz.dart';
-import 'package:whizz/src/features/quiz/presentation/widgets/image_cover.dart';
-import 'package:whizz/src/features/quiz/presentation/popups/popup_menu.dart';
-import 'package:whizz/src/features/quiz/presentation/widgets/rainbow_container.dart';
 
-import 'package:whizz/src/router/app_router.dart';
+import 'package:whizz/src/common/constants/constants.dart';
+import 'package:whizz/src/common/extensions/extension.dart';
+import 'package:whizz/src/common/widgets/quiz_textfield.dart';
+import 'package:whizz/src/features/quiz/data/bloc/quiz_bloc.dart';
+
+import 'package:whizz/src/features/quiz/presentation/popups/popup_menu.dart';
+import 'package:whizz/src/features/quiz/presentation/widgets/image_cover.dart';
 
 class EditQuizScreen extends StatelessWidget {
-  const EditQuizScreen({
-    super.key,
-    required this.quiz,
-  });
-
-  final Quiz quiz;
-
-  void intent(BuildContext context) async {
-    final result = await context.pushNamed<Media>(RouterPath.media.name);
-
-    if (result?.imageUrl != null) {
-      // ignore: use_build_context_synchronously
-      context.read<QuizCubit>().attachmentChanged(result!);
-    }
-  }
-
-  void createQuiz(BuildContext context) {
-    context.read<QuizCubit>().createQuiz().then((_) => context.pop());
-  }
+  const EditQuizScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Quiz'),
+        title: const Text('Create Quiz'),
+        leading: IconButton(
+          onPressed: () {
+            context.showConfirmDialog(
+              title: 'Discard changes?',
+              description: 'Changes you made won\'t be saved!',
+              onPositiveButton: context.pop,
+              onNegativeButton: () {},
+            );
+          },
+          icon: const Icon(Icons.arrow_back_ios_new),
+        ),
         actions: const [
           CreateOptionsPopupMenu(),
         ],
@@ -46,71 +37,62 @@ class EditQuizScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(Constants.kPadding),
-          child: Column(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  intent(context);
-                },
-                child: quiz.media.imageUrl != null
-                    ? ImageCover(
-                        media: Media(
-                          imageUrl: quiz.media.imageUrl,
-                          type: quiz.media.type,
-                        ),
-                      )
-                    : const RainbowContainer(),
-              ),
-              const SizedBox(
-                height: Constants.kPadding,
-              ),
-              QuizFormField(
-                hintText: 'Name',
-                initialValue: quiz.title,
-                maxLength: 50,
-                onChanged: context.read<QuizCubit>().nameChanged,
-              ),
-              const SizedBox(
-                height: Constants.kPadding,
-              ),
-              QuizFormField(
-                hintText: 'Description',
-                initialValue: quiz.description,
-                maxLines: 6,
-                maxLength: 500,
-                onChanged: context.read<QuizCubit>().descriptionChanged,
-              ),
-              const SizedBox(
-                height: Constants.kPadding,
-              ),
-              // QuizDropDownField(
-              //   onChanged: (val) {},
-              //   label: const Text('Collection'),
-              //   items: const ['Holiday', 'Games', 'Sports', 'Music'],
-              // ),
-              // const SizedBox(
-              //   height: Constants.kPadding,
-              // ),
-              // QuizDropDownField(
-              //   onChanged: (val) {
-              //     context.read<QuizCubit>().visibilityChanged(val as String);
-              //   },
-              //   label: const Text('Visibility'),
-              //   items: const ['Public', 'Private'],
-              // ),
-              // const SizedBox(
-              //   height: Constants.kPadding,
-              // ),
-              const QuizFormField(
-                hintText: 'Keyword',
-                maxLines: 6,
-                maxLength: 1000,
-              ),
-            ],
+          child: BlocBuilder<QuizBloc, QuizState>(
+            builder: (context, state) {
+              return Column(
+                children: [
+                  GestureDetector(
+                    onTap: () => context
+                        .read<QuizBloc>()
+                        .add(OnQuizMediaChanged(context)),
+                    child: ImageCover(media: state.quiz.media),
+                  ),
+                  const SizedBox(
+                    height: Constants.kPadding,
+                  ),
+                  QuizFormField(
+                    hintText: 'Name',
+                    initialValue: state.quiz.title,
+                    maxLength: 50,
+                    onChanged: (title) =>
+                        context.read<QuizBloc>().add(OnQuizTitleChanged(title)),
+                  ),
+                  const SizedBox(
+                    height: Constants.kPadding,
+                  ),
+                  QuizFormField(
+                    hintText: 'Description',
+                    maxLines: 6,
+                    maxLength: 500,
+                    onChanged: (desc) => context
+                        .read<QuizBloc>()
+                        .add(OnQuizDescriptionChange(desc)),
+                  ),
+                  const SizedBox(
+                    height: Constants.kPadding,
+                  ),
+                  QuizDropDownField(
+                    onChanged: (val) {},
+                    label: const Text('Collection'),
+                    items: ListEnum.collections,
+                  ),
+                  const SizedBox(
+                    height: Constants.kPadding,
+                  ),
+                  QuizDropDownField(
+                    onChanged: (val) => context
+                        .read<QuizBloc>()
+                        .add(OnQuizVisibilityChanged(val as String)),
+                    label: const Text('Visibility'),
+                    items: ListEnum.visibility,
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),
-      bottomNavigationBar: BlocBuilder<QuizCubit, QuizState>(
+      bottomNavigationBar: BlocBuilder<QuizBloc, QuizState>(
         builder: (context, state) {
           return Container(
             padding: const EdgeInsets.all(Constants.kPadding),
@@ -120,15 +102,9 @@ class EditQuizScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {
-                      // if (state.quiz.questions.isEmpty) {
-                      //   context.read<QuizCubit>().createNewQuestion();
-                      // }
-                      // context.pushNamed(
-                      //   RouterPath.question.name,
-                      //   extra: context.read<QuizCubit>(),
-                      // );
-                    },
+                    onPressed: () => context
+                        .read<QuizBloc>()
+                        .add(OnCreateNewQuestion(context, true)),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Constants.primaryColor,
                       elevation: 4,
@@ -146,11 +122,29 @@ class EditQuizScreen extends StatelessWidget {
                   width: Constants.kPadding,
                 ),
                 state.isLoading
-                    ? const CircularProgressIndicator.adaptive()
+                    ? Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: () {},
+                          icon: const CircularProgressIndicator.adaptive(),
+                          label: Text(
+                            'Saving',
+                            style: Constants.textHeading.copyWith(
+                              fontSize: 14.sp,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            elevation: 4,
+                          ),
+                        ),
+                      )
                     : Expanded(
                         child: ElevatedButton(
-                          onPressed:
-                              state.isValid ? () => createQuiz(context) : null,
+                          onPressed: state.isValid
+                              ? () => context
+                                  .read<QuizBloc>()
+                                  .add(OnInitialNewQuiz(context))
+                              : null,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             elevation: 4,

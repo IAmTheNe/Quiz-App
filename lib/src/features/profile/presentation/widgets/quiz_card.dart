@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/extensions/extension.dart';
+import 'package:whizz/src/features/quiz/data/bloc/quiz_bloc.dart';
 import 'package:whizz/src/features/quiz/data/models/quiz.dart';
 import 'package:whizz/src/features/quiz/presentation/widgets/image_cover.dart';
 import 'package:whizz/src/router/app_router.dart';
@@ -17,9 +19,8 @@ class QuizCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         context.pushNamed(
-          RouterPath.quizDetail.name,
-          pathParameters: {'id': quiz.id},
-          extra: quiz,
+          RouterPath.quizEdit.name,
+          extra: context.read<QuizBloc>()..add(OnGoToEditScreen(quiz)),
         );
       },
       child: Row(

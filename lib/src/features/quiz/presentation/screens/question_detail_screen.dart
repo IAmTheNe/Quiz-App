@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/features/quiz/data/models/quiz.dart';
 import 'package:whizz/src/features/quiz/presentation/widgets/image_cover.dart';
-import 'package:whizz/src/router/app_router.dart';
 
 class QuestionDetailScreen extends StatelessWidget {
   const QuestionDetailScreen({
@@ -20,12 +18,7 @@ class QuestionDetailScreen extends StatelessWidget {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () {
-              context.pushNamed(
-                RouterPath.quizEdit.name,
-                extra: quiz,
-              );
-            },
+            onPressed: () {},
             icon: const Icon(Icons.edit),
           ),
           IconButton(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whizz/src/common/constants/constants.dart';
-import 'package:whizz/src/features/quiz/data/bloc/quiz_cubit.dart';
+import 'package:whizz/src/features/quiz/data/bloc/quiz_bloc.dart';
 import 'package:whizz/src/features/quiz/data/models/question.dart';
 
 class PreviewQuestionCard extends StatelessWidget {
@@ -16,7 +16,7 @@ class PreviewQuestionCard extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         child: Row(
           children: [
-            BlocBuilder<QuizCubit, QuizState>(
+            BlocBuilder<QuizBloc, QuizState>(
               builder: (context, state) {
                 return Wrap(
                   crossAxisAlignment: WrapCrossAlignment.center,
@@ -27,7 +27,9 @@ class PreviewQuestionCard extends StatelessWidget {
                     questions.length,
                     (index) => GestureDetector(
                       onTap: () {
-                        context.read<QuizCubit>().indexChanged(index);
+                        context
+                            .read<QuizBloc>()
+                            .add(OnQuestionSelectedChanged(index));
                       },
                       child: CircleAvatar(
                         backgroundColor: state.index != index

@@ -6,11 +6,10 @@ import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/extensions/extension.dart';
 import 'package:whizz/src/common/widgets/quiz_textfield.dart';
-import 'package:whizz/src/features/quiz/data/bloc/quiz_cubit.dart';
-import 'package:whizz/src/features/quiz/data/controllers/quiz_controller.dart';
+import 'package:whizz/src/features/quiz/data/bloc/quiz_bloc.dart';
+
 import 'package:whizz/src/features/quiz/presentation/popups/popup_menu.dart';
 import 'package:whizz/src/features/quiz/presentation/widgets/image_cover.dart';
-import 'package:whizz/src/router/app_router.dart';
 
 class CreateQuizScreen extends StatelessWidget {
   const CreateQuizScreen({super.key});
@@ -38,17 +37,14 @@ class CreateQuizScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(Constants.kPadding),
-          child: BlocBuilder<QuizCubit, QuizState>(
+          child: BlocBuilder<QuizBloc, QuizState>(
             builder: (context, state) {
               return Column(
                 children: [
                   GestureDetector(
-                    onTap: () {
-                      QuizController.intent(
-                        context: context,
-                        onResult: context.read<QuizCubit>().attachmentChanged,
-                      );
-                    },
+                    onTap: () => context
+                        .read<QuizBloc>()
+                        .add(OnQuizMediaChanged(context)),
                     child: ImageCover(media: state.quiz.media),
                   ),
                   const SizedBox(
@@ -58,7 +54,8 @@ class CreateQuizScreen extends StatelessWidget {
                     hintText: 'Name',
                     initialValue: state.quiz.title,
                     maxLength: 50,
-                    onChanged: context.read<QuizCubit>().nameChanged,
+                    onChanged: (title) =>
+                        context.read<QuizBloc>().add(OnQuizTitleChanged(title)),
                   ),
                   const SizedBox(
                     height: Constants.kPadding,
@@ -67,7 +64,9 @@ class CreateQuizScreen extends StatelessWidget {
                     hintText: 'Description',
                     maxLines: 6,
                     maxLength: 500,
-                    onChanged: context.read<QuizCubit>().descriptionChanged,
+                    onChanged: (desc) => context
+                        .read<QuizBloc>()
+                        .add(OnQuizDescriptionChange(desc)),
                   ),
                   const SizedBox(
                     height: Constants.kPadding,
@@ -81,11 +80,9 @@ class CreateQuizScreen extends StatelessWidget {
                     height: Constants.kPadding,
                   ),
                   QuizDropDownField(
-                    onChanged: (val) {
-                      context
-                          .read<QuizCubit>()
-                          .visibilityChanged(val as String);
-                    },
+                    onChanged: (val) => context
+                        .read<QuizBloc>()
+                        .add(OnQuizVisibilityChanged(val as String)),
                     label: const Text('Visibility'),
                     items: ListEnum.visibility,
                   ),
@@ -95,7 +92,7 @@ class CreateQuizScreen extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: BlocBuilder<QuizCubit, QuizState>(
+      bottomNavigationBar: BlocBuilder<QuizBloc, QuizState>(
         builder: (context, state) {
           return Container(
             padding: const EdgeInsets.all(Constants.kPadding),
@@ -105,15 +102,9 @@ class CreateQuizScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {
-                      if (state.quiz.questions.isEmpty) {
-                        context.read<QuizCubit>().createNewQuestion();
-                      }
-                      context.pushNamed(
-                        RouterPath.question.name,
-                        extra: context.read<QuizCubit>(),
-                      );
-                    },
+                    onPressed: () => context
+                        .read<QuizBloc>()
+                        .add(OnCreateNewQuestion(context, true)),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Constants.primaryColor,
                       elevation: 4,
@@ -131,12 +122,28 @@ class CreateQuizScreen extends StatelessWidget {
                   width: Constants.kPadding,
                 ),
                 state.isLoading
-                    ? const CircularProgressIndicator.adaptive()
+                    ? Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: () {},
+                          icon: const CircularProgressIndicator.adaptive(),
+                          label: Text(
+                            'Saving',
+                            style: Constants.textHeading.copyWith(
+                              fontSize: 14.sp,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            elevation: 4,
+                          ),
+                        ),
+                      )
                     : Expanded(
                         child: ElevatedButton(
                           onPressed: state.isValid
-                              ? () =>
-                                  QuizController.createQuiz(context: context)
+                              ? () => context
+                                  .read<QuizBloc>()
+                                  .add(OnInitialNewQuiz(context))
                               : null,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,

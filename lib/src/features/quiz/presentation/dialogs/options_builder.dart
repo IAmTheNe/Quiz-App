@@ -17,6 +17,7 @@ mixin OptionsSelector {
         return AlertDialog(
           title: const Text('Enter question'),
           content: TextFormField(
+            autofocus: true,
             maxLength: 150,
             maxLines: 3,
             minLines: 1,
@@ -52,6 +53,7 @@ mixin OptionsSelector {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextFormField(
+                autofocus: true,
                 maxLength: 150,
                 maxLines: 3,
                 minLines: 1,

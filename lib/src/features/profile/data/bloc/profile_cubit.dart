@@ -23,11 +23,14 @@ class ProfileCubit extends Cubit<ProfileState> {
   void _onGetProfile() async {
     emit(state.copyWith(isLoading: true));
     final user = _cache.read<User>(key: 'user');
-    final quiz = await _quizRepository.fetchAllQuizzes();
-    emit(state.copyWith(
-      user: user,
-      quizzies: quiz,
-      isLoading: false,
-    ));
+    _quizRepository.fetchAllQuizzes2().listen(
+      (quiz) {
+        emit(state.copyWith(
+          user: user,
+          quizzies: quiz,
+          isLoading: false,
+        ));
+      },
+    );
   }
 }
