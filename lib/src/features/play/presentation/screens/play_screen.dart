@@ -9,7 +9,7 @@ class PlayScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Play'),
+          title: const Text('Join quiz'),
         ),
         body: const Column(
           children: [

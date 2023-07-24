@@ -1,28 +1,32 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:twitter_login/twitter_login.dart';
-import 'package:whizz/src/env/env.dart';
+import 'package:whizz/src/common/constants/constants.dart';
 
+import 'package:whizz/src/common/modules/cache.dart';
+import 'package:whizz/src/env/env.dart';
 import 'package:whizz/src/features/auth/data/exceptions/auth_exception.dart';
 import 'package:whizz/src/features/auth/data/extensions/auth_extension.dart';
 import 'package:whizz/src/features/auth/data/models/user.dart';
-import 'package:whizz/src/common/modules/cache.dart';
 import 'package:whizz/src/router/app_router.dart';
 
 class AuthenticationRepository {
   AuthenticationRepository({
     InMemoryCache? cache,
     firebase_auth.FirebaseAuth? firebaseAuth,
+    FirebaseFirestore? firestore,
     GoogleSignIn? googleSignIn,
     TwitterLogin? twitterLogin,
   })  : _cache = cache ?? InMemoryCache(),
         _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
+        _firestore = firestore ?? FirebaseFirestore.instance,
         _googleSignIn = googleSignIn ?? GoogleSignIn(),
         _twitterLogin = twitterLogin ??
             TwitterLogin(
@@ -33,6 +37,7 @@ class AuthenticationRepository {
 
   final InMemoryCache _cache;
   final firebase_auth.FirebaseAuth _firebaseAuth;
+  final FirebaseFirestore _firestore;
   final GoogleSignIn _googleSignIn;
   final TwitterLogin _twitterLogin;
 
@@ -72,7 +77,8 @@ class AuthenticationRepository {
           idToken: googleAuth.idToken,
           accessToken: googleAuth.accessToken,
         );
-        await _firebaseAuth.signInWithCredential(credential);
+        final user = await _firebaseAuth.signInWithCredential(credential);
+        await _addUser(user.user!.toUser);
       }
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw SignInWithCredentialException(e.code);
@@ -89,7 +95,8 @@ class AuthenticationRepository {
           accessToken: authResult.authToken!,
           secret: authResult.authTokenSecret!,
         );
-        await _firebaseAuth.signInWithCredential(credential);
+        final user = await _firebaseAuth.signInWithCredential(credential);
+        await _addUser(user.user!.toUser);
       } on firebase_auth.FirebaseAuthException catch (e) {
         throw SignInWithCredentialException.fromCode(e.code);
       } catch (e) {
@@ -171,6 +178,17 @@ class AuthenticationRepository {
     } catch (e) {
       log(e.toString());
       throw const VerifyOtpException();
+    }
+  }
+
+  Future<void> _addUser(User user) async {
+    try {
+      await _firestore
+          .collection(FirebaseDocumentConstants.user)
+          .doc(user.id)
+          .set(user.toMap());
+    } catch (e) {
+      log(e.toString());
     }
   }
 }

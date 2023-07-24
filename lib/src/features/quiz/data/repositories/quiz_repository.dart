@@ -25,6 +25,7 @@ class QuizRepository {
 
   Future<void> createNewQuiz(Quiz quiz) async {
     const uuid = Uuid();
+    final user = _cache.read<User>(key: 'user');
     final quizId = quiz.id.isNotEmpty ? quiz.id : uuid.v4();
     final createdAt = DateTime.now();
 
@@ -53,11 +54,10 @@ class QuizRepository {
         imageUrl: quizImageUrl,
       ),
       questions: updatedQuestionList,
+      author: user!.id,
     );
 
     await _firestore
-        .collection(FirebaseDocumentConstants.user)
-        .doc(_cache.read<User>(key: 'user')!.id)
         .collection(FirebaseDocumentConstants.quiz)
         .doc(quizId)
         .set(newQuiz.toMap());
@@ -80,10 +80,10 @@ class QuizRepository {
   }
 
   Stream<List<Quiz>> fetchAllQuizzes2() {
+    final userId = _cache.read<User>(key: 'user')!.id;
     return _firestore
-        .collection(FirebaseDocumentConstants.user)
-        .doc(_cache.read<User>(key: 'user')!.id)
         .collection(FirebaseDocumentConstants.quiz)
+        .where('author', isEqualTo: userId)
         .snapshots()
         .asyncMap((event) {
       final quiz = <Quiz>[];

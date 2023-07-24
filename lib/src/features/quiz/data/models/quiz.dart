@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
-import 'package:whizz/src/features/quiz/data/extensions/extension.dart';
 import 'package:whizz/src/features/quiz/data/models/media.dart';
 import 'package:whizz/src/features/quiz/data/models/question.dart';
 
@@ -18,6 +17,7 @@ class Quiz extends Equatable {
     this.createdAt,
     this.questions = const [],
     this.media = const Media(),
+    this.author = '',
   });
 
   final String id;
@@ -29,6 +29,7 @@ class Quiz extends Equatable {
   final DateTime? createdAt;
   final Media media;
   final List<Question> questions;
+  final String author;
 
   Quiz copyWith({
     String? id,
@@ -40,6 +41,7 @@ class Quiz extends Equatable {
     DateTime? createdAt,
     List<Question>? questions,
     Media? media,
+    String? author,
   }) {
     return Quiz(
       id: id ?? this.id,
@@ -51,6 +53,7 @@ class Quiz extends Equatable {
       createdAt: createdAt ?? this.createdAt,
       questions: questions ?? this.questions,
       media: media ?? this.media,
+      author: author ?? this.author,
     );
   }
 
@@ -65,6 +68,7 @@ class Quiz extends Equatable {
         createdAt,
         media,
         questions,
+        author,
       ];
 
   Map<String, dynamic> toMap() {
@@ -73,11 +77,12 @@ class Quiz extends Equatable {
       'title': title,
       'description': description,
       'collectionId': collectionId,
-      'visibility': visibility.name,
+      'isPublic': visibility.name == "public",
       'keyword': keyword,
       'createdAt': createdAt?.millisecondsSinceEpoch,
       'questions': questions.map((x) => x.toMap()).toList(),
       'imageUrl': media.imageUrl,
+      'author': author,
     };
   }
 
@@ -89,7 +94,7 @@ class Quiz extends Equatable {
           map['description'] != null ? map['description'] as String : null,
       collectionId:
           map['collectionId'] != null ? map['collectionId'] as String : null,
-      visibility: (map['visibility'] as String).convertQuizVisibitity(),
+      visibility: (map['isPublic'] as bool) ? QuizVisibility.public : QuizVisibility.private,
       keyword: List<String>.from((map['keyword'] as List<dynamic>)),
       createdAt: map['createdAt'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int)
@@ -101,8 +106,11 @@ class Quiz extends Equatable {
       ),
       media: Media(
         imageUrl: map['imageUrl'] != null ? map['imageUrl'] as String : null,
-        type: (map['imageUrl'] as String).isEmpty ? AttachType.none : AttachType.online,
+        type: (map['imageUrl'] as String).isEmpty
+            ? AttachType.none
+            : AttachType.online,
       ),
+      author: map['author'],
     );
   }
 

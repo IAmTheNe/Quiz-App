@@ -11,7 +11,7 @@ import 'package:whizz/src/features/auth/presentation/otp_screen.dart';
 import 'package:whizz/src/features/discovery/presentation/discovery_screen.dart';
 import 'package:whizz/src/features/home/presentation/screens/home_screen.dart';
 import 'package:whizz/src/features/media/presentation/screens/media_screen.dart';
-import 'package:whizz/src/features/play/presentation/play_screen.dart';
+import 'package:whizz/src/features/play/presentation/screens/play_screen.dart';
 import 'package:whizz/src/features/profile/data/bloc/profile_cubit.dart';
 import 'package:whizz/src/features/profile/presentation/screens/profile_screen.dart';
 import 'package:whizz/src/features/quiz/data/bloc/quiz_bloc.dart';
