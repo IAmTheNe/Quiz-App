@@ -22,11 +22,6 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
     if (index == currentIndex) {
       return;
     }
-    if (index != 3) {
-      setState(() {
-        currentIndex = index;
-      });
-    }
 
     switch (index) {
       case 0:
@@ -36,7 +31,7 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
         context.goNamed(RouterPath.discovery.name);
         break;
       case 2:
-        context.goNamed(RouterPath.play.name);
+        context.pushNamed(RouterPath.play.name);
         break;
       case 3:
         context.pushNamed(RouterPath.quiz.name);
@@ -46,6 +41,12 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
         break;
       default:
         context.goNamed(RouterPath.home.name);
+    }
+
+    if (index != 3 && index != 2) {
+      setState(() {
+        currentIndex = index;
+      });
     }
   }
 
@@ -71,7 +72,7 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
             label: 'Play',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add),
+            icon: Icon(Icons.add_circle),
             label: 'Create',
           ),
           BottomNavigationBarItem(

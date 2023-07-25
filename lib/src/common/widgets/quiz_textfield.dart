@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/extensions/extension.dart';
+import 'package:whizz/src/features/discovery/data/models/quiz_collection.dart';
 
 class QuizFormField extends StatelessWidget {
   const QuizFormField({
@@ -63,18 +65,20 @@ class QuizFormField extends StatelessWidget {
   }
 }
 
-class QuizDropDownField extends StatelessWidget {
-  const QuizDropDownField({
+class QuizCollectionDropDownField extends StatelessWidget {
+  const QuizCollectionDropDownField({
     super.key,
     required this.onChanged,
     required this.items,
     this.label,
+    this.initialValue,
   });
 
   final void Function(Object?)? onChanged;
   final Widget? label;
 
-  final List<Enum> items;
+  final List<QuizCollection> items;
+  final String? initialValue;
 
   @override
   Widget build(BuildContext context) {
@@ -92,16 +96,80 @@ class QuizDropDownField extends StatelessWidget {
         ),
       ),
       child: DropdownButtonFormField<String>(
-        items: items
-            .map<DropdownMenuItem<String>>(
-              (val) => DropdownMenuItem(
-                value: val.name,
-                child: Text(val.name.toCapitalize()),
-              ),
-            )
-            .toList(),
+        items: items.isNotEmpty
+            ? items
+                .map<DropdownMenuItem<String>>(
+                  (val) => DropdownMenuItem(
+                    value: val.id,
+                    child: Text(val.name),
+                  ),
+                )
+                .toList()
+            : null,
         onChanged: onChanged,
-        value: items[0].name,
+        value: items.isNotEmpty
+            ? (initialValue == null
+                ? items[0].id
+                : items
+                    .firstWhere((collection) => collection.id == initialValue!)
+                    .id)
+            : null,
+        decoration: InputDecoration(
+          isDense: true,
+          contentPadding: EdgeInsets.zero,
+          label: label,
+          border: InputBorder.none,
+        ),
+      ),
+    );
+  }
+}
+
+class QuizVisibilityTextField extends StatelessWidget {
+  const QuizVisibilityTextField({
+    super.key,
+    required this.onChanged,
+    this.label,
+    this.initialValue,
+  });
+
+  final void Function(Object?)? onChanged;
+  final Widget? label;
+
+  final String? initialValue;
+
+  @override
+  Widget build(BuildContext context) {
+    final items = <String>[
+      'public',
+      'private',
+    ];
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        vertical: 8,
+        horizontal: 12,
+      ),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.grey,
+        ),
+        borderRadius: BorderRadius.circular(
+          Constants.kPadding.toDouble() / 2,
+        ),
+      ),
+      child: DropdownButtonFormField<String>(
+        items: items.isNotEmpty
+            ? items
+                .map<DropdownMenuItem<String>>(
+                  (val) => DropdownMenuItem(
+                    value: val,
+                    child: Text(val.toCapitalize()),
+                  ),
+                )
+                .toList()
+            : null,
+        onChanged: onChanged,
+        value: initialValue ?? items[0],
         decoration: InputDecoration(
           isDense: true,
           contentPadding: EdgeInsets.zero,

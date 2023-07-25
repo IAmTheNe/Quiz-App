@@ -17,6 +17,7 @@ class Quiz extends Equatable {
     this.createdAt,
     this.questions = const [],
     this.media = const Media(),
+    this.playedCount = 0,
     this.author = '',
   });
 
@@ -30,6 +31,7 @@ class Quiz extends Equatable {
   final Media media;
   final List<Question> questions;
   final String author;
+  final int playedCount;
 
   Quiz copyWith({
     String? id,
@@ -42,6 +44,7 @@ class Quiz extends Equatable {
     List<Question>? questions,
     Media? media,
     String? author,
+    int? playedCount,
   }) {
     return Quiz(
       id: id ?? this.id,
@@ -54,6 +57,7 @@ class Quiz extends Equatable {
       questions: questions ?? this.questions,
       media: media ?? this.media,
       author: author ?? this.author,
+      playedCount: playedCount ?? this.playedCount,
     );
   }
 
@@ -69,6 +73,7 @@ class Quiz extends Equatable {
         media,
         questions,
         author,
+        playedCount,
       ];
 
   Map<String, dynamic> toMap() {
@@ -83,6 +88,7 @@ class Quiz extends Equatable {
       'questions': questions.map((x) => x.toMap()).toList(),
       'imageUrl': media.imageUrl,
       'author': author,
+      'played': playedCount,
     };
   }
 
@@ -94,7 +100,9 @@ class Quiz extends Equatable {
           map['description'] != null ? map['description'] as String : null,
       collectionId:
           map['collectionId'] != null ? map['collectionId'] as String : null,
-      visibility: (map['isPublic'] as bool) ? QuizVisibility.public : QuizVisibility.private,
+      visibility: (map['isPublic'] as bool)
+          ? QuizVisibility.public
+          : QuizVisibility.private,
       keyword: List<String>.from((map['keyword'] as List<dynamic>)),
       createdAt: map['createdAt'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int)
@@ -104,6 +112,7 @@ class Quiz extends Equatable {
           (x) => Question.fromMap(x as Map<String, dynamic>),
         ),
       ),
+      playedCount: int.parse(map['played'].toString()),
       media: Media(
         imageUrl: map['imageUrl'] != null ? map['imageUrl'] as String : null,
         type: (map['imageUrl'] as String).isEmpty

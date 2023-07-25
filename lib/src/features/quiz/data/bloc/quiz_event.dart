@@ -28,6 +28,12 @@ final class OnQuizVisibilityChanged implements QuizEvent {
   final String visibility;
 }
 
+final class OnQuizCollectionChanged implements QuizEvent {
+  const OnQuizCollectionChanged(this.collectionId);
+
+  final String collectionId;
+}
+
 final class OnTakePhoto implements QuizEvent {
   const OnTakePhoto();
 }

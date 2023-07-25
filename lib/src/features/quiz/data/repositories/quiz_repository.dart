@@ -95,6 +95,22 @@ class QuizRepository {
     });
   }
 
+  Stream<List<Quiz>> fetchTopQuizzes() {
+    return _firestore
+        .collection(FirebaseDocumentConstants.quiz)
+        .where('isPublic', isEqualTo: true)
+        .orderBy('played', descending: true)
+        .snapshots()
+        .asyncMap((event) {
+      final quiz = <Quiz>[];
+      for (final doc in event.docs) {
+        quiz.add(Quiz.fromMap(doc.data()));
+      }
+
+      return quiz;
+    });
+  }
+
   Future<String> _getDownloadUrl({
     required String path,
     required Media media,

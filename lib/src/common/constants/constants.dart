@@ -34,6 +34,7 @@ final class FirebaseDocumentConstants {
   static const quiz = 'Quiz';
   static const quizDetail = "Detail";
   static const quizScore = "Score";
+  static const collection = 'Collection';
 }
 
 final class ListEnum {

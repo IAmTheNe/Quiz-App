@@ -19,10 +19,6 @@ class QuestionDetailScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.edit),
-          ),
-          IconButton(
-            onPressed: () {},
             icon: const Icon(Icons.more_horiz),
           ),
         ],
@@ -106,7 +102,8 @@ class QuestionDetailScreen extends StatelessWidget {
                                 Text(
                                   quiz.questions[index].name,
                                   style: Constants.textTitle700.copyWith(
-                                    color: Colors.blue,
+                                    color: Constants.primaryColor,
+                                    fontSize: 14.sp,
                                   ),
                                 ),
                               ],

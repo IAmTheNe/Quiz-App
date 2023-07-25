@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/extensions/extension.dart';
 import 'package:whizz/src/common/widgets/quiz_textfield.dart';
+import 'package:whizz/src/features/discovery/data/bloc/quiz_collection_bloc.dart';
 import 'package:whizz/src/features/quiz/data/bloc/quiz_bloc.dart';
 
 import 'package:whizz/src/features/quiz/presentation/popups/popup_menu.dart';
@@ -18,7 +19,7 @@ class EditQuizScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Quiz'),
+        title: const Text('Edit Quiz'),
         leading: IconButton(
           onPressed: () {
             context.showConfirmDialog(
@@ -38,21 +39,21 @@ class EditQuizScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(Constants.kPadding),
           child: BlocBuilder<QuizBloc, QuizState>(
-            builder: (context, state) {
+            builder: (context, quizState) {
               return Column(
                 children: [
                   GestureDetector(
                     onTap: () => context
                         .read<QuizBloc>()
                         .add(OnQuizMediaChanged(context)),
-                    child: ImageCover(media: state.quiz.media),
+                    child: ImageCover(media: quizState.quiz.media),
                   ),
                   const SizedBox(
                     height: Constants.kPadding,
                   ),
                   QuizFormField(
                     hintText: 'Name',
-                    initialValue: state.quiz.title,
+                    initialValue: quizState.quiz.title,
                     maxLength: 50,
                     onChanged: (title) =>
                         context.read<QuizBloc>().add(OnQuizTitleChanged(title)),
@@ -61,6 +62,7 @@ class EditQuizScreen extends StatelessWidget {
                     height: Constants.kPadding,
                   ),
                   QuizFormField(
+                    initialValue: quizState.quiz.description,
                     hintText: 'Description',
                     maxLines: 6,
                     maxLength: 500,
@@ -71,20 +73,30 @@ class EditQuizScreen extends StatelessWidget {
                   const SizedBox(
                     height: Constants.kPadding,
                   ),
-                  QuizDropDownField(
-                    onChanged: (val) {},
-                    label: const Text('Collection'),
-                    items: ListEnum.collections,
+                  BlocBuilder<QuizCollectionBloc, QuizCollectionState>(
+                    builder: (context, state) {
+                      return QuizCollectionDropDownField(
+                        initialValue: quizState.quiz.collectionId,
+                        onChanged: (collectionId) {
+                          context.read<QuizBloc>().add(
+                              OnQuizCollectionChanged(collectionId as String));
+                        },
+                        label: const Text('Collection'),
+                        items: state is QuizCollectionSuccess
+                            ? state.collections
+                            : [],
+                      );
+                    },
                   ),
                   const SizedBox(
                     height: Constants.kPadding,
                   ),
-                  QuizDropDownField(
+                  QuizVisibilityTextField(
+                    initialValue: quizState.quiz.visibility.name,
                     onChanged: (val) => context
                         .read<QuizBloc>()
                         .add(OnQuizVisibilityChanged(val as String)),
                     label: const Text('Visibility'),
-                    items: ListEnum.visibility,
                   ),
                 ],
               );
@@ -127,7 +139,7 @@ class EditQuizScreen extends StatelessWidget {
                           onPressed: () {},
                           icon: const CircularProgressIndicator.adaptive(),
                           label: Text(
-                            'Saving',
+                            'Loading',
                             style: Constants.textHeading.copyWith(
                               fontSize: 14.sp,
                             ),

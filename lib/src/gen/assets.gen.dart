@@ -36,6 +36,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/hello.png
   AssetGenImage get hello => const AssetGenImage('assets/images/hello.png');
 
+  /// File path: assets/images/home_introduce.jpg
+  AssetGenImage get homeIntroduce =>
+      const AssetGenImage('assets/images/home_introduce.jpg');
+
   /// File path: assets/images/ic_facebook.svg
   SvgGenImage get icFacebook =>
       const SvgGenImage('assets/images/ic_facebook.svg');
@@ -57,6 +61,7 @@ class $AssetsImagesGen {
         appIcon,
         appLogo,
         hello,
+        homeIntroduce,
         icFacebook,
         loginFacebook,
         loginGoogle,

@@ -8,7 +8,10 @@ import 'package:whizz/src/features/auth/data/models/user.dart';
 import 'package:whizz/src/features/auth/data/repositories/auth_repository.dart';
 import 'package:whizz/src/features/auth/presentation/login_screen.dart';
 import 'package:whizz/src/features/auth/presentation/otp_screen.dart';
-import 'package:whizz/src/features/discovery/presentation/discovery_screen.dart';
+import 'package:whizz/src/features/discovery/data/models/quiz_collection.dart';
+import 'package:whizz/src/features/discovery/presentation/screens/discovery_detail_screen.dart';
+import 'package:whizz/src/features/discovery/presentation/screens/discovery_screen.dart';
+import 'package:whizz/src/features/home/data/cubit/top_quiz_cubit.dart';
 import 'package:whizz/src/features/home/presentation/screens/home_screen.dart';
 import 'package:whizz/src/features/media/presentation/screens/media_screen.dart';
 import 'package:whizz/src/features/play/presentation/screens/play_screen.dart';
@@ -28,6 +31,7 @@ enum RouterPath {
   login,
   otp,
   discovery,
+  discoveryDetail,
   play,
   quiz,
   quizDetail,
@@ -78,7 +82,10 @@ class AppRouter {
             name: RouterPath.home.name,
             pageBuilder: (_, state) => NoTransitionPage(
               key: state.pageKey,
-              child: const HomeScreen(),
+              child: BlocProvider(
+                create: (_) => TopQuizCubit(),
+                child: const HomeScreen(),
+              ),
             ),
           ),
           GoRoute(
@@ -90,14 +97,6 @@ class AppRouter {
             ),
           ),
           GoRoute(
-            path: '/play',
-            name: RouterPath.play.name,
-            pageBuilder: (_, state) => NoTransitionPage(
-              key: state.pageKey,
-              child: const PlayScreen(),
-            ),
-          ),
-          GoRoute(
             path: '/settings',
             name: RouterPath.settings.name,
             pageBuilder: (_, state) => NoTransitionPage(
@@ -106,6 +105,15 @@ class AppRouter {
             ),
           ),
         ],
+      ),
+      GoRoute(
+        path: '/play',
+        name: RouterPath.play.name,
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (_, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const PlayScreen(),
+        ),
       ),
       GoRoute(
         path: '/quiz',
@@ -199,6 +207,17 @@ class AppRouter {
               BlocProvider(create: (_) => QuizBloc()),
             ],
             child: const ProfileScreen(),
+          ),
+        ),
+      ),
+      GoRoute(
+        path: '/discovery_detail',
+        name: RouterPath.discoveryDetail.name,
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (_, state) => MaterialPage(
+          key: state.pageKey,
+          child: DiscoveryDetailScreen(
+            quizCollection: state.extra! as QuizCollection,
           ),
         ),
       ),

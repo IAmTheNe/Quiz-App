@@ -22,6 +22,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     on(_onQuizTitleChanged);
     on(_onQuizDescriptionChanged);
     on(_onQuizVisibilityChanged);
+    on(_onQuizCollectionChanged);
     on(_onQuizMediaChanged);
     on(_onCreateNewQuestion);
     on(_onQuestionMediaChanged);
@@ -79,6 +80,17 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
         ),
       ),
     );
+  }
+
+  void _onQuizCollectionChanged(
+    OnQuizCollectionChanged event,
+    Emitter<QuizState> emit,
+  ) {
+    emit(state.copyWith(
+      quiz: state.quiz.copyWith(
+        collectionId: event.collectionId,
+      ),
+    ));
   }
 
   void _onQuizMediaChanged(
