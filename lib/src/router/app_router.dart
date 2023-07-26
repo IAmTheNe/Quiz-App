@@ -4,10 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:whizz/src/features/auth/data/models/user.dart';
-import 'package:whizz/src/features/auth/data/repositories/auth_repository.dart';
-import 'package:whizz/src/features/auth/presentation/login_screen.dart';
-import 'package:whizz/src/features/auth/presentation/otp_screen.dart';
 import 'package:whizz/src/features/discovery/data/models/quiz_collection.dart';
 import 'package:whizz/src/features/discovery/presentation/screens/discovery_detail_screen.dart';
 import 'package:whizz/src/features/discovery/presentation/screens/discovery_screen.dart';
@@ -24,7 +20,11 @@ import 'package:whizz/src/features/quiz/presentation/screens/create_quiz_screen.
 import 'package:whizz/src/features/quiz/presentation/screens/edit_quiz_screen.dart';
 import 'package:whizz/src/features/quiz/presentation/screens/question_detail_screen.dart';
 import 'package:whizz/src/features/settings/presentation/screens/settings_screen.dart';
+import 'package:whizz/src/modules/auth/models/user.dart';
+import 'package:whizz/src/modules/auth/repository/auth_repository.dart';
 import 'package:whizz/src/router/scaffold_with_bottom_nav_bar.dart';
+import 'package:whizz/src/screens/login/login_screen.dart';
+import 'package:whizz/src/screens/otp/otp_screen.dart';
 
 enum RouterPath {
   home,
@@ -56,7 +56,7 @@ class AppRouter {
     initialLocation: '/login',
     navigatorKey: _rootNavigatorKey,
     redirect: (context, state) {
-      final isLoggedIn = _authRepo.currentUser != User.empty;
+      final isLoggedIn = _authRepo.currentUser != AppUser.empty;
       if (isLoggedIn) {
         if (state.matchedLocation == '/login') {
           return '/home';

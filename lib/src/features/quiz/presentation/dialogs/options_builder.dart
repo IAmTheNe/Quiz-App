@@ -23,7 +23,7 @@ mixin OptionsSelector {
             minLines: 1,
             initialValue: initialValue,
             onChanged: onChanged,
-            style: Constants.textSubtitle,
+            style: AppConstant.textSubtitle,
           ),
           actions: [
             TextButton(
@@ -58,7 +58,7 @@ mixin OptionsSelector {
                 maxLines: 3,
                 minLines: 1,
                 initialValue: answer.answer,
-                style: Constants.textSubtitle,
+                style: AppConstant.textSubtitle,
                 onChanged: onChanged,
               ),
               SwitchListTile(

@@ -40,14 +40,14 @@ class QuizFormField extends StatelessWidget {
           color: Colors.grey,
         ),
         borderRadius: BorderRadius.circular(
-          Constants.kPadding.toDouble() / 2,
+          AppConstant.kPadding.toDouble() / 2,
         ),
       ),
       child: TextFormField(
         keyboardType: keyboardType,
         initialValue: initialValue,
         onChanged: onChanged,
-        style: Constants.textSubtitle,
+        style: AppConstant.textSubtitle,
         minLines: 1,
         maxLines: maxLines ?? 1,
         maxLength: maxLength,
@@ -92,7 +92,7 @@ class QuizCollectionDropDownField extends StatelessWidget {
           color: Colors.grey,
         ),
         borderRadius: BorderRadius.circular(
-          Constants.kPadding.toDouble() / 2,
+          AppConstant.kPadding.toDouble() / 2,
         ),
       ),
       child: DropdownButtonFormField<String>(
@@ -154,7 +154,7 @@ class QuizVisibilityTextField extends StatelessWidget {
           color: Colors.grey,
         ),
         borderRadius: BorderRadius.circular(
-          Constants.kPadding.toDouble() / 2,
+          AppConstant.kPadding.toDouble() / 2,
         ),
       ),
       child: DropdownButtonFormField<String>(

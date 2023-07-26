@@ -16,7 +16,7 @@ class QuestionOptionsTabBar extends StatelessWidget {
           ),
         ),
         const SizedBox(
-          width: Constants.kPadding / 2,
+          width: AppConstant.kPadding / 2,
         ),
         Expanded(
           child: ElevatedButton(
@@ -25,7 +25,7 @@ class QuestionOptionsTabBar extends StatelessWidget {
           ),
         ),
         const SizedBox(
-          width: Constants.kPadding / 2,
+          width: AppConstant.kPadding / 2,
         ),
         Expanded(
           child: ElevatedButton(

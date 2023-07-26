@@ -37,7 +37,7 @@ class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(Constants.kPadding),
+        padding: const EdgeInsets.all(AppConstant.kPadding),
         child: BlocBuilder<QuizBloc, QuizState>(
           builder: (context, state) {
             return Column(
@@ -56,8 +56,8 @@ class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
                       ),
                     ),
                     Positioned(
-                      bottom: Constants.kPadding / 2,
-                      left: Constants.kPadding,
+                      bottom: AppConstant.kPadding / 2,
+                      left: AppConstant.kPadding,
                       child: ElevatedButton.icon(
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
@@ -69,7 +69,7 @@ class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
                         ),
                         label: Text(
                           '10 sec',
-                          style: Constants.textSubtitle.copyWith(
+                          style: AppConstant.textSubtitle.copyWith(
                             color: Colors.white,
                           ),
                         ),
@@ -78,7 +78,7 @@ class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
                   ],
                 ),
                 const SizedBox(
-                  height: Constants.kPadding / 2,
+                  height: AppConstant.kPadding / 2,
                 ),
                 GestureDetector(
                   onTap: () {
@@ -92,7 +92,7 @@ class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
                   },
                   child: Container(
                     alignment: Alignment.center,
-                    padding: const EdgeInsets.all(Constants.kPadding / 2),
+                    padding: const EdgeInsets.all(AppConstant.kPadding / 2),
                     width: double.infinity,
                     constraints: BoxConstraints(
                       maxHeight: .08.sh,
@@ -100,13 +100,13 @@ class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
                     ),
                     decoration: BoxDecoration(
                       color: const Color(0xFF6d5ff6),
-                      borderRadius: BorderRadius.circular(Constants.kPadding),
+                      borderRadius: BorderRadius.circular(AppConstant.kPadding),
                     ),
                     child: Text(
                       state.quiz.questions[state.index].name.isEmpty
                           ? 'Add title'
                           : state.quiz.questions[state.index].name,
-                      style: Constants.textSubtitle.copyWith(
+                      style: AppConstant.textSubtitle.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
                       ),
@@ -117,7 +117,7 @@ class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
                   ),
                 ),
                 const SizedBox(
-                  height: Constants.kPadding / 2,
+                  height: AppConstant.kPadding / 2,
                 ),
                 Expanded(
                   child: QuizAnswers(
@@ -125,7 +125,7 @@ class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
                   ),
                 ),
                 const SizedBox(
-                  height: Constants.kPadding / 2,
+                  height: AppConstant.kPadding / 2,
                 ),
                 Row(
                   children: [
@@ -133,7 +133,7 @@ class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
                       questions: state.quiz.questions,
                     ),
                     const SizedBox(
-                      width: Constants.kPadding,
+                      width: AppConstant.kPadding,
                     ),
                     IconButton.filled(
                       onPressed: () {

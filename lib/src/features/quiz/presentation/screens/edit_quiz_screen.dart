@@ -37,7 +37,7 @@ class EditQuizScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(Constants.kPadding),
+          padding: const EdgeInsets.all(AppConstant.kPadding),
           child: BlocBuilder<QuizBloc, QuizState>(
             builder: (context, quizState) {
               return Column(
@@ -49,7 +49,7 @@ class EditQuizScreen extends StatelessWidget {
                     child: ImageCover(media: quizState.quiz.media),
                   ),
                   const SizedBox(
-                    height: Constants.kPadding,
+                    height: AppConstant.kPadding,
                   ),
                   QuizFormField(
                     hintText: 'Name',
@@ -59,7 +59,7 @@ class EditQuizScreen extends StatelessWidget {
                         context.read<QuizBloc>().add(OnQuizTitleChanged(title)),
                   ),
                   const SizedBox(
-                    height: Constants.kPadding,
+                    height: AppConstant.kPadding,
                   ),
                   QuizFormField(
                     initialValue: quizState.quiz.description,
@@ -71,7 +71,7 @@ class EditQuizScreen extends StatelessWidget {
                         .add(OnQuizDescriptionChange(desc)),
                   ),
                   const SizedBox(
-                    height: Constants.kPadding,
+                    height: AppConstant.kPadding,
                   ),
                   BlocBuilder<QuizCollectionBloc, QuizCollectionState>(
                     builder: (context, state) {
@@ -89,7 +89,7 @@ class EditQuizScreen extends StatelessWidget {
                     },
                   ),
                   const SizedBox(
-                    height: Constants.kPadding,
+                    height: AppConstant.kPadding,
                   ),
                   QuizVisibilityTextField(
                     initialValue: quizState.quiz.visibility.name,
@@ -107,7 +107,7 @@ class EditQuizScreen extends StatelessWidget {
       bottomNavigationBar: BlocBuilder<QuizBloc, QuizState>(
         builder: (context, state) {
           return Container(
-            padding: const EdgeInsets.all(Constants.kPadding),
+            padding: const EdgeInsets.all(AppConstant.kPadding),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.min,
@@ -118,12 +118,12 @@ class EditQuizScreen extends StatelessWidget {
                         .read<QuizBloc>()
                         .add(OnCreateNewQuestion(context, true)),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Constants.primaryColor,
+                      backgroundColor: AppConstant.primaryColor,
                       elevation: 4,
                     ),
                     child: Text(
                       'Add Question',
-                      style: Constants.textHeading.copyWith(
+                      style: AppConstant.textHeading.copyWith(
                         color: Colors.white,
                         fontSize: 14.sp,
                       ),
@@ -131,7 +131,7 @@ class EditQuizScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  width: Constants.kPadding,
+                  width: AppConstant.kPadding,
                 ),
                 state.isLoading
                     ? Expanded(
@@ -140,7 +140,7 @@ class EditQuizScreen extends StatelessWidget {
                           icon: const CircularProgressIndicator.adaptive(),
                           label: Text(
                             'Loading',
-                            style: Constants.textHeading.copyWith(
+                            style: AppConstant.textHeading.copyWith(
                               fontSize: 14.sp,
                             ),
                           ),
@@ -163,7 +163,7 @@ class EditQuizScreen extends StatelessWidget {
                           ),
                           child: Text(
                             'Save',
-                            style: Constants.textHeading.copyWith(
+                            style: AppConstant.textHeading.copyWith(
                               fontSize: 14.sp,
                             ),
                           ),

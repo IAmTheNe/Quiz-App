@@ -20,7 +20,7 @@ class DiscoveryScreen extends StatelessWidget {
       body: BlocBuilder<QuizCollectionBloc, QuizCollectionState>(
         builder: (context, state) {
           return Padding(
-            padding: const EdgeInsets.all(Constants.kPadding),
+            padding: const EdgeInsets.all(AppConstant.kPadding),
             child: GridView.custom(
               gridDelegate: SliverWovenGridDelegate.count(
                 pattern: [
@@ -65,8 +65,8 @@ class DiscoveryScreen extends StatelessWidget {
       ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(
-          right: Constants.kPadding,
-          bottom: Constants.kPadding,
+          right: AppConstant.kPadding,
+          bottom: AppConstant.kPadding,
         ),
         child: FloatingActionButton(
           onPressed: () {},
@@ -93,7 +93,7 @@ class DiscoveryCard extends StatelessWidget {
       children: [
         Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(Constants.kPadding),
+            borderRadius: BorderRadius.circular(AppConstant.kPadding),
             image: DecorationImage(
               image: CachedNetworkImageProvider(collection.imageUrl!),
               fit: BoxFit.cover,
@@ -102,9 +102,9 @@ class DiscoveryCard extends StatelessWidget {
         ),
         Container(
           alignment: Alignment.bottomLeft,
-          padding: const EdgeInsets.all(Constants.kPadding),
+          padding: const EdgeInsets.all(AppConstant.kPadding),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(Constants.kPadding),
+            borderRadius: BorderRadius.circular(AppConstant.kPadding),
             gradient: const LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -117,7 +117,7 @@ class DiscoveryCard extends StatelessWidget {
           ),
           child: Text(
             collection.name,
-            style: Constants.textSubtitle.copyWith(
+            style: AppConstant.textSubtitle.copyWith(
               color: Colors.white,
               fontWeight: FontWeight.w700,
             ),

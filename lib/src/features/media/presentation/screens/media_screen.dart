@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
-import 'package:whizz/src/common/modules/pick_image.dart';
+import 'package:whizz/src/common/utils/pick_image.dart';
 import 'package:whizz/src/features/media/data/bloc/online_media_bloc.dart';
 import 'package:whizz/src/features/media/presentation/widgets/custom_square_button.dart';
 import 'package:whizz/src/features/media/presentation/widgets/masonry_list_photo.dart';
@@ -37,7 +37,7 @@ class MediaScreen extends StatelessWidget {
         title: const Text('Add media'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(Constants.kPadding),
+        padding: const EdgeInsets.all(AppConstant.kPadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -61,7 +61,7 @@ class MediaScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(
-              height: Constants.kPadding,
+              height: AppConstant.kPadding,
             ),
             TextFormField(
               decoration: InputDecoration(
@@ -76,7 +76,7 @@ class MediaScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: Constants.kPadding,
+              height: AppConstant.kPadding,
             ),
             BlocBuilder<OnlineMediaBloc, OnlineMediaState>(
               builder: (context, state) {

@@ -21,7 +21,7 @@ class HomeScreen extends StatelessWidget {
       appBar: _buildAppBar(context),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(Constants.kPadding),
+          padding: const EdgeInsets.all(AppConstant.kPadding),
           child: Column(
             children: [
               _buildPlayQuiz(context),
@@ -33,36 +33,36 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   Text(
                     'Top Collection',
-                    style: Constants.textHeading,
+                    style: AppConstant.textHeading,
                   ),
                   Text(
                     'Show all',
-                    style: Constants.textSubtitle,
+                    style: AppConstant.textSubtitle,
                   ),
                 ],
               ),
               const SizedBox(
-                height: Constants.kPadding / 2,
+                height: AppConstant.kPadding / 2,
               ),
               _buildTopCollection(),
               const SizedBox(
-                height: Constants.kPadding / 2,
+                height: AppConstant.kPadding / 2,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     'Top Quizz',
-                    style: Constants.textHeading,
+                    style: AppConstant.textHeading,
                   ),
                   Text(
                     'Show all',
-                    style: Constants.textSubtitle,
+                    style: AppConstant.textSubtitle,
                   ),
                 ],
               ),
               const SizedBox(
-                height: Constants.kPadding / 2,
+                height: AppConstant.kPadding / 2,
               ),
               SizedBox(
                 height: .18.sh,
@@ -75,7 +75,7 @@ class HomeScreen extends StatelessWidget {
                         return !state.isLoading
                             ? Container(
                                 margin: const EdgeInsets.only(
-                                    right: Constants.kPadding / 2),
+                                    right: AppConstant.kPadding / 2),
                                 child: GestureDetector(
                                   onTap: () {
                                     context.pushNamed(
@@ -119,19 +119,19 @@ class HomeScreen extends StatelessWidget {
                   right: 0,
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                      vertical: Constants.kPadding / 4,
-                      horizontal: Constants.kPadding,
+                      vertical: AppConstant.kPadding / 4,
+                      horizontal: AppConstant.kPadding,
                     ),
                     decoration: const BoxDecoration(
                       color: Colors.pink,
                       borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(Constants.kPadding),
-                        bottomLeft: Radius.circular(Constants.kPadding),
+                        topRight: Radius.circular(AppConstant.kPadding),
+                        bottomLeft: Radius.circular(AppConstant.kPadding),
                       ),
                     ),
                     child: Text(
                       '${state.quiz[index].questions.length} questions',
-                      style: Constants.textSubtitle.copyWith(
+                      style: AppConstant.textSubtitle.copyWith(
                         color: Colors.white,
                       ),
                       maxLines: 2,
@@ -143,11 +143,11 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(
-            height: Constants.kPadding / 2,
+            height: AppConstant.kPadding / 2,
           ),
           Text(
             state.quiz[index].title,
-            style: Constants.textTitle700,
+            style: AppConstant.textTitle700,
           ),
         ],
       ),
@@ -180,10 +180,10 @@ class HomeScreen extends StatelessWidget {
       children: [
         Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(Constants.kPadding),
+            borderRadius: BorderRadius.circular(AppConstant.kPadding),
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(Constants.kPadding),
+            borderRadius: BorderRadius.circular(AppConstant.kPadding),
             child: Assets.images.homeIntroduce.image(
               height: .35.sh,
               width: 1.sw,
@@ -195,7 +195,7 @@ class HomeScreen extends StatelessWidget {
           height: .35.sh,
           width: 1.sw,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(Constants.kPadding),
+            borderRadius: BorderRadius.circular(AppConstant.kPadding),
             gradient: const LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -213,7 +213,7 @@ class HomeScreen extends StatelessWidget {
           child: Center(
             child: Text(
               'Play quiz together with your friend now!',
-              style: Constants.textTitle700.copyWith(
+              style: AppConstant.textTitle700.copyWith(
                 color: Colors.white,
                 fontSize: 18.sp,
               ),
@@ -225,7 +225,7 @@ class HomeScreen extends StatelessWidget {
           bottom: 16,
           left: 16,
           right: 16,
-          child: MatchParentButton(
+          child: CustomButton(
             onPressed: () => context.pushNamed(RouterPath.play.name),
             label: 'Let\'s start!',
           ),
@@ -255,7 +255,7 @@ class HomeScreen extends StatelessWidget {
               'https://scontent.fdad1-4.fna.fbcdn.net/v/t39.30808-6/362222624_1482954875782698_4218631403666751824_n.jpg?_nc_cat=103&cb=99be929b-3346023f&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=65Zhcu4XNhcAX-IJfoL&_nc_ht=scontent.fdad1-4.fna&oh=00_AfDwLV7-VHVWFJiJmz0SNSJUM6JfMj1d8gbB6enGwXXglw&oe=64C13E9A'),
         ),
         SizedBox(
-          width: Constants.kPadding.w / 2,
+          width: AppConstant.kPadding.w / 2,
         ),
       ],
     );
@@ -277,9 +277,9 @@ class CollectionCard extends StatelessWidget {
         AspectRatio(
           aspectRatio: 16 / 9,
           child: Container(
-            margin: const EdgeInsets.only(right: Constants.kPadding / 2),
+            margin: const EdgeInsets.only(right: AppConstant.kPadding / 2),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(Constants.kPadding),
+              borderRadius: BorderRadius.circular(AppConstant.kPadding),
               image: DecorationImage(
                 image: CachedNetworkImageProvider(collection.imageUrl!),
                 fit: BoxFit.cover,
@@ -290,9 +290,9 @@ class CollectionCard extends StatelessWidget {
         AspectRatio(
           aspectRatio: 16 / 9,
           child: Container(
-            margin: const EdgeInsets.only(right: Constants.kPadding / 2),
+            margin: const EdgeInsets.only(right: AppConstant.kPadding / 2),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(Constants.kPadding),
+              borderRadius: BorderRadius.circular(AppConstant.kPadding),
               gradient: const LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -310,7 +310,7 @@ class CollectionCard extends StatelessWidget {
           right: 16,
           child: Text(
             collection.name,
-            style: Constants.textSubtitle.copyWith(
+            style: AppConstant.textSubtitle.copyWith(
               color: Colors.white,
               fontWeight: FontWeight.w700,
             ),

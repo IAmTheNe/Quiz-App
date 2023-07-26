@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 
-class MatchParentButton extends StatelessWidget {
-  const MatchParentButton({
+class CustomButton extends StatelessWidget {
+  const CustomButton({
     super.key,
     required this.onPressed,
     required this.label,
+    this.backgroundColor,
   });
 
   final void Function()? onPressed;
   final String label;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: Constants.primaryColor,
+        backgroundColor: backgroundColor ?? AppConstant.primaryColor,
         minimumSize: const Size.fromHeight(40),
       ),
       child: Text(
@@ -24,6 +26,35 @@ class MatchParentButton extends StatelessWidget {
         style: const TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.w700,
+        ),
+      ),
+    );
+  }
+}
+
+class LoadingButton extends StatelessWidget {
+  const LoadingButton({
+    super.key,
+    required this.label,
+  });
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton.icon(
+      onPressed: null,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppConstant.primaryColor,
+        minimumSize: const Size.fromHeight(40),
+      ),
+      icon: const Center(
+        child: CircularProgressIndicator.adaptive(),
+      ),
+      label: FittedBox(
+        child: Text(
+          label,
+          style: AppConstant.textTitle700,
         ),
       ),
     );

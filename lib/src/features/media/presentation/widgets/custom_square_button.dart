@@ -20,17 +20,17 @@ class CustomSquareButton extends StatelessWidget {
       child: Card(
         color: Colors.indigo.shade400,
         child: Container(
-          padding: const EdgeInsets.all(Constants.kPadding),
+          padding: const EdgeInsets.all(AppConstant.kPadding),
           child: Column(
             children: [
               Icon(
                 icon,
                 color: Colors.white,
               ),
-              const SizedBox(height: Constants.kPadding / 4),
+              const SizedBox(height: AppConstant.kPadding / 4),
               Text(
                 title,
-                style: Constants.textSubtitle.copyWith(
+                style: AppConstant.textSubtitle.copyWith(
                   color: Colors.white,
                 ),
               ),

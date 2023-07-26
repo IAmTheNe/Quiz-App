@@ -36,19 +36,19 @@ class QuizCard extends StatelessWidget {
                   right: 0,
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                      vertical: Constants.kPadding / 4,
-                      horizontal: Constants.kPadding,
+                      vertical: AppConstant.kPadding / 4,
+                      horizontal: AppConstant.kPadding,
                     ),
                     decoration: const BoxDecoration(
                       color: Colors.pink,
                       borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(Constants.kPadding),
-                        bottomLeft: Radius.circular(Constants.kPadding),
+                        topRight: Radius.circular(AppConstant.kPadding),
+                        bottomLeft: Radius.circular(AppConstant.kPadding),
                       ),
                     ),
                     child: Text(
                       '${quiz.questions.length} questions',
-                      style: Constants.textSubtitle.copyWith(
+                      style: AppConstant.textSubtitle.copyWith(
                         color: Colors.white,
                       ),
                     ),
@@ -58,7 +58,7 @@ class QuizCard extends StatelessWidget {
             ),
           ),
           const SizedBox(
-            width: Constants.kPadding / 2,
+            width: AppConstant.kPadding / 2,
           ),
           Expanded(
             child: Column(
@@ -66,11 +66,11 @@ class QuizCard extends StatelessWidget {
               children: [
                 Text(
                   quiz.title,
-                  style: Constants.textTitle700,
+                  style: AppConstant.textTitle700,
                 ),
                 Text(
                   quiz.createdAt!.millisecondsSinceEpoch.countDay(),
-                  style: Constants.textSubtitle.copyWith(
+                  style: AppConstant.textSubtitle.copyWith(
                     color: Colors.grey.shade700,
                   ),
                 )

@@ -9,6 +9,7 @@ import 'package:whizz/src/features/auth/data/repositories/auth_repository.dart';
 import 'package:whizz/src/features/discovery/data/bloc/quiz_collection_bloc.dart';
 import 'package:whizz/src/features/media/data/bloc/online_media_bloc.dart';
 import 'package:whizz/src/gen/fonts.gen.dart';
+import 'package:whizz/src/modules/auth/bloc/auth_bloc.dart';
 import 'package:whizz/src/router/app_router.dart';
 
 class MyApp extends StatelessWidget {
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
             create: (_) => OnlineMediaBloc()..add(const GetListPhotosEvent())),
         BlocProvider(
             create: (_) => QuizCollectionBloc()..add(const GetDataEvent())),
+        BlocProvider(create: (_) => AuthBloc()),
       ],
       child: ScreenUtilInit(
         builder: (context, child) => MaterialApp.router(
@@ -36,7 +38,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             fontFamily: FontFamily.montserrat,
             colorScheme: ColorScheme.fromSeed(
-              seedColor: Constants.primaryColor,
+              seedColor: AppConstant.primaryColor,
             ),
             useMaterial3: true,
             platform: TargetPlatform.iOS,

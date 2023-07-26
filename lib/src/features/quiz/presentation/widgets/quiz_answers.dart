@@ -54,7 +54,7 @@ class QuizAnswers extends StatelessWidget with OptionsSelector {
             children: [
               Container(
                 alignment: Alignment.center,
-                padding: const EdgeInsets.all(Constants.kPadding / 2),
+                padding: const EdgeInsets.all(AppConstant.kPadding / 2),
                 decoration: BoxDecoration(
                   color: listColors[index],
                   borderRadius: BorderRadius.circular(16),
@@ -63,7 +63,7 @@ class QuizAnswers extends StatelessWidget with OptionsSelector {
                   answers[index].answer.isNotEmpty
                       ? answers[index].answer
                       : 'Add answer',
-                  style: Constants.textSubtitle.copyWith(
+                  style: AppConstant.textSubtitle.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
                   ),

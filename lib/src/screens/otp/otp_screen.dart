@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:formz/formz.dart';
 import 'package:pinput/pinput.dart';
 
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/extensions/extension.dart';
 import 'package:whizz/src/common/widgets/custom_button.dart';
-import 'package:whizz/src/features/auth/data/bloc/login/login_cubit.dart';
 import 'package:whizz/src/features/auth/data/bloc/otp/otp_cubit.dart';
+import 'package:whizz/src/modules/auth/bloc/auth_bloc.dart';
 
-class OtpScreen extends StatelessWidget {
+class OtpScreen extends HookWidget {
   const OtpScreen({super.key, required this.codeSent});
 
   final (String, int) codeSent;
@@ -24,12 +24,14 @@ class OtpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final pinController = useTextEditingController(text: '');
+
     return Scaffold(
       appBar: AppBar(),
-      body: BlocListener<OtpCubit, OtpState>(
+      body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state.status.isFailure) {
-            context.showErrorSnackBar(state.errorMessage!);
+          if (state.isError) {
+            context.showErrorSnackBar(state.message!);
           }
         },
         child: Padding(
@@ -44,10 +46,10 @@ class OtpScreen extends StatelessWidget {
               const Text(
                 'Vui lòng nhập mã số gồm 6 chữ số được gửi tới',
               ),
-              BlocBuilder<LoginCubit, LoginState>(
+              BlocBuilder<AuthBloc, AuthState>(
                 builder: (context, state) {
                   return Text(
-                    '${state.countryCode.dialCode} ${state.phone.value}',
+                    '${state.code.dialCode}${state.phoneNumber}',
                     style: const TextStyle(
                       fontWeight: FontWeight.w700,
                     ),
@@ -60,9 +62,7 @@ class OtpScreen extends StatelessWidget {
               SizedBox(
                 width: 1.sw - (AppConstant.kPadding * 2),
                 child: Pinput(
-                  onChanged: (pin) {
-                    context.read<OtpCubit>().pinChanged(pin);
-                  },
+                  controller: pinController,
                   length: 6,
                 ),
               ),
@@ -87,18 +87,19 @@ class OtpScreen extends StatelessWidget {
               SizedBox(
                 height: AppConstant.kPadding.h / 2,
               ),
-              BlocBuilder<OtpCubit, OtpState>(
+              BlocBuilder<AuthBloc, AuthState>(
                 builder: (context, state) {
-                  return state.status.isInProgress
+                  return state.isLoading
                       ? const Center(
                           child: CircularProgressIndicator.adaptive(),
                         )
                       : CustomButton(
-                          onPressed: state.isValid
-                              ? () {
-                                  verifyPin(context, state.otp.value);
-                                }
-                              : null,
+                          onPressed: () => context.read<AuthBloc>().add(
+                                OtpVerification(
+                                  pinController.text,
+                                  codeSent.$1,
+                                ),
+                              ),
                           label: 'Xác minh',
                         );
                 },

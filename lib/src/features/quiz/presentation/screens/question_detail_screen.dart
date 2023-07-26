@@ -25,7 +25,7 @@ class QuestionDetailScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(Constants.kPadding),
+          padding: const EdgeInsets.all(AppConstant.kPadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -37,42 +37,42 @@ class QuestionDetailScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(
-                height: Constants.kPadding / 2,
+                height: AppConstant.kPadding / 2,
               ),
               Text(
                 quiz.title,
-                style: Constants.textHeading.copyWith(
+                style: AppConstant.textHeading.copyWith(
                   fontSize: 22.sp,
                   color: Colors.red,
                 ),
               ),
               const SizedBox(
-                height: Constants.kPadding / 2,
+                height: AppConstant.kPadding / 2,
               ),
               Text(
                 'Description',
-                style: Constants.textTitle700.copyWith(
-                  color: Constants.primaryColor,
+                style: AppConstant.textTitle700.copyWith(
+                  color: AppConstant.primaryColor,
                 ),
               ),
               const SizedBox(
-                height: Constants.kPadding / 2,
+                height: AppConstant.kPadding / 2,
               ),
               Text(
                 quiz.description!.isEmpty ? 'Empty' : quiz.description!,
-                style: Constants.textSubtitle,
+                style: AppConstant.textSubtitle,
               ),
               const SizedBox(
-                height: Constants.kPadding / 2,
+                height: AppConstant.kPadding / 2,
               ),
               Text(
                 '${quiz.questions.length} question',
-                style: Constants.textTitle700.copyWith(
-                  color: Constants.primaryColor,
+                style: AppConstant.textTitle700.copyWith(
+                  color: AppConstant.primaryColor,
                 ),
               ),
               const SizedBox(
-                height: Constants.kPadding / 2,
+                height: AppConstant.kPadding / 2,
               ),
               ListView.builder(
                 shrinkWrap: true,
@@ -93,7 +93,7 @@ class QuestionDetailScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(
-                            width: Constants.kPadding / 2,
+                            width: AppConstant.kPadding / 2,
                           ),
                           Expanded(
                             child: Column(
@@ -101,8 +101,8 @@ class QuestionDetailScreen extends StatelessWidget {
                               children: [
                                 Text(
                                   quiz.questions[index].name,
-                                  style: Constants.textTitle700.copyWith(
-                                    color: Constants.primaryColor,
+                                  style: AppConstant.textTitle700.copyWith(
+                                    color: AppConstant.primaryColor,
                                     fontSize: 14.sp,
                                   ),
                                 ),
@@ -112,7 +112,7 @@ class QuestionDetailScreen extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(
-                        height: Constants.kPadding / 2,
+                        height: AppConstant.kPadding / 2,
                       ),
                     ],
                   );
@@ -124,7 +124,7 @@ class QuestionDetailScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(Constants.kPadding),
+        padding: const EdgeInsets.all(AppConstant.kPadding),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.min,
@@ -133,13 +133,13 @@ class QuestionDetailScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Constants.primaryColor,
+                  backgroundColor: AppConstant.primaryColor,
                   elevation: 4,
                 ),
                 child: FittedBox(
                   child: Text(
                     'Play with friend',
-                    style: Constants.textHeading.copyWith(
+                    style: AppConstant.textHeading.copyWith(
                       color: Colors.white,
                       fontSize: 14.sp,
                     ),
@@ -148,7 +148,7 @@ class QuestionDetailScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              width: Constants.kPadding,
+              width: AppConstant.kPadding,
             ),
             Expanded(
               child: ElevatedButton(
@@ -160,7 +160,7 @@ class QuestionDetailScreen extends StatelessWidget {
                 child: FittedBox(
                   child: Text(
                     'Play solo',
-                    style: Constants.textHeading.copyWith(
+                    style: AppConstant.textHeading.copyWith(
                       fontSize: 14.sp,
                     ),
                   ),

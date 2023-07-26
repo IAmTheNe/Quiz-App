@@ -37,7 +37,7 @@ class CreateQuizScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(Constants.kPadding),
+          padding: const EdgeInsets.all(AppConstant.kPadding),
           child: Column(
             children: [
               BlocBuilder<QuizBloc, QuizState>(
@@ -51,7 +51,7 @@ class CreateQuizScreen extends StatelessWidget {
                 },
               ),
               const SizedBox(
-                height: Constants.kPadding,
+                height: AppConstant.kPadding,
               ),
               QuizFormField(
                 hintText: 'Name',
@@ -60,7 +60,7 @@ class CreateQuizScreen extends StatelessWidget {
                     context.read<QuizBloc>().add(OnQuizTitleChanged(title)),
               ),
               const SizedBox(
-                height: Constants.kPadding,
+                height: AppConstant.kPadding,
               ),
               QuizFormField(
                 hintText: 'Description',
@@ -70,7 +70,7 @@ class CreateQuizScreen extends StatelessWidget {
                     context.read<QuizBloc>().add(OnQuizDescriptionChange(desc)),
               ),
               const SizedBox(
-                height: Constants.kPadding,
+                height: AppConstant.kPadding,
               ),
               BlocBuilder<QuizCollectionBloc, QuizCollectionState>(
                 builder: (context, state) {
@@ -87,7 +87,7 @@ class CreateQuizScreen extends StatelessWidget {
                 },
               ),
               const SizedBox(
-                height: Constants.kPadding,
+                height: AppConstant.kPadding,
               ),
               QuizVisibilityTextField(
                 onChanged: (val) => context
@@ -100,7 +100,7 @@ class CreateQuizScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(Constants.kPadding),
+        padding: const EdgeInsets.all(AppConstant.kPadding),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.min,
@@ -111,12 +111,12 @@ class CreateQuizScreen extends StatelessWidget {
                     .read<QuizBloc>()
                     .add(OnCreateNewQuestion(context, true)),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Constants.primaryColor,
+                  backgroundColor: AppConstant.primaryColor,
                   elevation: 4,
                 ),
                 child: Text(
                   'Add Question',
-                  style: Constants.textHeading.copyWith(
+                  style: AppConstant.textHeading.copyWith(
                     color: Colors.white,
                     fontSize: 14.sp,
                   ),
@@ -124,7 +124,7 @@ class CreateQuizScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              width: Constants.kPadding,
+              width: AppConstant.kPadding,
             ),
             BlocBuilder<QuizBloc, QuizState>(
               builder: (context, state) {
@@ -135,7 +135,7 @@ class CreateQuizScreen extends StatelessWidget {
                           icon: const CircularProgressIndicator.adaptive(),
                           label: Text(
                             'Loading',
-                            style: Constants.textHeading.copyWith(
+                            style: AppConstant.textHeading.copyWith(
                               fontSize: 14.sp,
                             ),
                           ),
@@ -158,7 +158,7 @@ class CreateQuizScreen extends StatelessWidget {
                           ),
                           child: Text(
                             'Save',
-                            style: Constants.textHeading.copyWith(
+                            style: AppConstant.textHeading.copyWith(
                               fontSize: 14.sp,
                             ),
                           ),

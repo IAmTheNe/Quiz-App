@@ -27,9 +27,9 @@ class ImageCover extends StatelessWidget {
             decoration: BoxDecoration(
               // color: Colors.black26,
               borderRadius: const BorderRadius.all(
-                Radius.circular(Constants.kPadding),
+                Radius.circular(AppConstant.kPadding),
               ),
-              gradient: Constants.sunsetGradient,
+              gradient: AppConstant.sunsetGradient,
               image: DecorationImage(
                 image: CachedNetworkImageProvider(media.imageUrl!),
                 fit: BoxFit.cover,
@@ -44,9 +44,9 @@ class ImageCover extends StatelessWidget {
             decoration: BoxDecoration(
               // color: Colors.black26,
               borderRadius: const BorderRadius.all(
-                Radius.circular(Constants.kPadding),
+                Radius.circular(AppConstant.kPadding),
               ),
-              gradient: Constants.sunsetGradient,
+              gradient: AppConstant.sunsetGradient,
               image: DecorationImage(
                 image: FileImage(File(media.imageUrl!)),
                 fit: BoxFit.cover,

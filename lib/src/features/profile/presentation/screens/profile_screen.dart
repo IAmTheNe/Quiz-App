@@ -20,7 +20,7 @@ class ProfileScreen extends StatelessWidget {
               _buildTop(context, state),
               _buildDisplayInformation(state),
               const SizedBox(
-                height: Constants.kPadding,
+                height: AppConstant.kPadding,
               ),
               _buildListQuiz(state),
             ],
@@ -40,11 +40,11 @@ class ProfileScreen extends StatelessWidget {
           state.isLoading
               ? Text(
                   '0 Quiz',
-                  style: Constants.textHeading,
+                  style: AppConstant.textHeading,
                 )
               : Text(
                   '${state.quizzies.length} Quizz',
-                  style: Constants.textHeading,
+                  style: AppConstant.textHeading,
                 ),
           ListView.builder(
             shrinkWrap: true,
@@ -55,7 +55,7 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   QuizCard(quiz: state.quizzies[index]),
                   const SizedBox(
-                    height: Constants.kPadding / 2,
+                    height: AppConstant.kPadding / 2,
                   ),
                 ],
               );
@@ -72,11 +72,11 @@ class ProfileScreen extends StatelessWidget {
       children: [
         Text(
           state.user.name ?? 'Nameless',
-          style: Constants.textTitle700,
+          style: AppConstant.textTitle700,
         ),
         Text(
           '@${state.user.id}',
-          style: Constants.textSubtitle,
+          style: AppConstant.textSubtitle,
         ),
       ],
     );
@@ -124,8 +124,8 @@ class ProfileScreen extends StatelessWidget {
               ],
             ),
             borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(Constants.kPadding * 2),
-              bottomRight: Radius.circular(Constants.kPadding * 2),
+              bottomLeft: Radius.circular(AppConstant.kPadding * 2),
+              bottomRight: Radius.circular(AppConstant.kPadding * 2),
             ),
           ),
         ),

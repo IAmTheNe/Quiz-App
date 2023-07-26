@@ -22,8 +22,8 @@ class MasonryListPhotos extends StatelessWidget {
       gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
       ),
-      mainAxisSpacing: Constants.kPadding / 4,
-      crossAxisSpacing: Constants.kPadding / 4,
+      mainAxisSpacing: AppConstant.kPadding / 4,
+      crossAxisSpacing: AppConstant.kPadding / 4,
       itemBuilder: (context, index) {
         final url = state.photos[index].urls.raw.toString();
         return GestureDetector(
@@ -34,7 +34,7 @@ class MasonryListPhotos extends StatelessWidget {
             ));
           },
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(Constants.kPadding / 4),
+            borderRadius: BorderRadius.circular(AppConstant.kPadding / 4),
             child: CachedNetworkImage(
               imageUrl: url,
               progressIndicatorBuilder: (context, url, download) {

@@ -2,30 +2,29 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:twitter_login/twitter_login.dart';
-import 'package:whizz/src/common/constants/constants.dart';
 
+import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/utils/cache.dart';
 import 'package:whizz/src/env/env.dart';
-import 'package:whizz/src/features/auth/data/exceptions/auth_exception.dart';
-import 'package:whizz/src/features/auth/data/extensions/auth_extension.dart';
-import 'package:whizz/src/features/auth/data/models/user.dart';
+import 'package:whizz/src/modules/auth/exception/auth_exception.dart';
+import 'package:whizz/src/modules/auth/models/user.dart';
 import 'package:whizz/src/router/app_router.dart';
 
 class AuthenticationRepository {
   AuthenticationRepository({
     InMemoryCache? cache,
-    firebase_auth.FirebaseAuth? firebaseAuth,
+    FirebaseAuth? firebaseAuth,
     FirebaseFirestore? firestore,
     GoogleSignIn? googleSignIn,
     TwitterLogin? twitterLogin,
   })  : _cache = cache ?? InMemoryCache(),
-        _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
+        _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
         _firestore = firestore ?? FirebaseFirestore.instance,
         _googleSignIn = googleSignIn ?? GoogleSignIn(),
         _twitterLogin = twitterLogin ??
@@ -36,7 +35,7 @@ class AuthenticationRepository {
             );
 
   final InMemoryCache _cache;
-  final firebase_auth.FirebaseAuth _firebaseAuth;
+  final FirebaseAuth _firebaseAuth;
   final FirebaseFirestore _firestore;
   final GoogleSignIn _googleSignIn;
   final TwitterLogin _twitterLogin;
@@ -45,9 +44,9 @@ class AuthenticationRepository {
   /// the authentication state changes.
   ///
   /// Emits [User.empty] if the user is not authenticated.
-  Stream<User> get user {
+  Stream<AppUser> get user {
     return _firebaseAuth.authStateChanges().map((firebaseUser) {
-      final user = firebaseUser == null ? User.empty : firebaseUser.toUser;
+      final user = firebaseUser == null ? AppUser.empty : firebaseUser.toUser;
       _cache.write(key: 'user', value: user);
       return user;
     });
@@ -55,17 +54,17 @@ class AuthenticationRepository {
 
   /// Returns the current cached user.
   /// Defaults to [User.empty] if there is no cached user.
-  User get currentUser {
-    return _cache.read<User>(key: 'user') ?? User.empty;
+  AppUser get currentUser {
+    return _cache.read<AppUser>(key: 'user') ?? AppUser.empty;
   }
 
   /// The function `loginWithGoogle` handles the login process using Google authentication in a Flutter
   /// app, supporting both web and mobile platforms.
   Future<void> loginWithGoogle() async {
     try {
-      late final firebase_auth.AuthCredential credential;
+      late final AuthCredential credential;
       if (kIsWeb) {
-        final googleProvider = firebase_auth.GoogleAuthProvider();
+        final googleProvider = GoogleAuthProvider();
         final userCredential = await _firebaseAuth.signInWithPopup(
           googleProvider,
         );
@@ -73,14 +72,14 @@ class AuthenticationRepository {
       } else {
         final googleUser = await _googleSignIn.signIn();
         final googleAuth = await googleUser!.authentication;
-        credential = firebase_auth.GoogleAuthProvider.credential(
+        credential = GoogleAuthProvider.credential(
           idToken: googleAuth.idToken,
           accessToken: googleAuth.accessToken,
         );
         final user = await _firebaseAuth.signInWithCredential(credential);
         await _addUser(user.user!.toUser);
       }
-    } on firebase_auth.FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (e) {
       throw SignInWithCredentialException(e.code);
     } catch (_) {
       throw const SignInWithCredentialException();
@@ -91,13 +90,13 @@ class AuthenticationRepository {
     final authResult = await _twitterLogin.loginV2();
     if (authResult.status == TwitterLoginStatus.loggedIn) {
       try {
-        final credential = firebase_auth.TwitterAuthProvider.credential(
+        final credential = TwitterAuthProvider.credential(
           accessToken: authResult.authToken!,
           secret: authResult.authTokenSecret!,
         );
         final user = await _firebaseAuth.signInWithCredential(credential);
         await _addUser(user.user!.toUser);
-      } on firebase_auth.FirebaseAuthException catch (e) {
+      } on FirebaseAuthException catch (e) {
         throw SignInWithCredentialException.fromCode(e.code);
       } catch (e) {
         log(e.toString());
@@ -116,28 +115,15 @@ class AuthenticationRepository {
         _googleSignIn.signOut(),
       ]);
     } catch (_) {
-      throw LogoutException();
+      // throw LogoutException();
     }
   }
 
-  /// The function reloads the current user's data from Firebase Authentication.
-  Future<void> reload() async {
-    await _firebaseAuth.currentUser?.reload();
-  }
-
-  /// The current user's email has been verified or not. Default `false`.
-  bool get isEmailVerified => _firebaseAuth.currentUser?.emailVerified ?? false;
-
-  /// The function sends an email verification to the current user if they are logged in.
-  void sendEmailVerification() {
-    _firebaseAuth.currentUser?.sendEmailVerification();
-  }
-
-  Future<void> loginWithPhone(
+  Future<void> loginWithPhoneNumber(
     BuildContext context,
     String phoneNumber,
   ) async {
-    final completer = Completer<firebase_auth.PhoneAuthCredential>();
+    final completer = Completer<PhoneAuthCredential>();
     await _firebaseAuth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
       verificationCompleted: completer.complete,
@@ -155,7 +141,7 @@ class AuthenticationRepository {
     try {
       final credential = await completer.future;
       await _firebaseAuth.signInWithCredential(credential);
-    } on firebase_auth.FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (e) {
       throw VerifyPhoneNumberException.fromCode(e.code);
     } catch (_) {
       throw const VerifyPhoneNumberException();
@@ -167,13 +153,12 @@ class AuthenticationRepository {
     String otp,
   ) async {
     try {
-      firebase_auth.PhoneAuthCredential credential =
-          firebase_auth.PhoneAuthProvider.credential(
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: verificationId,
         smsCode: otp,
       );
       await _firebaseAuth.signInWithCredential(credential);
-    } on firebase_auth.FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (e) {
       throw VerifyOtpException.fromCode(e.code);
     } catch (e) {
       log(e.toString());
@@ -181,7 +166,7 @@ class AuthenticationRepository {
     }
   }
 
-  Future<void> _addUser(User user) async {
+  Future<void> _addUser(AppUser user) async {
     try {
       await _firestore
           .collection(FirebaseDocumentConstants.user)

@@ -21,7 +21,7 @@ class PreviewQuestionCard extends StatelessWidget {
                 return Wrap(
                   crossAxisAlignment: WrapCrossAlignment.center,
                   alignment: WrapAlignment.spaceBetween,
-                  spacing: Constants.kPadding,
+                  spacing: AppConstant.kPadding,
                   direction: Axis.horizontal,
                   children: List.generate(
                     questions.length,

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whizz/src/common/constants/constants.dart';
-import 'package:whizz/src/common/modules/debouncer.dart';
+import 'package:whizz/src/common/utils/debouncer.dart';
 import 'package:whizz/src/features/discovery/data/models/quiz_collection.dart';
 
 class QuizCollectionRepository {
