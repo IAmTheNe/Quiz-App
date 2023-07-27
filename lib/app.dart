@@ -3,14 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 
-import 'package:whizz/src/features/auth/data/bloc/login/login_cubit.dart';
-import 'package:whizz/src/features/auth/data/bloc/otp/otp_cubit.dart';
-import 'package:whizz/src/features/auth/data/repositories/auth_repository.dart';
-import 'package:whizz/src/features/discovery/data/bloc/quiz_collection_bloc.dart';
-import 'package:whizz/src/features/media/data/bloc/online_media_bloc.dart';
 import 'package:whizz/src/gen/fonts.gen.dart';
 import 'package:whizz/src/modules/auth/bloc/auth_bloc.dart';
+import 'package:whizz/src/modules/media/bloc/online_media_bloc.dart';
 import 'package:whizz/src/router/app_router.dart';
+
+import 'package:whizz/src/modules/collection/bloc/quiz_collection_bloc.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -20,8 +18,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => LoginCubit(AuthenticationRepository())),
-        BlocProvider(create: (_) => OtpCubit(AuthenticationRepository())),
         BlocProvider(
             create: (_) => OnlineMediaBloc()..add(const GetListPhotosEvent())),
         BlocProvider(

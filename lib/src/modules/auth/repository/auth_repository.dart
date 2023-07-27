@@ -10,6 +10,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:twitter_login/twitter_login.dart';
 
 import 'package:whizz/src/common/constants/constants.dart';
+import 'package:whizz/src/common/extensions/extension.dart';
 import 'package:whizz/src/common/utils/cache.dart';
 import 'package:whizz/src/env/env.dart';
 import 'package:whizz/src/modules/auth/exception/auth_exception.dart';
@@ -129,6 +130,7 @@ class AuthenticationRepository {
       verificationCompleted: completer.complete,
       verificationFailed: completer.completeError,
       codeSent: (verificationId, forceResendingToken) async {
+        context.hideCurrentSnackbar();
         await context.pushNamed(
           RouterPath.otp.name,
           extra: (verificationId, forceResendingToken),

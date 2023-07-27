@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/extensions/extension.dart';
-import 'package:whizz/src/features/quiz/data/bloc/quiz_bloc.dart';
-import 'package:whizz/src/features/quiz/presentation/dialogs/options_builder.dart';
-import 'package:whizz/src/common/widgets/image_cover.dart';
-import 'package:whizz/src/features/quiz/presentation/widgets/preview_question_card.dart';
-import 'package:whizz/src/features/quiz/presentation/widgets/quiz_answers.dart';
+import 'package:whizz/src/common/widgets/shared_widget.dart';
 
-class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
+import 'package:whizz/src/modules/quiz/bloc/create_edit_quiz/quiz_bloc.dart';
+
+import 'package:whizz/src/screens/question_create/widgets/preview_question_card.dart';
+import 'package:whizz/src/screens/question_create/widgets/question_answer.dart';
+
+class CreateQuestionScreen extends StatelessWidget {
   const CreateQuestionScreen({super.key});
 
   @override
@@ -120,7 +122,7 @@ class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
                   height: AppConstant.kPadding / 2,
                 ),
                 Expanded(
-                  child: QuizAnswers(
+                  child: QuestionAnswer(
                     answers: state.quiz.questions[state.index].answers,
                   ),
                 ),
@@ -156,4 +158,38 @@ class CreateQuestionScreen extends StatelessWidget with OptionsSelector {
       ),
     );
   }
+}
+
+void showInputTitle({
+  required BuildContext context,
+  required String initialValue,
+  void Function(String)? onChanged,
+}) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    useRootNavigator: true,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Enter question'),
+        content: TextFormField(
+          autofocus: true,
+          maxLength: 150,
+          maxLines: 3,
+          minLines: 1,
+          initialValue: initialValue,
+          onChanged: onChanged,
+          style: AppConstant.textSubtitle,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              context.pop();
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      );
+    },
+  );
 }

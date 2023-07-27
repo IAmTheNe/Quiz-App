@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:whizz/src/common/constants/constants.dart';
-import 'package:whizz/src/features/quiz/data/models/quiz.dart';
 import 'package:whizz/src/common/widgets/image_cover.dart';
+import 'package:whizz/src/modules/quiz/model/quiz.dart';
 
 class QuestionDetailScreen extends StatelessWidget {
   const QuestionDetailScreen({

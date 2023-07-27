@@ -29,6 +29,10 @@ extension BuildContextX on BuildContext {
       );
   }
 
+  void hideCurrentSnackbar() {
+    ScaffoldMessenger.of(this).hideCurrentSnackBar();
+  }
+
   Future<CountryCode?> showCountryPicker() async {
     final FlCountryCodePicker codePicker = FlCountryCodePicker(
       countryTextStyle: TextStyle(

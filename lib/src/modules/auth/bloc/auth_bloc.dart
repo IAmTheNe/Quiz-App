@@ -79,14 +79,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     SignInWithPhoneNumber event,
     Emitter<AuthState> emit,
   ) async {
-    emit(state.copyWith(
-      isLoading: true,
-      isError: false,
-    ));
     try {
       final phoneNumber = '${state.code.dialCode}${event.phoneNumber}';
+      FocusManager.instance.primaryFocus?.unfocus();
+      event.context.showSuccessSnackBar(
+        'Chúng tôi đang kiểm tra thông tin của bạn... Vui lòng đợi trong giây lát!',
+        duration: const Duration(minutes: 1),
+      );
       emit(state.copyWith(
-        isLoading: false,
         phoneNumber: event.phoneNumber,
       ));
       await _repository.loginWithPhoneNumber(event.context, phoneNumber);

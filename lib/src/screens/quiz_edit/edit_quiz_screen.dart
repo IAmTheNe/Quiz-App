@@ -5,12 +5,10 @@ import 'package:go_router/go_router.dart';
 
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/extensions/extension.dart';
-import 'package:whizz/src/common/widgets/quiz_textfield.dart';
-import 'package:whizz/src/features/discovery/data/bloc/quiz_collection_bloc.dart';
-import 'package:whizz/src/features/quiz/data/bloc/quiz_bloc.dart';
-
-import 'package:whizz/src/features/quiz/presentation/popups/popup_menu.dart';
-import 'package:whizz/src/common/widgets/image_cover.dart';
+import 'package:whizz/src/common/widgets/shared_widget.dart';
+import 'package:whizz/src/modules/collection/bloc/quiz_collection_bloc.dart';
+import 'package:whizz/src/modules/quiz/bloc/create_edit_quiz/quiz_bloc.dart';
+import 'package:whizz/src/screens/quiz_create/widgets/popup_menu.dart';
 
 class EditQuizScreen extends StatelessWidget {
   const EditQuizScreen({super.key});

@@ -6,7 +6,7 @@ import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/extensions/extension.dart';
 import 'package:whizz/src/features/quiz/data/bloc/quiz_bloc.dart';
 import 'package:whizz/src/features/quiz/data/models/quiz.dart';
-import 'package:whizz/src/features/quiz/presentation/widgets/image_cover.dart';
+import 'package:whizz/src/common/widgets/image_cover.dart';
 import 'package:whizz/src/router/app_router.dart';
 
 class QuizCard extends StatelessWidget {
@@ -28,10 +28,12 @@ class QuizCard extends StatelessWidget {
           Expanded(
             child: Stack(
               children: [
-                ImageCover(
-                  media: quiz.media,
-                  isPreview: true,
-                ),
+                /// The `ImageCover` widget is used to display an image cover for the quiz. It takes two
+                /// parameters: `media` and `isPreview`.
+                // ImageCover(
+                //   media: quiz.media,
+                //   isPreview: true,
+                // ),
                 Positioned(
                   right: 0,
                   child: Container(

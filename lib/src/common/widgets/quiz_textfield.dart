@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/extensions/extension.dart';
-import 'package:whizz/src/features/discovery/data/models/quiz_collection.dart';
+import 'package:whizz/src/modules/collection/model/quiz_collection.dart';
 
 class QuizFormField extends StatelessWidget {
   const QuizFormField({

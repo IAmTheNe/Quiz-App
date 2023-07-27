@@ -1,4 +1,0 @@
-enum Attachment {
-  gallery,
-  unsplash,
-}

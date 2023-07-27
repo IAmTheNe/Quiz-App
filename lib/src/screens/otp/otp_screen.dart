@@ -7,20 +7,12 @@ import 'package:pinput/pinput.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/extensions/extension.dart';
 import 'package:whizz/src/common/widgets/custom_button.dart';
-import 'package:whizz/src/features/auth/data/bloc/otp/otp_cubit.dart';
 import 'package:whizz/src/modules/auth/bloc/auth_bloc.dart';
 
 class OtpScreen extends HookWidget {
   const OtpScreen({super.key, required this.codeSent});
 
   final (String, int) codeSent;
-
-  void verifyPin(BuildContext context, String pin) {
-    context.read<OtpCubit>().verifyOtp(
-          otp: pin,
-          verificationId: codeSent.$1,
-        );
-  }
 
   @override
   Widget build(BuildContext context) {

@@ -9,22 +9,23 @@ import 'package:whizz/src/features/discovery/presentation/screens/discovery_deta
 import 'package:whizz/src/features/discovery/presentation/screens/discovery_screen.dart';
 import 'package:whizz/src/features/home/data/cubit/top_quiz_cubit.dart';
 import 'package:whizz/src/features/home/presentation/screens/home_screen.dart';
-import 'package:whizz/src/features/media/presentation/screens/media_screen.dart';
 import 'package:whizz/src/features/play/presentation/screens/play_screen.dart';
 import 'package:whizz/src/features/profile/data/bloc/profile_cubit.dart';
 import 'package:whizz/src/features/profile/presentation/screens/profile_screen.dart';
-import 'package:whizz/src/features/quiz/data/bloc/quiz_bloc.dart';
-import 'package:whizz/src/features/quiz/data/models/quiz.dart';
-import 'package:whizz/src/features/quiz/presentation/screens/create_question_screen.dart';
-import 'package:whizz/src/features/quiz/presentation/screens/create_quiz_screen.dart';
-import 'package:whizz/src/features/quiz/presentation/screens/edit_quiz_screen.dart';
-import 'package:whizz/src/features/quiz/presentation/screens/question_detail_screen.dart';
+
 import 'package:whizz/src/features/settings/presentation/screens/settings_screen.dart';
 import 'package:whizz/src/modules/auth/models/user.dart';
 import 'package:whizz/src/modules/auth/repository/auth_repository.dart';
+import 'package:whizz/src/modules/quiz/bloc/create_edit_quiz/quiz_bloc.dart';
+import 'package:whizz/src/modules/quiz/model/quiz.dart';
 import 'package:whizz/src/router/scaffold_with_bottom_nav_bar.dart';
 import 'package:whizz/src/screens/login/login_screen.dart';
+import 'package:whizz/src/screens/media/media_screen.dart';
 import 'package:whizz/src/screens/otp/otp_screen.dart';
+import 'package:whizz/src/screens/question_create/create_question_screen.dart';
+import 'package:whizz/src/screens/quiz_create/create_quiz_screen.dart';
+import 'package:whizz/src/screens/quiz_detail/quiz_detail_screen.dart';
+import 'package:whizz/src/screens/quiz_edit/edit_quiz_screen.dart';
 
 enum RouterPath {
   home,
