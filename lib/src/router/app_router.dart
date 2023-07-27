@@ -4,28 +4,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:whizz/src/features/discovery/data/models/quiz_collection.dart';
-import 'package:whizz/src/features/discovery/presentation/screens/discovery_detail_screen.dart';
-import 'package:whizz/src/features/discovery/presentation/screens/discovery_screen.dart';
-import 'package:whizz/src/features/home/data/cubit/top_quiz_cubit.dart';
-import 'package:whizz/src/features/home/presentation/screens/home_screen.dart';
-import 'package:whizz/src/features/play/presentation/screens/play_screen.dart';
-import 'package:whizz/src/features/profile/data/bloc/profile_cubit.dart';
-import 'package:whizz/src/features/profile/presentation/screens/profile_screen.dart';
 
-import 'package:whizz/src/features/settings/presentation/screens/settings_screen.dart';
 import 'package:whizz/src/modules/auth/models/user.dart';
 import 'package:whizz/src/modules/auth/repository/auth_repository.dart';
-import 'package:whizz/src/modules/quiz/bloc/create_edit_quiz/quiz_bloc.dart';
+import 'package:whizz/src/modules/collection/model/quiz_collection.dart';
+import 'package:whizz/src/modules/profile/cubit/profile_cubit.dart';
+import 'package:whizz/src/modules/quiz/bloc/quiz_bloc.dart';
+import 'package:whizz/src/modules/quiz/cubit/top_quiz_cubit.dart';
 import 'package:whizz/src/modules/quiz/model/quiz.dart';
 import 'package:whizz/src/router/scaffold_with_bottom_nav_bar.dart';
+import 'package:whizz/src/screens/discovery/discovery_screen.dart';
+import 'package:whizz/src/screens/discovery_detail/discovery_detail_screen.dart';
+import 'package:whizz/src/screens/home/home_screen.dart';
 import 'package:whizz/src/screens/login/login_screen.dart';
 import 'package:whizz/src/screens/media/media_screen.dart';
 import 'package:whizz/src/screens/otp/otp_screen.dart';
+import 'package:whizz/src/screens/play/play_screen.dart';
+import 'package:whizz/src/screens/profile/profile_screen.dart';
 import 'package:whizz/src/screens/question_create/create_question_screen.dart';
 import 'package:whizz/src/screens/quiz_create/create_quiz_screen.dart';
 import 'package:whizz/src/screens/quiz_detail/quiz_detail_screen.dart';
 import 'package:whizz/src/screens/quiz_edit/edit_quiz_screen.dart';
+import 'package:whizz/src/screens/settings/settings_screen.dart';
 
 enum RouterPath {
   home,

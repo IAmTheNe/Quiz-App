@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unsplash_client/unsplash_client.dart';
-import 'package:whizz/src/features/quiz/data/models/media.dart';
-import 'package:whizz/src/features/quiz/data/models/quiz.dart';
+
 import 'package:whizz/src/modules/media/repository/unsplash_image_repository.dart';
+import 'package:whizz/src/modules/quiz/model/media.dart';
+import 'package:whizz/src/modules/quiz/model/quiz.dart';
 
 part 'online_media_event.dart';
 part 'online_media_state.dart';

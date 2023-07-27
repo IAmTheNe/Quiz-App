@@ -7,7 +7,7 @@ import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/extensions/extension.dart';
 import 'package:whizz/src/common/widgets/shared_widget.dart';
 
-import 'package:whizz/src/modules/quiz/bloc/create_edit_quiz/quiz_bloc.dart';
+import 'package:whizz/src/modules/quiz/bloc/quiz_bloc.dart';
 
 import 'package:whizz/src/screens/question_create/widgets/preview_question_card.dart';
 import 'package:whizz/src/screens/question_create/widgets/question_answer.dart';

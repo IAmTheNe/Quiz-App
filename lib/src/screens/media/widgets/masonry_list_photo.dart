@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
-import 'package:whizz/src/features/quiz/data/models/media.dart';
-import 'package:whizz/src/features/quiz/data/models/quiz.dart';
 import 'package:whizz/src/modules/media/bloc/online_media_bloc.dart';
+import 'package:whizz/src/modules/quiz/model/media.dart';
+import 'package:whizz/src/modules/quiz/model/quiz.dart';
 
 
 
