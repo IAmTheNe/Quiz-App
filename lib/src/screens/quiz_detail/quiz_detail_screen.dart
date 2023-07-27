@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/widgets/image_cover.dart';
 import 'package:whizz/src/modules/quiz/model/quiz.dart';
+import 'package:whizz/src/screens/quiz_detail/widgets/popup_menu.dart';
 
 class QuestionDetailScreen extends StatelessWidget {
   const QuestionDetailScreen({
@@ -16,11 +18,8 @@ class QuestionDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.more_horiz),
-          ),
+        actions: const [
+          CreateOptionsPopupMenu(),
         ],
       ),
       body: SingleChildScrollView(
@@ -47,7 +46,41 @@ class QuestionDetailScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(
-                height: AppConstant.kPadding / 2,
+                height: AppConstant.kPadding,
+              ),
+              Row(
+                children: [
+                  CircleAvatar(
+                    radius: 20,
+                    backgroundImage:
+                        CachedNetworkImageProvider(quiz.author.avatar!),
+                  ),
+                  const SizedBox(
+                    width: AppConstant.kPadding / 2,
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        quiz.author.name!,
+                        style: AppConstant.textTitle700.copyWith(
+                          fontSize: 12.sp,
+                        ),
+                      ),
+                      Text(
+                        '@${quiz.author.id}',
+                        style: AppConstant.textSubtitle.copyWith(
+                          fontSize: 10.sp,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: AppConstant.kPadding,
               ),
               Text(
                 'Description',

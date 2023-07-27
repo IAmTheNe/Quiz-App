@@ -2,9 +2,9 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:whizz/src/modules/auth/models/user.dart';
 import 'package:whizz/src/modules/quiz/model/media.dart';
 import 'package:whizz/src/modules/quiz/model/question.dart';
-
 
 class Quiz extends Equatable {
   const Quiz({
@@ -18,7 +18,7 @@ class Quiz extends Equatable {
     this.questions = const [],
     this.media = const Media(),
     this.playedCount = 0,
-    this.author = '',
+    this.author = AppUser.empty,
   });
 
   final String id;
@@ -30,7 +30,7 @@ class Quiz extends Equatable {
   final DateTime? createdAt;
   final Media media;
   final List<Question> questions;
-  final String author;
+  final AppUser author;
   final int playedCount;
 
   Quiz copyWith({
@@ -43,7 +43,7 @@ class Quiz extends Equatable {
     DateTime? createdAt,
     List<Question>? questions,
     Media? media,
-    String? author,
+    AppUser? author,
     int? playedCount,
   }) {
     return Quiz(
@@ -87,7 +87,7 @@ class Quiz extends Equatable {
       'createdAt': createdAt?.millisecondsSinceEpoch,
       'questions': questions.map((x) => x.toMap()).toList(),
       'imageUrl': media.imageUrl,
-      'author': author,
+      'author': author.toMap(),
       'played': playedCount,
     };
   }
@@ -119,7 +119,7 @@ class Quiz extends Equatable {
             ? AttachType.none
             : AttachType.online,
       ),
-      author: map['author'],
+      author: AppUser.fromMap(map['author']),
     );
   }
 

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/extensions/extension.dart';
 import 'package:whizz/src/common/widgets/shared_widget.dart';
+import 'package:whizz/src/modules/quiz/bloc/quiz_bloc.dart';
 import 'package:whizz/src/modules/quiz/model/quiz.dart';
+import 'package:whizz/src/router/app_router.dart';
 
 class QuizCard extends StatelessWidget {
   const QuizCard({super.key, required this.quiz});
@@ -13,7 +17,12 @@ class QuizCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        context.pushNamed(
+          RouterPath.quizEdit.name,
+          extra: context.read<QuizBloc>()..add(OnGoToEditScreen(quiz)),
+        );
+      },
       child: Row(
         children: [
           Expanded(

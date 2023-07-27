@@ -55,7 +55,7 @@ class QuizRepository {
         imageUrl: quizImageUrl,
       ),
       questions: updatedQuestionList,
-      author: user!.id,
+      author: user,
     );
 
     await _firestore
@@ -81,10 +81,10 @@ class QuizRepository {
   }
 
   Stream<List<Quiz>> fetchAllQuizzes2() {
-    final userId = _cache.read<AppUser>(key: 'user')!.id;
+    final user = _cache.read<AppUser>(key: 'user');
     return _firestore
         .collection(FirebaseDocumentConstants.quiz)
-        .where('author', isEqualTo: userId)
+        .where('author', isEqualTo: user?.toMap())
         .snapshots()
         .asyncMap((event) {
       final quiz = <Quiz>[];
