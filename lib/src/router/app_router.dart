@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-
 import 'package:whizz/src/modules/auth/models/user.dart';
 import 'package:whizz/src/modules/auth/repository/auth_repository.dart';
 import 'package:whizz/src/modules/collection/model/quiz_collection.dart';
+import 'package:whizz/src/modules/play/cubit/play_cubit.dart';
 import 'package:whizz/src/modules/profile/cubit/profile_cubit.dart';
 import 'package:whizz/src/modules/quiz/bloc/quiz_bloc.dart';
 import 'package:whizz/src/modules/quiz/cubit/top_quiz_cubit.dart';
@@ -20,6 +20,7 @@ import 'package:whizz/src/screens/login/login_screen.dart';
 import 'package:whizz/src/screens/media/media_screen.dart';
 import 'package:whizz/src/screens/otp/otp_screen.dart';
 import 'package:whizz/src/screens/play/play_screen.dart';
+import 'package:whizz/src/screens/play_quiz/play_quiz_screen.dart';
 import 'package:whizz/src/screens/profile/profile_screen.dart';
 import 'package:whizz/src/screens/question_create/create_question_screen.dart';
 import 'package:whizz/src/screens/quiz_create/create_quiz_screen.dart';
@@ -44,6 +45,7 @@ enum RouterPath {
   noConnection,
   error,
   profile,
+  playQuiz,
 }
 
 class AppRouter {
@@ -115,6 +117,22 @@ class AppRouter {
           key: state.pageKey,
           child: const PlayScreen(),
         ),
+        routes: [
+          GoRoute(
+            path: ':id',
+            name: RouterPath.playQuiz.name,
+            parentNavigatorKey: _rootNavigatorKey,
+            pageBuilder: (context, state) => MaterialPage(
+              key: state.pageKey,
+              child: BlocProvider(
+                create: (context) => GameCubit(),
+                child: PlayQuizScreen(
+                  quiz: state.extra! as Quiz,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       GoRoute(
         path: '/quiz',
