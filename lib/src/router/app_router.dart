@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:whizz/src/modules/auth/models/user.dart';
 import 'package:whizz/src/modules/auth/repository/auth_repository.dart';
 import 'package:whizz/src/modules/collection/model/quiz_collection.dart';
+import 'package:whizz/src/modules/lobby/cubit/lobby_cubit.dart';
 import 'package:whizz/src/modules/play/cubit/play_cubit.dart';
 import 'package:whizz/src/modules/profile/cubit/profile_cubit.dart';
 import 'package:whizz/src/modules/quiz/bloc/quiz_bloc.dart';
@@ -19,6 +20,7 @@ import 'package:whizz/src/screens/home/home_screen.dart';
 import 'package:whizz/src/screens/login/login_screen.dart';
 import 'package:whizz/src/screens/media/media_screen.dart';
 import 'package:whizz/src/screens/otp/otp_screen.dart';
+import 'package:whizz/src/screens/play/lobby_screen.dart';
 import 'package:whizz/src/screens/play/play_screen.dart';
 import 'package:whizz/src/screens/play_quiz/play_quiz_screen.dart';
 import 'package:whizz/src/screens/profile/profile_screen.dart';
@@ -32,6 +34,7 @@ enum RouterPath {
   home,
   login,
   otp,
+  lobby,
   discovery,
   discoveryDetail,
   play,
@@ -237,6 +240,17 @@ class AppRouter {
           key: state.pageKey,
           child: DiscoveryDetailScreen(
             quizCollection: state.extra! as QuizCollection,
+          ),
+        ),
+      ),
+      GoRoute(
+        path: '/lobby',
+        name: RouterPath.lobby.name,
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (_, state) => MaterialPage(
+          key: state.pageKey,
+          child: LobbyScreen(
+            isSoloMode: state.extra as bool? ?? true,
           ),
         ),
       ),

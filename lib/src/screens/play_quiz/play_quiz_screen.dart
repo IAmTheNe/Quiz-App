@@ -35,7 +35,6 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
     return WillPopScope(
       child: BlocBuilder<GameCubit, GameState>(
         builder: (context, state) {
-          print(state);
           return Scaffold(
             body: PageView.builder(
                 physics: const NeverScrollableScrollPhysics(),
