@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 import 'package:whizz/src/modules/auth/models/user.dart';
 import 'package:whizz/src/modules/auth/repository/auth_repository.dart';
 import 'package:whizz/src/modules/collection/model/quiz_collection.dart';
-import 'package:whizz/src/modules/lobby/cubit/lobby_cubit.dart';
 import 'package:whizz/src/modules/play/cubit/play_cubit.dart';
 import 'package:whizz/src/modules/profile/cubit/profile_cubit.dart';
 import 'package:whizz/src/modules/quiz/bloc/quiz_bloc.dart';

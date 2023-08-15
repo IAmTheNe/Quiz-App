@@ -48,12 +48,17 @@ class LobbyScreen extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                Text('${state.participants.length} participants'),
-                const Spacer(),
-                if (!isSoloMode) ...[
-                  const Spacer(),
-                  Container(),
-                ],
+                Text(
+                  '${state.participants.length} participants',
+                  style: AppConstant.textTitle700,
+                ),
+                Wrap(
+                  children: state.participants
+                      .map((e) => Chip(
+                            label: Text(e.participant.name!),
+                          ))
+                      .toList(),
+                ),
                 const Spacer(),
                 Text(
                   'Game starts in',
@@ -91,11 +96,11 @@ class _CounterState extends State<Counter> {
           seconds--;
         } else {
           timer?.cancel();
-          // context.goNamed(
-          //   RouterPath.playQuiz.name,
-          //   pathParameters: {'id': widget.quiz.id},
-          //   extra: widget.quiz,
-          // );
+          context.goNamed(
+            RouterPath.playQuiz.name,
+            pathParameters: {'id': widget.quiz.id},
+            extra: widget.quiz,
+          );
         }
       });
     });
