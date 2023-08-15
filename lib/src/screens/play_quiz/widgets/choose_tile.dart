@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/modules/play/cubit/play_cubit.dart';
-import 'package:whizz/src/modules/quiz/model/answer.dart';
+import 'package:whizz/src/modules/quiz/model/question.dart';
 
 class ChooseTile extends StatelessWidget {
   const ChooseTile({
     super.key,
-    required this.answers,
+    required this.question,
   });
 
-  final List<Answer> answers;
+  final Question question;
 
   final listColors = const [
     Color(0xFFe35454),
@@ -39,6 +39,8 @@ class ChooseTile extends StatelessWidget {
               onTap: state.answers[state.currentQuestion] == null
                   ? () {
                       context.read<GameCubit>().chooseAnswer(index);
+                      context.read<GameCubit>().calculateScore(
+                          question, question.answers[index].isCorrect);
                     }
                   : null,
               child: Container(
@@ -46,7 +48,7 @@ class ChooseTile extends StatelessWidget {
                 padding: const EdgeInsets.all(AppConstant.kPadding / 2),
                 decoration: BoxDecoration(
                   color: isTimeOut
-                      ? answers[index].isCorrect
+                      ? question.answers[index].isCorrect
                           ? Colors.green
                           : Colors.red
                       : state.answers[state.currentQuestion] != index
@@ -55,7 +57,7 @@ class ChooseTile extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Text(
-                  answers[index].answer,
+                  question.answers[index].answer,
                   style: AppConstant.textSubtitle.copyWith(
                     color: state.answers[state.currentQuestion] != index
                         ? Colors.white

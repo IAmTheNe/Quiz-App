@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:whizz/src/modules/quiz/model/quiz.dart';
+import 'package:whizz/src/modules/quiz/model/question.dart';
 
 part 'play_state.dart';
 
@@ -36,5 +36,28 @@ class GameCubit extends Cubit<GameState> {
     emit(state.copyWith(
       remainTime: t,
     ));
+  }
+
+  void calculateScore(Question q, bool isCorrect) {
+    final previousScore = state.score;
+    int score = 0;
+    final time = q.duration! - state.remainTime;
+    final percent = state.remainTime / q.duration!;
+
+    if (isCorrect) {
+      if (percent >= 0.8) {
+        score = 1000;
+      } else if (percent >= 0.6) {
+        score = 980 - time * 2;
+      } else if (percent >= 0.3) {
+        score = 960 - time * 2;
+      } else {
+        score = 940 - time * 3;
+      }
+    }
+
+    emit(
+      state.copyWith(score: previousScore + score),
+    );
   }
 }

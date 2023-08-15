@@ -35,6 +35,7 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
     return WillPopScope(
       child: BlocBuilder<GameCubit, GameState>(
         builder: (context, state) {
+          print(state);
           return Scaffold(
             body: PageView.builder(
                 physics: const NeverScrollableScrollPhysics(),
@@ -105,7 +106,7 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
                         ),
                         Expanded(
                           child: ChooseTile(
-                            answers: widget.quiz.questions[index].answers,
+                            question: widget.quiz.questions[index],
                           ),
                         ),
                         const SizedBox(
@@ -154,7 +155,7 @@ class _CounterState extends State<Counter> {
 
           // Delay 3s để show đáp án
           Future.delayed(const Duration(seconds: 3)).then((_) {
-          context.read<GameCubit>().tick(-1);
+            context.read<GameCubit>().tick(-1);
 
             widget.onNextQuestion();
           });
