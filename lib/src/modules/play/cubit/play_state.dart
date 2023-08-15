@@ -5,7 +5,7 @@ class GameState extends Equatable {
   const GameState({
     this.answers = const [],
     this.currentQuestion = 0,
-    this.remainTime = 0,
+    this.remainTime = -1,
   });
 
   final List<int?> answers;

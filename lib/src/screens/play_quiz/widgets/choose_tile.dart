@@ -8,11 +8,9 @@ class ChooseTile extends StatelessWidget {
   const ChooseTile({
     super.key,
     required this.answers,
-    required this.state,
   });
 
   final List<Answer> answers;
-  final GameState state;
 
   final listColors = const [
     Color(0xFFe35454),
@@ -34,34 +32,43 @@ class ChooseTile extends StatelessWidget {
         mainAxisSpacing: 4,
       ),
       itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: state.answers[state.currentQuestion] == null
-              ? () {
-                  context.read<GameCubit>().chooseAnswer(index);
-                }
-              : null,
-          child: Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.all(AppConstant.kPadding / 2),
-            decoration: BoxDecoration(
-              color: state.answers[state.currentQuestion] != index
-                  ? listColors[index]
-                  : Colors.tealAccent,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Text(
-              answers[index].answer,
-              style: AppConstant.textSubtitle.copyWith(
-                color: state.answers[state.currentQuestion] != index
-                    ? Colors.white
-                    : Colors.black,
-                fontWeight: FontWeight.w700,
+        return BlocBuilder<GameCubit, GameState>(
+          builder: (context, state) {
+            final isTimeOut = state.remainTime == 0;
+            return GestureDetector(
+              onTap: state.answers[state.currentQuestion] == null
+                  ? () {
+                      context.read<GameCubit>().chooseAnswer(index);
+                    }
+                  : null,
+              child: Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(AppConstant.kPadding / 2),
+                decoration: BoxDecoration(
+                  color: isTimeOut
+                      ? answers[index].isCorrect
+                          ? Colors.green
+                          : Colors.red
+                      : state.answers[state.currentQuestion] != index
+                          ? listColors[index]
+                          : Colors.tealAccent,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Text(
+                  answers[index].answer,
+                  style: AppConstant.textSubtitle.copyWith(
+                    color: state.answers[state.currentQuestion] != index
+                        ? Colors.white
+                        : Colors.black,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  maxLines: null,
+                  textAlign: TextAlign.justify,
+                  overflow: TextOverflow.visible,
+                ),
               ),
-              maxLines: null,
-              textAlign: TextAlign.justify,
-              overflow: TextOverflow.visible,
-            ),
-          ),
+            );
+          },
         );
       },
     );

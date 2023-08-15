@@ -42,7 +42,6 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
                 itemCount: widget.quiz.questions.length,
                 itemBuilder: (context, index) {
                   final currentQuestion = widget.quiz.questions[index];
-
                   return Padding(
                     padding: const EdgeInsets.all(AppConstant.kPadding),
                     child: Column(
@@ -62,6 +61,7 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
                                     duration: const Duration(milliseconds: 300),
                                     curve: Curves.ease,
                                   );
+                                  context.read<GameCubit>().nextQuestion(index);
                                 }
                               },
                             ),
@@ -75,34 +75,29 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
                         const SizedBox(
                           height: AppConstant.kPadding / 2,
                         ),
-                        GestureDetector(
-                          onTap: () => context
-                              .read<GameCubit>()
-                              .nextQuestion(widget.quiz),
-                          child: Container(
-                            alignment: Alignment.center,
-                            padding:
-                                const EdgeInsets.all(AppConstant.kPadding / 2),
-                            width: double.infinity,
-                            constraints: BoxConstraints(
-                              maxHeight: .08.sh,
-                              minHeight: .05.sh,
+                        Container(
+                          alignment: Alignment.center,
+                          padding:
+                              const EdgeInsets.all(AppConstant.kPadding / 2),
+                          width: double.infinity,
+                          constraints: BoxConstraints(
+                            maxHeight: .08.sh,
+                            minHeight: .05.sh,
+                          ),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF6d5ff6),
+                            borderRadius:
+                                BorderRadius.circular(AppConstant.kPadding),
+                          ),
+                          child: Text(
+                            widget.quiz.questions[index].name,
+                            style: AppConstant.textSubtitle.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
                             ),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF6d5ff6),
-                              borderRadius:
-                                  BorderRadius.circular(AppConstant.kPadding),
-                            ),
-                            child: Text(
-                              widget.quiz.questions[index].name,
-                              style: AppConstant.textSubtitle.copyWith(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              maxLines: null,
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.visible,
-                            ),
+                            maxLines: null,
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.visible,
                           ),
                         ),
                         const SizedBox(
@@ -111,7 +106,6 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
                         Expanded(
                           child: ChooseTile(
                             answers: widget.quiz.questions[index].answers,
-                            state: state,
                           ),
                         ),
                         const SizedBox(
@@ -150,16 +144,20 @@ class _CounterState extends State<Counter> {
   int seconds = 0;
 
   void _startTimer() {
-    timer = Timer.periodic(const Duration(seconds: 1), (t) {
+    timer = Timer.periodic(const Duration(seconds: 1), (_) {
       setState(() {
         if (seconds > 0) {
           seconds--;
+          context.read<GameCubit>().tick(seconds);
         } else {
           timer?.cancel();
 
           // Delay 3s để show đáp án
-          Future.delayed(const Duration(seconds: 3))
-              .then((_) => widget.onNextQuestion());
+          Future.delayed(const Duration(seconds: 3)).then((_) {
+          context.read<GameCubit>().tick(-1);
+
+            widget.onNextQuestion();
+          });
         }
       });
     });
