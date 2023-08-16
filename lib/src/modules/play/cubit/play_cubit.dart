@@ -17,11 +17,11 @@ class GameCubit extends Cubit<GameState> {
     );
   }
 
-  void nextQuestion(int index) {
+  void nextQuestion() {
     emit(state.copyWith(
-      currentQuestion: index + 1,
+      currentQuestion: state.currentQuestion + 1,
       // remainTime: quiz.questions[state.currentQuestion].duration ?? 0,
-      answers: List.from(state.answers)..insert(index + 1, null),
+      answers: List.from(state.answers)..insert(state.currentQuestion + 1, null),
     ));
   }
 

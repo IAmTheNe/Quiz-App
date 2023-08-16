@@ -33,4 +33,31 @@ class LobbyRepository {
   }
 
   enterLobby() {}
+
+  Stream<Lobby> lobbyScore(Lobby lobby) {
+    return _firestore
+        .collection(FirebaseDocumentConstants.lobby)
+        .where('id', isEqualTo: lobby.id)
+        .snapshots()
+        .asyncMap((event) {
+      return Lobby.fromMap(event.docs[0].data());
+    });
+  }
+
+  Future<void> calculateScore(Lobby lobby, int score) async {
+    final user = _cache.read<AppUser>(key: 'user');
+    final participant = Participant(
+      participant: user!,
+      score: score,
+    );
+    final index = lobby.participants.indexWhere(
+      (e) => user.id == e.participant.id,
+    );
+
+    lobby.participants[index] = participant;
+    await _firestore
+        .collection(FirebaseDocumentConstants.lobby)
+        .doc(lobby.id)
+        .set(lobby.toMap());
+  }
 }

@@ -11,24 +11,28 @@ class Lobby {
     this.participants = const [],
     this.quiz = const Quiz(),
     this.host = AppUser.empty,
+    this.top5 = const [],
   });
 
   final String id;
   final List<Participant> participants;
   final Quiz quiz;
   final AppUser host;
+  final List<Participant> top5;
 
   Lobby copyWith({
     String? id,
     List<Participant>? participants,
     Quiz? quiz,
     AppUser? host,
+    List<Participant>? top5,
   }) {
     return Lobby(
       id: id ?? this.id,
       participants: participants ?? this.participants,
       quiz: quiz ?? this.quiz,
       host: host ?? this.host,
+      top5: top5 ?? this.top5,
     );
   }
 
@@ -44,13 +48,18 @@ class Lobby {
   factory Lobby.fromMap(Map<String, dynamic> map) {
     return Lobby(
       id: map['id'] as String,
-      participants: List<Participant>.from((map['participants'] as List<int>).map<Participant>((x) => Participant.fromMap(x as Map<String,dynamic>),),),
-      quiz: Quiz.fromMap(map['quiz'] as Map<String,dynamic>),
-      host: AppUser.fromMap(map['host'] as Map<String,dynamic>),
+      participants: List<Participant>.from(
+        (map['participants'] as List<dynamic>).map<Participant>(
+          (x) => Participant.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
+      quiz: Quiz.fromMap(map['quiz'] as Map<String, dynamic>),
+      host: AppUser.fromMap(map['host'] as Map<String, dynamic>),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Lobby.fromJson(String source) => Lobby.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Lobby.fromJson(String source) =>
+      Lobby.fromMap(json.decode(source) as Map<String, dynamic>);
 }

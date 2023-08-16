@@ -29,4 +29,16 @@ class LobbyCubit extends Cubit<Lobby> {
       participants: lobby.participants,
     ));
   }
+
+  void calculateScore(int score) async {
+    await _repository.calculateScore(state, score);
+    getScores();
+  }
+
+  void getScores() {
+    _repository.lobbyScore(state).listen((lobby) {
+      lobby.participants.sort((a, b) => a.score - b.score);
+      emit(lobby);
+    });
+  }
 }
