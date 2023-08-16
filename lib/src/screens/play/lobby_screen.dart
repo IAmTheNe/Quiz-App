@@ -28,46 +28,51 @@ class LobbyScreen extends StatelessWidget {
       body: BlocBuilder<LobbyCubit, Lobby>(
         builder: (context, state) {
           return Padding(
-            padding: const EdgeInsets.all(AppConstant.kPadding * 2),
-            child: Column(
-              children: [
-                Text(
-                  state.quiz.title,
-                  style: AppConstant.textTitle700.copyWith(
-                    fontSize: 20.sp,
+            padding: const EdgeInsets.all(AppConstant.kPadding),
+            child: SizedBox(
+              width: double.infinity,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    state.quiz.title,
+                    style: AppConstant.textTitle700.copyWith(
+                      fontSize: 20.sp,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: AppConstant.kPadding / 4,
-                ),
-                Text(
-                  state.quiz.description ?? '',
-                  textAlign: TextAlign.center,
-                  style: AppConstant.textSubtitle.copyWith(
-                    fontSize: 16.sp,
+                  const SizedBox(
+                    height: AppConstant.kPadding / 4,
                   ),
-                ),
-                const Spacer(),
-                Text(
-                  '${state.participants.length} participants',
-                  style: AppConstant.textTitle700,
-                ),
-                Wrap(
-                  children: state.participants
-                      .map((e) => Chip(
-                            label: Text(e.participant.name!),
-                          ))
-                      .toList(),
-                ),
-                const Spacer(),
-                Text(
-                  'Game starts in',
-                  style: AppConstant.textHeading,
-                ),
-                Counter(
-                  quiz: state.quiz,
-                ),
-              ],
+                  Text(
+                    state.quiz.description ?? '',
+                    textAlign: TextAlign.center,
+                    style: AppConstant.textSubtitle.copyWith(
+                      fontSize: 16.sp,
+                    ),
+                  ),
+                  const Spacer(),
+                  Text(
+                    '${state.participants.length} participants',
+                    style: AppConstant.textTitle700,
+                  ),
+                  Wrap(
+                    children: state.participants
+                        .map((e) => Chip(
+                              label: Text(e.participant.name!),
+                            ))
+                        .toList(),
+                  ),
+                  const Spacer(),
+                  Text(
+                    'Game starts in',
+                    style: AppConstant.textHeading,
+                  ),
+                  Counter(
+                    quiz: state.quiz,
+                  ),
+                ],
+              ),
             ),
           );
         },
