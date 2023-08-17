@@ -129,7 +129,9 @@ class AppRouter {
               child: BlocProvider(
                 create: (context) => GameCubit(),
                 child: PlayQuizScreen(
-                  quiz: state.extra! as Quiz,
+                  quiz: (state.extra! as Map)['quiz'] as Quiz,
+                  isSoloMode:
+                      (state.extra! as Map)['isSoloMode'] as bool? ?? true,
                 ),
               ),
             ),

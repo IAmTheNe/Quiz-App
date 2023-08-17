@@ -17,13 +17,17 @@ class LobbyRepository {
 
   Future<Lobby> createLobby(Lobby lobby) async {
     final user = _cache.read<AppUser>(key: 'user');
+    final now = DateTime.now();
     final participant = Participant(participant: user!, score: 0);
     final participants = List<Participant>.from(lobby.participants)
       ..add(participant);
+
     final lobbyNew = lobby.copyWith(
       host: user,
       participants: participants,
+      startTime: now,
     );
+
     await _firestore
         .collection(FirebaseDocumentConstants.lobby)
         .doc(lobby.id)
@@ -68,5 +72,35 @@ class LobbyRepository {
     );
 
     return index;
+  }
+
+  int getScore(Lobby lobby) {
+    final user = _cache.read<AppUser>(key: 'user');
+    final participant = lobby.participants.firstWhere(
+      (e) => user!.id == e.participant.id,
+    );
+
+    return participant.score;
+  }
+
+  Future<List<Participant>> soloHistory(Lobby lobby) async {
+    final listLobby = <Lobby>[];
+    final participant = <Participant>[];
+
+    await _firestore
+        .collection(FirebaseDocumentConstants.lobby)
+        .where('quiz', isEqualTo: lobby.quiz.toMap())
+        .get()
+        .then((querySnapshot) {
+      for (final doc in querySnapshot.docs) {
+        listLobby.add(Lobby.fromMap(doc.data()));
+      }
+
+      for (final lobby in listLobby) {
+        participant.add(lobby.participants[0]);
+      }
+    });
+
+    return participant;
   }
 }

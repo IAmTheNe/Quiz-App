@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
+import 'package:whizz/src/common/widgets/custom_button.dart';
 import 'package:whizz/src/modules/lobby/cubit/lobby_cubit.dart';
 import 'package:whizz/src/modules/lobby/model/lobby.dart';
 import 'package:whizz/src/modules/quiz/model/quiz.dart';
@@ -35,6 +36,17 @@ class LobbyScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  if (!isSoloMode) ...[
+                    Text(
+                      state.code ?? '123456',
+                      style: AppConstant.textTitle700.copyWith(
+                        fontSize: 28.sp,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: AppConstant.kPadding,
+                    ),
+                  ],
                   Text(
                     state.quiz.title,
                     style: AppConstant.textTitle700.copyWith(
@@ -64,13 +76,16 @@ class LobbyScreen extends StatelessWidget {
                         .toList(),
                   ),
                   const Spacer(),
-                  Text(
-                    'Game starts in',
-                    style: AppConstant.textHeading,
-                  ),
-                  Counter(
-                    quiz: state.quiz,
-                  ),
+                  if (state.isStart) ...[
+                    Text(
+                      'Game starts in',
+                      style: AppConstant.textHeading,
+                    ),
+                    Counter(
+                      quiz: state.quiz,
+                    ),
+                  ] else
+                    CustomButton(onPressed: () {}, label: 'Start now'),
                 ],
               ),
             ),
@@ -104,7 +119,7 @@ class _CounterState extends State<Counter> {
           context.goNamed(
             RouterPath.playQuiz.name,
             pathParameters: {'id': widget.quiz.id},
-            extra: widget.quiz,
+            extra: {'quiz': widget.quiz},
           );
         }
       });

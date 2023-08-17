@@ -18,9 +18,11 @@ class PlayQuizScreen extends StatefulWidget {
   const PlayQuizScreen({
     super.key,
     required this.quiz,
+    this.isSoloMode = true,
   });
 
   final Quiz quiz;
+  final bool isSoloMode;
 
   @override
   State<PlayQuizScreen> createState() => _PlayQuizScreenState();
@@ -51,7 +53,9 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
 
                 if (index.isEven) {
                   if (index == widget.quiz.questions.length * 2) {
-                    return _buildTotalScorePage();
+                    return widget.isSoloMode
+                        ? _buildTotalSoloScorePage()
+                        : _buildTotalFriendScorePage();
                   }
                   return _buildQuestionPage(
                       state, currentQuestion, index, context);
@@ -67,7 +71,7 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
     );
   }
 
-  Widget _buildTotalScorePage() {
+  Widget _buildTotalFriendScorePage() {
     return Padding(
       padding: const EdgeInsets.all(AppConstant.kPadding),
       child: BlocBuilder<LobbyCubit, Lobby>(
@@ -118,12 +122,78 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
     );
   }
 
+  Widget _buildTotalSoloScorePage() {
+    return Padding(
+      padding: const EdgeInsets.all(AppConstant.kPadding),
+      child: BlocBuilder<LobbyCubit, Lobby>(
+        builder: (context, state) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AppBar(
+                title: const Text('Leaderboard'),
+                automaticallyImplyLeading: false,
+              ),
+              BlocBuilder<GameCubit, GameState>(
+                builder: (context, s) {
+                  return Center(
+                    child: Text(
+                      'You got ${s.score} points',
+                      style: AppConstant.textHeading,
+                    ),
+                  );
+                },
+              ),
+              Expanded(
+                child: state.solo.isNotEmpty
+                    ? ListView.builder(
+                        itemCount:
+                            state.solo.length > 5 ? 5 : state.solo.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            leading: Text('${index + 1}'),
+                            title: Text(state.solo[index].participant.name!),
+                            subtitle: Text(state.startTime.toString()),
+                            trailing: Text(state.solo[index].score.toString()),
+                          );
+                        },
+                      )
+                    : const Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('Waiting to get leaderboard!'),
+                            CircularProgressIndicator.adaptive(),
+                          ],
+                        ),
+                      ),
+              ),
+              if (state.solo.isNotEmpty)
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: CustomButton(
+                    onPressed: () {
+                      context.goNamed(RouterPath.home.name);
+                      context.read<LobbyCubit>().cancel();
+                    },
+                    label: 'Go Back',
+                  ),
+                ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
   LeaderboardCountdown _buildShowScorePage(int index, BuildContext context) {
     return LeaderboardCountdown(
       onNextQuestion: () {
         if (index <= (widget.quiz.questions.length - 1) * 2 + 1) {
           if (index <= (widget.quiz.questions.length - 1) * 2) {
             context.read<GameCubit>().nextQuestion();
+          } else {
+            context.read<LobbyCubit>().soloHistory();
           }
           _controller.nextPage(
             duration: const Duration(milliseconds: 300),

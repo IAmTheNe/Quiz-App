@@ -27,6 +27,7 @@ class LobbyCubit extends Cubit<Lobby> {
     emit(state.copyWith(
       host: lobby.host,
       participants: lobby.participants,
+      startTime: lobby.startTime,
     ));
   }
 
@@ -44,6 +45,17 @@ class LobbyCubit extends Cubit<Lobby> {
 
   int getRank() {
     return _repository.getRank(state);
+  }
+
+  int getScore() {
+    return _repository.getScore(state);
+  }
+
+  void soloHistory() async {
+    final participant = await _repository.soloHistory(state);
+    participant.sort((a, b) => b.score - a.score);
+
+    emit(state.copyWith(solo: participant));
   }
 
   void cancel() {

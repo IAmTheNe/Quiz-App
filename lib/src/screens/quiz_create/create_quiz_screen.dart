@@ -133,22 +133,22 @@ class CreateQuizScreen extends StatelessWidget {
             BlocBuilder<QuizBloc, QuizState>(
               builder: (context, state) {
                 return state.isLoading
-                    ? const Expanded(
-                        // child: ElevatedButton.icon(
-                        //   onPressed: () {},
-                        //   icon: const CircularProgressIndicator.adaptive(),
-                        //   label: Text(
-                        //     'Loading',
-                        //     style: AppConstant.textHeading.copyWith(
-                        //       fontSize: 14.sp,
-                        //     ),
-                        //   ),
-                        //   style: ElevatedButton.styleFrom(
-                        //     backgroundColor: Colors.white,
-                        //     elevation: 4,
-                        //   ),
-                        // ),
-                        child: LoadingButton(label: 'Loading'),
+                    ? Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: () {},
+                          icon: const CircularProgressIndicator.adaptive(),
+                          label: Text(
+                            'Loading',
+                            style: AppConstant.textHeading.copyWith(
+                              fontSize: 14.sp,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            elevation: 4,
+                          ),
+                        ),
+                        // child: LoadingButton(label: 'Loading'),
                       )
                     : Expanded(
                         // child: ElevatedButton(

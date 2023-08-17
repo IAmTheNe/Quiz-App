@@ -12,6 +12,11 @@ class Lobby {
     this.quiz = const Quiz(),
     this.host = AppUser.empty,
     this.top5 = const [],
+    this.solo = const [],
+    this.code,
+    this.isStart = false,
+    this.startTime,
+    this.isSolo = true,
   });
 
   final String id;
@@ -19,6 +24,11 @@ class Lobby {
   final Quiz quiz;
   final AppUser host;
   final List<Participant> top5;
+  final List<Participant> solo;
+  final String? code;
+  final bool isStart;
+  final DateTime? startTime;
+  final bool isSolo;
 
   Lobby copyWith({
     String? id,
@@ -26,6 +36,11 @@ class Lobby {
     Quiz? quiz,
     AppUser? host,
     List<Participant>? top5,
+    List<Participant>? solo,
+    String? code,
+    bool? isStart,
+    DateTime? startTime,
+    bool? isSolo,
   }) {
     return Lobby(
       id: id ?? this.id,
@@ -33,6 +48,11 @@ class Lobby {
       quiz: quiz ?? this.quiz,
       host: host ?? this.host,
       top5: top5 ?? this.top5,
+      solo: solo ?? this.solo,
+      code: code ?? this.code,
+      isStart: isStart ?? this.isStart,
+      startTime: startTime ?? this.startTime,
+      isSolo: isSolo ?? this.isSolo,
     );
   }
 
@@ -42,6 +62,10 @@ class Lobby {
       'participants': participants.map((x) => x.toMap()).toList(),
       'quiz': quiz.toMap(),
       'host': host.toMap(),
+      'code': code,
+      'isStart': isStart,
+      'startTime': startTime?.millisecondsSinceEpoch,
+      'isSolo': isSolo,
     };
   }
 
@@ -55,6 +79,12 @@ class Lobby {
       ),
       quiz: Quiz.fromMap(map['quiz'] as Map<String, dynamic>),
       host: AppUser.fromMap(map['host'] as Map<String, dynamic>),
+      code: map['code'] != null ? map['code'] as String : null,
+      isStart: map['isStart'] as bool,
+      startTime: map['startTime'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['startTime'] as int)
+          : null,
+      isSolo: map['isSolo'] as bool,
     );
   }
 

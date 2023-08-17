@@ -168,7 +168,13 @@ class QuestionDetailScreen extends StatelessWidget {
           children: [
             Expanded(
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.read<LobbyCubit>().createLobby(quiz);
+                  context.goNamed(
+                    RouterPath.lobby.name,
+                    extra: false,
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppConstant.primaryColor,
                   elevation: 4,
