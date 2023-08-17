@@ -29,6 +29,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     on(_onQuestionMediaChanged);
     on(_onQuestionNameChanged);
     on(_onSelectedQuestionChanged);
+    on(_onQuestionDurationChanged);
     on(_onQuestionAnwserChanged);
     on(_onQuestionAnswerStatusChanged);
     on(_onQuestionRemoveCurrent);
@@ -200,6 +201,26 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
 
     updatedList[state.index] = updatedList[state.index].copyWith(
       name: name,
+    );
+
+    emit(
+      state.copyWith(
+        quiz: state.quiz.copyWith(
+          questions: updatedList,
+        ),
+      ),
+    );
+  }
+
+  void _onQuestionDurationChanged(
+    OnQuestionDurationChanged event,
+    Emitter<QuizState> emit,
+  ) {
+    final duration = event.duration;
+    final updatedList = List<Question>.from(state.quiz.questions);
+
+    updatedList[state.index] = updatedList[state.index].copyWith(
+      duration: duration,
     );
 
     emit(

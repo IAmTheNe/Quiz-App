@@ -79,6 +79,12 @@ final class OnQuestionMediaChanged implements QuizEvent {
   final BuildContext context;
 }
 
+final class OnQuestionDurationChanged implements QuizEvent {
+  const OnQuestionDurationChanged(this.duration);
+
+  final int duration;
+}
+
 final class OnQuestionAnswerChanged implements QuizEvent {
   const OnQuestionAnswerChanged(this.answer, this.index);
 

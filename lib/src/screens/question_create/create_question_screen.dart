@@ -61,7 +61,10 @@ class CreateQuestionScreen extends StatelessWidget {
                       bottom: AppConstant.kPadding / 2,
                       left: AppConstant.kPadding,
                       child: ElevatedButton.icon(
-                        onPressed: () {},
+                        onPressed: () => showSetTimer(
+                          context: context,
+                          state: state,
+                        ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF036be5),
                         ),
@@ -70,7 +73,7 @@ class CreateQuestionScreen extends StatelessWidget {
                           color: Colors.white,
                         ),
                         label: Text(
-                          '10 sec',
+                          '${state.quiz.questions[state.index].duration} sec',
                           style: AppConstant.textSubtitle.copyWith(
                             color: Colors.white,
                           ),
@@ -158,6 +161,96 @@ class CreateQuestionScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+void showSetTimer({
+  required BuildContext context,
+  required QuizState state,
+}) {
+  final lsTimer = <int>[5, 10, 15, 30, 45, 60, 90, 120];
+  int currentIndex =
+      lsTimer.indexOf(state.quiz.questions[state.index].duration!);
+
+  showModalBottomSheet(
+    context: context,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(16.0),
+    ),
+    builder: (ctx) {
+      return StatefulBuilder(
+        builder: (_, setState) {
+          return Container(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Set duration',
+                  style: AppConstant.textHeading,
+                ),
+                const SizedBox(
+                  height: AppConstant.kPadding / 2,
+                ),
+                Expanded(
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                    ),
+                    itemCount: lsTimer.length,
+                    itemBuilder: (_, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            currentIndex = index;
+                          });
+                        },
+                        child: Material(
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16.0),
+                          ),
+                          child: Container(
+                            decoration: currentIndex != index
+                                ? BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16.0),
+                                    color: Colors.white,
+                                  )
+                                : BoxDecoration(
+                                    gradient: AppConstant.sunsetGradient,
+                                    borderRadius: BorderRadius.circular(16.0),
+                                  ),
+                            child: Center(
+                              child: Text('${lsTimer[index]} sec'),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: AppConstant.kPadding / 2,
+                ),
+                CustomButton(
+                  onPressed: () {
+                    context
+                        .read<QuizBloc>()
+                        .add(OnQuestionDurationChanged(lsTimer[currentIndex]));
+                    context.pop();
+                  },
+                  label: 'Continue',
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    },
+  );
 }
 
 void showInputTitle({

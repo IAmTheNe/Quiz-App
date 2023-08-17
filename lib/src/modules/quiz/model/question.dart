@@ -12,7 +12,7 @@ class Question extends Equatable {
   const Question({
     this.id = '',
     this.name = '',
-    this.duration = 0,
+    this.duration = 5,
     this.point = 0,
     this.type = QuestionType.choice,
     this.answers = const [],
