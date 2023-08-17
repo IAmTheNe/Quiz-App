@@ -40,7 +40,9 @@ class ChooseTile extends StatelessWidget {
                   ? () {
                       context.read<GameCubit>().chooseAnswer(index);
                       context.read<GameCubit>().calculateScore(
-                          question, question.answers[index].isCorrect);
+                            question,
+                            question.answers[index].isCorrect,
+                          );
                     }
                   : null,
               child: Container(
@@ -51,9 +53,10 @@ class ChooseTile extends StatelessWidget {
                       ? question.answers[index].isCorrect
                           ? Colors.green
                           : Colors.red
-                      : state.answers[state.currentQuestion] != index
-                          ? listColors[index]
-                          : Colors.tealAccent,
+                      : state.answers[state.currentQuestion] != index &&
+                              state.answers[state.currentQuestion] != null
+                          ? listColors[index].withOpacity(.2)
+                          : listColors[index],
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Text(
