@@ -60,4 +60,13 @@ class LobbyRepository {
         .doc(lobby.id)
         .set(lobby.toMap());
   }
+
+  int getRank(Lobby lobby) {
+    final user = _cache.read<AppUser>(key: 'user');
+    final index = lobby.participants.indexWhere(
+      (e) => user!.id == e.participant.id,
+    );
+
+    return index;
+  }
 }

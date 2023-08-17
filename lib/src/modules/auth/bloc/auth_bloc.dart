@@ -87,9 +87,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         duration: const Duration(minutes: 1),
       );
       emit(state.copyWith(
+        isLoading: true,
         phoneNumber: event.phoneNumber,
       ));
-      await _repository.loginWithPhoneNumber(event.context, phoneNumber);
+      await _repository.loginWithPhoneNumber(event.context, phoneNumber, () {
+        emit(state.copyWith(
+          isLoading: false,
+        ));
+      });
     } on VerifyPhoneNumberException catch (e) {
       emit(state.copyWith(
         isLoading: false,

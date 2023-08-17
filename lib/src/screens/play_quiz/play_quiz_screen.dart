@@ -3,13 +3,15 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
-import 'package:whizz/src/common/widgets/image_cover.dart';
+import 'package:whizz/src/common/widgets/shared_widget.dart';
 import 'package:whizz/src/modules/lobby/cubit/lobby_cubit.dart';
 import 'package:whizz/src/modules/lobby/model/lobby.dart';
 import 'package:whizz/src/modules/play/cubit/play_cubit.dart';
 import 'package:whizz/src/modules/quiz/model/question.dart';
 import 'package:whizz/src/modules/quiz/model/quiz.dart';
+import 'package:whizz/src/router/app_router.dart';
 import 'package:whizz/src/screens/play_quiz/widgets/choose_tile.dart';
 
 class PlayQuizScreen extends StatefulWidget {
@@ -42,31 +44,93 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
             body: PageView.builder(
               physics: const NeverScrollableScrollPhysics(),
               controller: _controller,
-              itemCount: widget.quiz.questions.length * 2,
+              itemCount: widget.quiz.questions.length * 2 + 1,
               itemBuilder: (context, index) {
                 final currentQuestion =
                     widget.quiz.questions[state.currentQuestion];
 
                 if (index.isEven) {
+                  if (index == widget.quiz.questions.length * 2) {
+                    return _buildTotalScorePage();
+                  }
                   return _buildQuestionPage(
                       state, currentQuestion, index, context);
                 }
 
-                return LeaderboardCountdown(onNextQuestion: () {
-                  if (index <= (widget.quiz.questions.length - 1) * 2) {
-                    context.read<GameCubit>().nextQuestion();
-                    _controller.nextPage(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.ease,
-                    );
-                  }
-                });
+                return _buildShowScorePage(index, context);
               },
             ),
           );
         },
       ),
       onWillPop: () async => false,
+    );
+  }
+
+  Widget _buildTotalScorePage() {
+    return Padding(
+      padding: const EdgeInsets.all(AppConstant.kPadding),
+      child: BlocBuilder<LobbyCubit, Lobby>(
+        builder: (context, state) {
+          final rank = context.read<LobbyCubit>().getRank();
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AppBar(
+                title: const Text('Leaderboard'),
+                automaticallyImplyLeading: false,
+              ),
+              Center(
+                child: Text(
+                  'You got rank ${rank + 1}',
+                  style: AppConstant.textHeading,
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: state.participants.length > 5
+                      ? 5
+                      : state.participants.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      leading: Text('${index + 1}'),
+                      title: Text(state.participants[index].participant.name!),
+                      trailing:
+                          Text(state.participants[index].score.toString()),
+                    );
+                  },
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: CustomButton(
+                  onPressed: () {
+                    context.read<LobbyCubit>().cancel();
+                    context.goNamed(RouterPath.home.name);
+                  },
+                  label: 'Go Back',
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  LeaderboardCountdown _buildShowScorePage(int index, BuildContext context) {
+    return LeaderboardCountdown(
+      onNextQuestion: () {
+        if (index <= (widget.quiz.questions.length - 1) * 2 + 1) {
+          if (index <= (widget.quiz.questions.length - 1) * 2) {
+            context.read<GameCubit>().nextQuestion();
+          }
+          _controller.nextPage(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.ease,
+          );
+        }
+      },
     );
   }
 
@@ -86,7 +150,7 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
                 duration: currentQuestion.duration ?? 0,
                 quiz: widget.quiz,
                 onNextQuestion: () {
-                  if (index <= (widget.quiz.questions.length - 1) * 2) {
+                  if (index <= (widget.quiz.questions.length - 1) * 2 + 1) {
                     context.read<LobbyCubit>().calculateScore(state.score);
                     _controller.nextPage(
                       duration: const Duration(milliseconds: 300),

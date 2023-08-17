@@ -123,14 +123,18 @@ class AuthenticationRepository {
   Future<void> loginWithPhoneNumber(
     BuildContext context,
     String phoneNumber,
+    VoidCallback onVerificationCompleted,
   ) async {
     final completer = Completer<PhoneAuthCredential>();
     await _firebaseAuth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
-      verificationCompleted: completer.complete,
+      verificationCompleted: (_) {
+        log('Sign in with Phone Number successfully!');
+      },
       verificationFailed: completer.completeError,
       codeSent: (verificationId, forceResendingToken) async {
         context.hideCurrentSnackbar();
+        onVerificationCompleted();
         await context.pushNamed(
           RouterPath.otp.name,
           extra: (verificationId, forceResendingToken),

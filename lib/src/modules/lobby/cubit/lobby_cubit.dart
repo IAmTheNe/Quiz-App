@@ -41,4 +41,12 @@ class LobbyCubit extends Cubit<Lobby> {
       emit(lobby);
     });
   }
+
+  int getRank() {
+    return _repository.getRank(state);
+  }
+
+  void cancel() {
+    emit(const Lobby());
+  }
 }

@@ -6,9 +6,6 @@ class ShowScoreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Show Score'),
-      ),
       body: Column(
         children: [
           ListView.builder(
