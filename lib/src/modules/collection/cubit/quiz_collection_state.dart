@@ -1,4 +1,4 @@
-part of 'quiz_collection_bloc.dart';
+part of 'quiz_collection_cubit.dart';
 
 sealed class QuizCollectionState {
   const QuizCollectionState();
@@ -22,4 +22,10 @@ class QuizCollectionError implements QuizCollectionState {
   const QuizCollectionError(this.message);
 
   final String message;
+}
+
+class QuizDetailInfo implements QuizCollectionState {
+  const QuizDetailInfo(this.quizzes);
+
+  final List<Quiz> quizzes;
 }

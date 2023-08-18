@@ -3,25 +3,20 @@ import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whizz/src/modules/collection/model/quiz_collection.dart';
 import 'package:whizz/src/modules/collection/repository/quiz_collection_repository.dart';
+import 'package:whizz/src/modules/quiz/model/quiz.dart';
 
-
-part 'quiz_collection_event.dart';
 part 'quiz_collection_state.dart';
 
-class QuizCollectionBloc
-    extends Bloc<QuizCollectionEvent, QuizCollectionState> {
-  QuizCollectionBloc({QuizCollectionRepository? repository})
+class QuizCollectionCubit extends Cubit<QuizCollectionState> {
+  QuizCollectionCubit({QuizCollectionRepository? repository})
       : _repository = repository ?? QuizCollectionRepository(),
         super(const QuizCollectionInitial()) {
-    on(_onGetCollection);
+    onGetCollection();
   }
 
   final QuizCollectionRepository _repository;
 
-  void _onGetCollection(
-    GetDataEvent event,
-    Emitter<QuizCollectionState> emit,
-  ) async {
+  void onGetCollection() async {
     emit(const QuizCollectionLoading());
     try {
       final result = await _repository.fetchAllCollections();
@@ -30,5 +25,10 @@ class QuizCollectionBloc
       log(e.toString());
       emit(QuizCollectionError(e.toString()));
     }
+  }
+
+  Future<List<Quiz>> onGetQuizByCollectionId(String collectionId) async {
+    final result = await _repository.collectionByID(collectionId);
+    return result;
   }
 }

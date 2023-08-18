@@ -5,11 +5,10 @@ import 'package:whizz/src/common/constants/constants.dart';
 
 import 'package:whizz/src/gen/fonts.gen.dart';
 import 'package:whizz/src/modules/auth/bloc/auth_bloc.dart';
+import 'package:whizz/src/modules/collection/cubit/quiz_collection_cubit.dart';
 import 'package:whizz/src/modules/lobby/cubit/lobby_cubit.dart';
 import 'package:whizz/src/modules/media/bloc/online_media_bloc.dart';
 import 'package:whizz/src/router/app_router.dart';
-
-import 'package:whizz/src/modules/collection/bloc/quiz_collection_bloc.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -21,8 +20,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
             create: (_) => OnlineMediaBloc()..add(const GetListPhotosEvent())),
-        BlocProvider(
-            create: (_) => QuizCollectionBloc()..add(const GetDataEvent())),
+        BlocProvider(create: (_) => QuizCollectionCubit()),
         BlocProvider(create: (_) => AuthBloc()),
         BlocProvider(create: (_) => LobbyCubit()),
       ],

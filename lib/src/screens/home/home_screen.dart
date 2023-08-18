@@ -7,7 +7,7 @@ import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/widgets/shared_widget.dart';
 
 import 'package:whizz/src/gen/assets.gen.dart';
-import 'package:whizz/src/modules/collection/bloc/quiz_collection_bloc.dart';
+import 'package:whizz/src/modules/collection/cubit/quiz_collection_cubit.dart';
 import 'package:whizz/src/modules/collection/model/quiz_collection.dart';
 import 'package:whizz/src/modules/quiz/cubit/top_quiz_cubit.dart';
 import 'package:whizz/src/router/app_router.dart';
@@ -148,6 +148,8 @@ class HomeScreen extends StatelessWidget {
           Text(
             state.quiz[index].title,
             style: AppConstant.textTitle700,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
@@ -157,16 +159,29 @@ class HomeScreen extends StatelessWidget {
   SizedBox _buildTopCollection() {
     return SizedBox(
       height: .15.sh,
-      child: BlocBuilder<QuizCollectionBloc, QuizCollectionState>(
+      child: BlocBuilder<QuizCollectionCubit, QuizCollectionState>(
         builder: (context, state) {
           return ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount:
                 state is QuizCollectionSuccess ? state.collections.length : 10,
             itemBuilder: (context, index) {
-              return state is QuizCollectionSuccess
-                  ? CollectionCard(collection: state.collections[index])
-                  : Container();
+              if (state is QuizCollectionSuccess) {
+                return GestureDetector(
+                    onTap: () {
+                      context.pushNamed(
+                        RouterPath.discoveryDetail.name,
+                        extra: state.collections[index],
+                      );
+                      context
+                          .read<QuizCollectionCubit>()
+                          .onGetQuizByCollectionId(state.collections[index].id);
+                    },
+                    child:
+                        CollectionCard(collection: state.collections[index]));
+              } else {
+                return Container();
+              }
             },
           );
         },

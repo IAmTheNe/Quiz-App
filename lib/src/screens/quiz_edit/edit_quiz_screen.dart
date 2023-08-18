@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/extensions/extension.dart';
 import 'package:whizz/src/common/widgets/shared_widget.dart';
-import 'package:whizz/src/modules/collection/bloc/quiz_collection_bloc.dart';
+import 'package:whizz/src/modules/collection/cubit/quiz_collection_cubit.dart';
 import 'package:whizz/src/modules/quiz/bloc/quiz_bloc.dart';
 import 'package:whizz/src/screens/quiz_create/widgets/popup_menu.dart';
 
@@ -71,7 +71,7 @@ class EditQuizScreen extends StatelessWidget {
                   const SizedBox(
                     height: AppConstant.kPadding,
                   ),
-                  BlocBuilder<QuizCollectionBloc, QuizCollectionState>(
+                  BlocBuilder<QuizCollectionCubit, QuizCollectionState>(
                     builder: (context, state) {
                       return QuizCollectionDropDownField(
                         initialValue: quizState.quiz.collectionId,

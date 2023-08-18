@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/utils/debouncer.dart';
 import 'package:whizz/src/modules/collection/model/quiz_collection.dart';
+import 'package:whizz/src/modules/quiz/model/quiz.dart';
 
 class QuizCollectionRepository {
   QuizCollectionRepository({
@@ -57,5 +58,19 @@ class QuizCollectionRepository {
       callback: _searchCollection,
       args: [value, limit],
     );
+  }
+
+  Future<List<Quiz>> collectionByID(String collectionId) async {
+    final quizzes = <Quiz>[];
+    await _firestore
+        .collection(FirebaseDocumentConstants.quiz)
+        .where('collectionId', isEqualTo: collectionId)
+        .get()
+        .then((querySnapshot) {
+      for (final quiz in querySnapshot.docs) {
+        quizzes.add(Quiz.fromMap(quiz.data()));
+      }
+    });
+    return quizzes;
   }
 }

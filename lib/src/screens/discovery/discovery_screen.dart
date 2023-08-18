@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
+import 'package:whizz/src/modules/collection/cubit/quiz_collection_cubit.dart';
 
-import 'package:whizz/src/modules/collection/bloc/quiz_collection_bloc.dart';
 import 'package:whizz/src/modules/collection/model/quiz_collection.dart';
 
 import 'package:whizz/src/router/app_router.dart';
@@ -19,7 +19,7 @@ class DiscoveryScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Discovery'),
       ),
-      body: BlocBuilder<QuizCollectionBloc, QuizCollectionState>(
+      body: BlocBuilder<QuizCollectionCubit, QuizCollectionState>(
         builder: (context, state) {
           return Padding(
             padding: const EdgeInsets.all(AppConstant.kPadding),
@@ -47,10 +47,16 @@ class DiscoveryScreen extends StatelessWidget {
                         child: CircularProgressIndicator.adaptive(),
                       ),
                     QuizCollectionSuccess() => GestureDetector(
-                        onTap: () => context.pushNamed(
-                          RouterPath.discoveryDetail.name,
-                          extra: state.collections[index],
-                        ),
+                        onTap: () {
+                          context.pushNamed(
+                            RouterPath.discoveryDetail.name,
+                            extra: state.collections[index],
+                          );
+                          context
+                              .read<QuizCollectionCubit>()
+                              .onGetQuizByCollectionId(
+                                  state.collections[index].id);
+                        },
                         child: DiscoveryCard(
                           collection: state.collections[index],
                         ),
