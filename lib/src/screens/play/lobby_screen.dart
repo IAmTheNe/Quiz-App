@@ -38,7 +38,7 @@ class LobbyScreen extends StatelessWidget {
                 children: [
                   if (!isSoloMode) ...[
                     Text(
-                      state.code ?? '123456',
+                      state.code ?? '',
                       style: AppConstant.textTitle700.copyWith(
                         fontSize: 28.sp,
                       ),
@@ -83,9 +83,16 @@ class LobbyScreen extends StatelessWidget {
                     ),
                     Counter(
                       quiz: state.quiz,
+                      isSoloMode: isSoloMode,
                     ),
-                  ] else
-                    CustomButton(onPressed: () {}, label: 'Start now'),
+                  ] else if (state.participants.isNotEmpty &&
+                      state.participants[0].participant == state.host)
+                    CustomButton(
+                      onPressed: () {
+                        context.read<LobbyCubit>().startGame();
+                      },
+                      label: 'Start now',
+                    ),
                 ],
               ),
             ),
@@ -97,9 +104,14 @@ class LobbyScreen extends StatelessWidget {
 }
 
 class Counter extends StatefulWidget {
-  const Counter({super.key, required this.quiz});
+  const Counter({
+    super.key,
+    required this.quiz,
+    required this.isSoloMode,
+  });
 
   final Quiz quiz;
+  final bool isSoloMode;
 
   @override
   State<Counter> createState() => _CounterState();
@@ -119,7 +131,10 @@ class _CounterState extends State<Counter> {
           context.goNamed(
             RouterPath.playQuiz.name,
             pathParameters: {'id': widget.quiz.id},
-            extra: {'quiz': widget.quiz},
+            extra: {
+              'quiz': widget.quiz,
+              'isSoloMode': widget.isSoloMode,
+            },
           );
         }
       });

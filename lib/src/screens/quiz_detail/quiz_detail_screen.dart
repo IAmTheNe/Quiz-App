@@ -169,7 +169,9 @@ class QuestionDetailScreen extends StatelessWidget {
             Expanded(
               child: ElevatedButton(
                 onPressed: () {
-                  context.read<LobbyCubit>().createLobby(quiz);
+                  context
+                      .read<LobbyCubit>()
+                      .createLobby(quiz, isSoloMode: false);
                   context.goNamed(
                     RouterPath.lobby.name,
                     extra: false,

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/utils/cache.dart';
@@ -15,7 +17,10 @@ class LobbyRepository {
   final FirebaseFirestore _firestore;
   final InMemoryCache _cache;
 
-  Future<Lobby> createLobby(Lobby lobby) async {
+  Future<Lobby> createLobby(
+    Lobby lobby, {
+    bool isSoloMode = true,
+  }) async {
     final user = _cache.read<AppUser>(key: 'user');
     final now = DateTime.now();
     final participant = Participant(participant: user!, score: 0);
@@ -26,6 +31,7 @@ class LobbyRepository {
       host: user,
       participants: participants,
       startTime: now,
+      code: isSoloMode ? null : _randomCode(),
     );
 
     await _firestore
@@ -36,9 +42,52 @@ class LobbyRepository {
     return lobbyNew;
   }
 
-  enterLobby() {}
+  Future<void> startGame(Lobby lobby) async {
+    final lobbyNew = lobby.copyWith(
+      isStart: true,
+    );
+    await _firestore
+        .collection(FirebaseDocumentConstants.lobby)
+        .doc(lobby.id)
+        .set(lobbyNew.toMap());
+  }
 
-  Stream<Lobby> lobbyScore(Lobby lobby) {
+  String _randomCode() {
+    final rand = Random().nextInt(1000000);
+    return rand.toString().padLeft(6, '0');
+  }
+
+  Future<Lobby?> enterLobby(String code) async {
+    final lobbies = <Lobby>[];
+    final user = _cache.read<AppUser>(key: 'user');
+    await _firestore
+        .collection(FirebaseDocumentConstants.lobby)
+        .where('code', isEqualTo: code)
+        .where('isStart', isEqualTo: false)
+        .get()
+        .then((querySnapshot) {
+      for (final lobby in querySnapshot.docs) {
+        lobbies.add(Lobby.fromMap(lobby.data()));
+      }
+    });
+
+    if (lobbies.isEmpty) {
+      return null;
+    }
+
+    final participants = List<Participant>.from(lobbies[0].participants)
+      ..add(Participant(participant: user!, score: 0));
+
+    final lobby = lobbies[0].copyWith(participants: participants);
+    await _firestore
+        .collection(FirebaseDocumentConstants.lobby)
+        .doc(lobby.id)
+        .set(lobby.toMap());
+
+    return lobby;
+  }
+
+  Stream<Lobby> lobbyInformation(Lobby lobby) {
     return _firestore
         .collection(FirebaseDocumentConstants.lobby)
         .where('id', isEqualTo: lobby.id)
@@ -74,15 +123,6 @@ class LobbyRepository {
     return index;
   }
 
-  int getScore(Lobby lobby) {
-    final user = _cache.read<AppUser>(key: 'user');
-    final participant = lobby.participants.firstWhere(
-      (e) => user!.id == e.participant.id,
-    );
-
-    return participant.score;
-  }
-
   Future<List<Participant>> soloHistory(Lobby lobby) async {
     final listLobby = <Lobby>[];
     final participant = <Participant>[];
@@ -90,6 +130,7 @@ class LobbyRepository {
     await _firestore
         .collection(FirebaseDocumentConstants.lobby)
         .where('quiz', isEqualTo: lobby.quiz.toMap())
+        .where('isSolo', isEqualTo: true)
         .get()
         .then((querySnapshot) {
       for (final doc in querySnapshot.docs) {
