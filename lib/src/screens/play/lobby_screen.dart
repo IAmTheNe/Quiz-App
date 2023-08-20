@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/widgets/custom_button.dart';
 import 'package:whizz/src/modules/lobby/cubit/lobby_cubit.dart';
 import 'package:whizz/src/modules/lobby/model/lobby.dart';
 import 'package:whizz/src/modules/quiz/model/quiz.dart';
 import 'package:whizz/src/router/app_router.dart';
+import 'package:whizz/src/screens/play/widgets/popup_menu.dart';
 
 class LobbyScreen extends StatelessWidget {
   const LobbyScreen({
@@ -25,6 +27,9 @@ class LobbyScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
+        actions: [
+          if (!isSoloMode) const CreateOptionsPopupMenu(),
+        ],
       ),
       body: BlocBuilder<LobbyCubit, Lobby>(
         builder: (context, state) {
@@ -37,6 +42,12 @@ class LobbyScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   if (!isSoloMode) ...[
+                    if (state.code != null)
+                      QrImageView(
+                        data: state.code!,
+                        version: QrVersions.auto,
+                        size: .2.sh,
+                      ),
                     Text(
                       state.code ?? '',
                       style: AppConstant.textTitle700.copyWith(

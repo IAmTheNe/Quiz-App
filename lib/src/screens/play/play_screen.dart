@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:pinput/pinput.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
+
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/widgets/custom_button.dart';
 import 'package:whizz/src/modules/lobby/cubit/lobby_cubit.dart';
@@ -38,9 +40,7 @@ class PlayScreen extends StatelessWidget {
                     InputCodeScreen(),
 
                     //! Tab 2
-                    Center(
-                      child: Text('Tab 2'),
-                    ),
+                    QrCodeScanner(),
                   ],
                 ),
               ),
@@ -48,6 +48,68 @@ class PlayScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class QrCodeScanner extends StatefulWidget {
+  const QrCodeScanner({
+    super.key,
+  });
+
+  @override
+  State<QrCodeScanner> createState() => _QrCodeScannerState();
+}
+
+class _QrCodeScannerState extends State<QrCodeScanner> {
+  QRViewController? _controller;
+  final qrkey = GlobalKey(debugLabel: 'qr');
+
+  void _onQrViewCreated(QRViewController controller) {
+    _controller = controller;
+    controller.scannedDataStream.listen((scanData) {
+      if (scanData.code != null) {
+        context.read<LobbyCubit>().enterRoom(context, scanData.code!);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Place the QR code in the area',
+                style: AppConstant.textTitle700,
+              ),
+              Text(
+                'Scanner will be started automatically!',
+                style: AppConstant.textSubtitle,
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          flex: 4,
+          child: QRView(
+            key: qrkey,
+            onQRViewCreated: _onQrViewCreated,
+          ),
+        ),
+        Expanded(
+          child: Container(),
+        ),
+      ],
     );
   }
 }
@@ -67,16 +129,16 @@ class InputCodeScreen extends HookWidget {
           alignment: Alignment.center,
           child: Pinput(
             controller: pinController,
-            autofocus: true,
             length: 6,
           ),
         ),
         const Spacer(),
         CustomButton(
-            onPressed: () {
-              context.read<LobbyCubit>().enterRoom(context, pinController.text);
-            },
-            label: 'Join'),
+          onPressed: () {
+            context.read<LobbyCubit>().enterRoom(context, pinController.text);
+          },
+          label: 'Join',
+        ),
         const Spacer(),
       ],
     );

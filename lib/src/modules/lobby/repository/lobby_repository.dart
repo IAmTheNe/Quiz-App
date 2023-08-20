@@ -97,7 +97,7 @@ class LobbyRepository {
     });
   }
 
-  Future<void> calculateScore(Lobby lobby, int score) async {
+  Future<void> updateScore(Lobby lobby, int score) async {
     final user = _cache.read<AppUser>(key: 'user');
     final participant = Participant(
       participant: user!,

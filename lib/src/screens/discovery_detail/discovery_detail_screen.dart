@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/widgets/shared_widget.dart';
+import 'package:whizz/src/gen/assets.gen.dart';
 import 'package:whizz/src/modules/collection/cubit/quiz_collection_cubit.dart';
 import 'package:whizz/src/modules/collection/model/quiz_collection.dart';
 import 'package:whizz/src/modules/quiz/model/quiz.dart';
@@ -55,11 +58,27 @@ class DiscoveryDetailScreen extends StatelessWidget {
               },
             );
           } else {
-            return const Center(
-              child: Text('Empty page'),
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Assets.images.empty.lottie(
+                    height: .25.sh,
+                  ),
+                  Text(
+                    'Oops! There\'s nothing here!',
+                    style: AppConstant.textTitle700,
+                  ),
+                ],
+              ),
             );
           }
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.add),
       ),
     );
   }

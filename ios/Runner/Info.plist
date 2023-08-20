@@ -12,6 +12,8 @@
 		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 		<key>CFBundleInfoDictionaryVersion</key>
 		<string>6.0</string>
+		<key>NSCameraUsageDescription</key>
+		<string>Camera permission is required for barcode scanning.</string>
 		<key>CFBundleName</key>
 		<string>Quizwhizz</string>
 		<key>CFBundlePackageType</key>
