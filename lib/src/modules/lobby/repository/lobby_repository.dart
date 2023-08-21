@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'dart:math';
 
+import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/utils/cache.dart';
 import 'package:whizz/src/modules/auth/models/user.dart';
@@ -23,6 +26,7 @@ class LobbyRepository {
   }) async {
     final user = _cache.read<AppUser>(key: 'user');
     final now = DateTime.now();
+
     final participant = Participant(participant: user!, score: 0);
     final participants = List<Participant>.from(lobby.participants)
       ..add(participant);
@@ -37,7 +41,14 @@ class LobbyRepository {
     await _firestore
         .collection(FirebaseDocumentConstants.lobby)
         .doc(lobby.id)
-        .set(lobbyNew.toMap());
+        .set(lobbyNew.toInfomation());
+
+    await _firestore
+        .collection(FirebaseDocumentConstants.lobby)
+        .doc(lobby.id)
+        .collection(FirebaseDocumentConstants.lobbyParticipant)
+        .doc(user.id)
+        .set(participant.toMap());
 
     return lobbyNew;
   }
@@ -75,19 +86,58 @@ class LobbyRepository {
       return null;
     }
 
+    final participant = Participant(
+      participant: user!,
+      score: 0,
+    );
+
     final participants = List<Participant>.from(lobbies[0].participants)
-      ..add(Participant(participant: user!, score: 0));
+      ..add(participant);
 
     final lobby = lobbies[0].copyWith(participants: participants);
     await _firestore
         .collection(FirebaseDocumentConstants.lobby)
         .doc(lobby.id)
-        .set(lobby.toMap());
+        .collection(FirebaseDocumentConstants.lobbyParticipant)
+        .doc(user.id)
+        .set(participant.toMap());
 
     return lobby;
   }
 
   Stream<Lobby> lobbyInformation(Lobby lobby) {
+    final stream1 = _firestore
+        .collection(FirebaseDocumentConstants.lobby)
+        .doc(lobby.id)
+        .collection(FirebaseDocumentConstants.lobbyParticipant)
+        .snapshots()
+        .asyncMap((event) {
+      final participants = <Participant>[];
+      for (final participant in event.docs) {
+        participants.add(Participant.fromMap(participant.data()));
+      }
+
+      return participants;
+    });
+
+    final stream2 = _firestore
+        .collection(FirebaseDocumentConstants.lobby)
+        .where('id', isEqualTo: lobby.id)
+        .snapshots()
+        .asyncMap((event) {
+      return Lobby.fromMap(event.docs[0].data());
+    });
+
+    final stream = StreamZip([stream1, stream2]);
+    return stream.asyncMap((event) {
+      final lobby = (event[1] as Lobby).copyWith(
+        participants: event[0] as List<Participant>,
+      );
+      return lobby;
+    });
+  }
+
+  Stream<Lobby> lobby(Lobby lobby) {
     return _firestore
         .collection(FirebaseDocumentConstants.lobby)
         .where('id', isEqualTo: lobby.id)
@@ -97,21 +147,35 @@ class LobbyRepository {
     });
   }
 
+  Stream<List<Participant>> participants(Lobby lobby) {
+    return _firestore
+        .collection(FirebaseDocumentConstants.lobby)
+        .doc(lobby.id)
+        .collection(FirebaseDocumentConstants.lobbyParticipant)
+        .snapshots()
+        .asyncMap((event) {
+      final participants = <Participant>[];
+      for (final participant in event.docs) {
+        participants.add(Participant.fromMap(participant.data()));
+      }
+
+      return participants;
+    });
+  }
+
   Future<void> updateScore(Lobby lobby, int score) async {
     final user = _cache.read<AppUser>(key: 'user');
     final participant = Participant(
       participant: user!,
       score: score,
     );
-    final index = lobby.participants.indexWhere(
-      (e) => user.id == e.participant.id,
-    );
-
-    lobby.participants[index] = participant;
+   
     await _firestore
         .collection(FirebaseDocumentConstants.lobby)
         .doc(lobby.id)
-        .set(lobby.toMap());
+        .collection(FirebaseDocumentConstants.lobbyParticipant)
+        .doc(user.id)
+        .set(participant.toMap());
   }
 
   int getRank(Lobby lobby) {
@@ -136,11 +200,18 @@ class LobbyRepository {
       for (final doc in querySnapshot.docs) {
         listLobby.add(Lobby.fromMap(doc.data()));
       }
-
-      for (final lobby in listLobby) {
-        participant.add(lobby.participants[0]);
-      }
     });
+
+    for (final lobby in listLobby) {
+      await _firestore
+          .collection(FirebaseDocumentConstants.lobby)
+          .doc(lobby.id)
+          .collection(FirebaseDocumentConstants.lobbyParticipant)
+          .get()
+          .then((querySnapshot) {
+        participant.add(Participant.fromMap(querySnapshot.docs[0].data()));
+      });
+    }
 
     return participant;
   }

@@ -37,13 +37,20 @@ class LobbyCubit extends Cubit<Lobby> {
       isSoloMode: isSoloMode,
     );
 
-    _repository.lobbyInformation(lobby).listen((e) {
-      emit(e);
+    _repository.lobby(lobby).listen((event) {
+      emit(event);
+    });
+
+    _repository.participants(lobby).listen((event) {
+      emit(state.copyWith(
+        participants: event,
+      ));
     });
   }
 
   void startGame() async {
     await _repository.startGame(state);
+    emit(state.copyWith(isStart: true));
   }
 
   void calculateScore(int score) async {
@@ -52,21 +59,34 @@ class LobbyCubit extends Cubit<Lobby> {
   }
 
   void getScores() {
-    state.participants.sort((a, b) => b.score - a.score);
-    emit(state);
+    Lobby lobby = state;
+    lobby.participants.sort((a, b) => b.score - a.score);
+    emit(lobby);
   }
 
   int getRank() {
     return _repository.getRank(state);
   }
 
-  Future<void> enterRoom(BuildContext context, String code) async {
+  void enterRoom(BuildContext context, String code) {
     _repository.enterLobby(code).then((result) {
       if (result == null) {
         context.showErrorSnackBar('Quiz not found');
       } else {
-        _repository.lobbyInformation(result).listen((lobby) {
-          emit(lobby);
+        // _repository.lobbyInformation(result).listen((lobby) {
+        //   emit(lobby);
+        // });
+
+        _repository.lobby(result).listen((event) {
+          emit(event.copyWith(
+            isHost: false,
+          ));
+        });
+
+        _repository.participants(result).listen((event) {
+          emit(state.copyWith(
+            participants: event,
+          ));
         });
         context.goNamed(
           RouterPath.lobby.name,

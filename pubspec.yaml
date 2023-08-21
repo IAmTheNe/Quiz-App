@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  async: ^2.11.0
   awesome_dialog: ^2.2.1
   cached_network_image: ^3.2.3
   cloud_firestore: ^4.8.2

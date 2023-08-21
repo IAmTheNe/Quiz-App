@@ -17,6 +17,7 @@ class Lobby {
     this.isStart = false,
     this.startTime,
     this.isSolo = true,
+    this.isHost = true,
   });
 
   final String id;
@@ -29,6 +30,7 @@ class Lobby {
   final bool isStart;
   final DateTime? startTime;
   final bool isSolo;
+  final bool isHost;
 
   Lobby copyWith({
     String? id,
@@ -41,6 +43,7 @@ class Lobby {
     bool? isStart,
     DateTime? startTime,
     bool? isSolo,
+    bool? isHost,
   }) {
     return Lobby(
       id: id ?? this.id,
@@ -53,13 +56,26 @@ class Lobby {
       isStart: isStart ?? this.isStart,
       startTime: startTime ?? this.startTime,
       isSolo: isSolo ?? this.isSolo,
+      isHost: isHost ?? this.isHost,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
-      'participants': participants.map((x) => x.toMap()).toList(),
+      // 'participants': participants.map((x) => x.toMap()).toList(),
+      'quiz': quiz.toMap(),
+      'host': host.toMap(),
+      'code': code,
+      'isStart': isStart,
+      'startTime': startTime?.millisecondsSinceEpoch,
+      'isSolo': isSolo,
+    };
+  }
+
+  Map<String, dynamic> toInfomation() {
+    return <String, dynamic>{
+      'id': id,
       'quiz': quiz.toMap(),
       'host': host.toMap(),
       'code': code,
@@ -72,11 +88,11 @@ class Lobby {
   factory Lobby.fromMap(Map<String, dynamic> map) {
     return Lobby(
       id: map['id'] as String,
-      participants: List<Participant>.from(
-        (map['participants'] as List<dynamic>).map<Participant>(
-          (x) => Participant.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
+      // participants: List<Participant>.from(
+      //   (map['participants'] as List<dynamic>).map<Participant>(
+      //     (x) => Participant.fromMap(x as Map<String, dynamic>),
+      //   ),
+      // ),
       quiz: Quiz.fromMap(map['quiz'] as Map<String, dynamic>),
       host: AppUser.fromMap(map['host'] as Map<String, dynamic>),
       code: map['code'] != null ? map['code'] as String : null,

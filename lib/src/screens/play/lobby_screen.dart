@@ -96,8 +96,7 @@ class LobbyScreen extends StatelessWidget {
                       quiz: state.quiz,
                       isSoloMode: isSoloMode,
                     ),
-                  ] else if (state.participants.isNotEmpty &&
-                      state.participants[0].participant == state.host)
+                  ] else if (state.participants.isNotEmpty && state.isHost)
                     CustomButton(
                       onPressed: () {
                         context.read<LobbyCubit>().startGame();
