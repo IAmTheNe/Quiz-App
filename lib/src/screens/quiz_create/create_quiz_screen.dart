@@ -10,14 +10,13 @@ import 'package:whizz/src/modules/collection/cubit/quiz_collection_cubit.dart';
 import 'package:whizz/src/modules/quiz/bloc/quiz_bloc.dart';
 import 'package:whizz/src/screens/quiz_create/widgets/popup_menu.dart';
 
-// import 'package:whizz/src/features/discovery/data/bloc/quiz_collection_bloc.dart';
-// import 'package:whizz/src/features/quiz/data/bloc/quiz_bloc.dart';
-
-// import 'package:whizz/src/features/quiz/presentation/popups/popup_menu.dart';
-// import 'package:whizz/src/common/widgets/image_cover.dart';
-
 class CreateQuizScreen extends StatelessWidget {
-  const CreateQuizScreen({super.key});
+  const CreateQuizScreen({
+    super.key,
+    this.collectionId,
+  });
+
+  final String? collectionId;
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +78,8 @@ class CreateQuizScreen extends StatelessWidget {
               BlocBuilder<QuizCollectionCubit, QuizCollectionState>(
                 builder: (context, state) {
                   return QuizCollectionDropDownField(
+                    ctx: context,
+                    initialValue: collectionId,
                     onChanged: (collectionId) {
                       context
                           .read<QuizBloc>()
@@ -148,26 +149,8 @@ class CreateQuizScreen extends StatelessWidget {
                             elevation: 4,
                           ),
                         ),
-                        // child: LoadingButton(label: 'Loading'),
                       )
                     : Expanded(
-                        // child: ElevatedButton(
-                        //   onPressed: state.isValid
-                        //       ? () => context
-                        //           .read<QuizBloc>()
-                        //           .add(OnInitialNewQuiz(context))
-                        //       : null,
-                        //   style: ElevatedButton.styleFrom(
-                        //     backgroundColor: Colors.white,
-                        //     elevation: 4,
-                        //   ),
-                        //   child: Text(
-                        //     'Save',
-                        //     style: AppConstant.textHeading.copyWith(
-                        //       fontSize: 14.sp,
-                        //     ),
-                        //   ),
-                        // ),
                         child: CustomButton(
                           onPressed: state.isValid
                               ? () => context

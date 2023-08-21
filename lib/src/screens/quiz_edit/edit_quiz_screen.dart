@@ -74,6 +74,7 @@ class EditQuizScreen extends StatelessWidget {
                   BlocBuilder<QuizCollectionCubit, QuizCollectionState>(
                     builder: (context, state) {
                       return QuizCollectionDropDownField(
+                        ctx: context,
                         initialValue: quizState.quiz.collectionId,
                         onChanged: (collectionId) {
                           context.read<QuizBloc>().add(

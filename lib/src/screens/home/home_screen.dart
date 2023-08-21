@@ -70,7 +70,7 @@ class HomeScreen extends StatelessWidget {
                   builder: (context, state) {
                     return ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: !state.isLoading ? state.quiz.length : 10,
+                      itemCount: !state.isLoading ? state.quiz.length : 5,
                       itemBuilder: (context, index) {
                         return !state.isLoading
                             ? Container(
@@ -113,7 +113,10 @@ class HomeScreen extends StatelessWidget {
               children: [
                 SizedBox(
                   width: double.infinity,
-                  child: ImageCover(media: state.quiz[index].media),
+                  child: ImageCover(
+                    media: state.quiz[index].media,
+                    isPreview: true,
+                  ),
                 ),
                 Positioned(
                   right: 0,
@@ -264,14 +267,6 @@ class HomeScreen extends StatelessWidget {
             Icons.search,
           ),
         ),
-        // CircleAvatar(
-        //   backgroundColor: Colors.grey.shade300,
-        //   backgroundImage: const CachedNetworkImageProvider(
-        //       'https://scontent.fdad1-4.fna.fbcdn.net/v/t39.30808-6/362222624_1482954875782698_4218631403666751824_n.jpg?_nc_cat=103&cb=99be929b-3346023f&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=65Zhcu4XNhcAX-IJfoL&_nc_ht=scontent.fdad1-4.fna&oh=00_AfDwLV7-VHVWFJiJmz0SNSJUM6JfMj1d8gbB6enGwXXglw&oe=64C13E9A'),
-        // ),
-        // SizedBox(
-        //   width: AppConstant.kPadding.w / 2,
-        // ),
       ],
     );
   }

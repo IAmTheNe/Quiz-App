@@ -150,7 +150,9 @@ class AppRouter {
                 create: (_) => QuizBloc(),
               ),
             ],
-            child: const CreateQuizScreen(),
+            child: CreateQuizScreen(
+              collectionId: state.extra as String?,
+            ),
           ),
         ),
         routes: [

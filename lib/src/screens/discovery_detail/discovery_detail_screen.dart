@@ -77,7 +77,12 @@ class DiscoveryDetailScreen extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          context.pushNamed(
+            RouterPath.quiz.name,
+            extra: quizCollection.id,
+          );
+        },
         child: const Icon(Icons.add),
       ),
     );

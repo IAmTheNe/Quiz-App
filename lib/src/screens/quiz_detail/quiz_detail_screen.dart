@@ -49,6 +49,7 @@ class QuestionDetailScreen extends StatelessWidget {
                   color: Colors.red,
                 ),
               ),
+
               const SizedBox(
                 height: AppConstant.kPadding,
               ),
@@ -103,59 +104,59 @@ class QuestionDetailScreen extends StatelessWidget {
                 height: AppConstant.kPadding / 2,
               ),
               Text(
-                '${quiz.questions.length} question',
+                '${quiz.questions.length} questions',
                 style: AppConstant.textTitle700.copyWith(
                   color: AppConstant.primaryColor,
                 ),
               ),
-              const SizedBox(
-                height: AppConstant.kPadding / 2,
-              ),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: AspectRatio(
-                              aspectRatio: 4 / 3,
-                              child: ImageCover(
-                                media: quiz.questions[index].media,
-                                isPreview: true,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: AppConstant.kPadding / 2,
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  quiz.questions[index].name,
-                                  style: AppConstant.textTitle700.copyWith(
-                                    color: AppConstant.primaryColor,
-                                    fontSize: 14.sp,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: AppConstant.kPadding / 2,
-                      ),
-                    ],
-                  );
-                },
-                itemCount: quiz.questions.length,
-              ),
+              // const SizedBox(
+              //   height: AppConstant.kPadding / 2,
+              // ),
+              // ListView.builder(
+              //   shrinkWrap: true,
+              //   physics: const NeverScrollableScrollPhysics(),
+              //   itemBuilder: (context, index) {
+              //     return Column(
+              //       children: [
+              //         Row(
+              //           crossAxisAlignment: CrossAxisAlignment.center,
+              //           children: [
+              //             Expanded(
+              //               child: AspectRatio(
+              //                 aspectRatio: 4 / 3,
+              //                 child: ImageCover(
+              //                   media: quiz.questions[index].media,
+              //                   isPreview: true,
+              //                 ),
+              //               ),
+              //             ),
+              //             const SizedBox(
+              //               width: AppConstant.kPadding / 2,
+              //             ),
+              //             Expanded(
+              //               child: Column(
+              //                 crossAxisAlignment: CrossAxisAlignment.start,
+              //                 children: [
+              //                   Text(
+              //                     quiz.questions[index].name,
+              //                     style: AppConstant.textTitle700.copyWith(
+              //                       color: AppConstant.primaryColor,
+              //                       fontSize: 14.sp,
+              //                     ),
+              //                   ),
+              //                 ],
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //         const SizedBox(
+              //           height: AppConstant.kPadding / 2,
+              //         ),
+              //       ],
+              //     );
+              //   },
+              //   itemCount: quiz.questions.length,
+              // ),
             ],
           ),
         ),

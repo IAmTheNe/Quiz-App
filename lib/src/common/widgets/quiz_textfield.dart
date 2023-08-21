@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/extensions/extension.dart';
 import 'package:whizz/src/modules/collection/model/quiz_collection.dart';
+import 'package:whizz/src/modules/quiz/bloc/quiz_bloc.dart';
 
 class QuizFormField extends StatelessWidget {
   const QuizFormField({
@@ -68,20 +70,32 @@ class QuizFormField extends StatelessWidget {
 class QuizCollectionDropDownField extends StatelessWidget {
   const QuizCollectionDropDownField({
     super.key,
+    required this.ctx,
     required this.onChanged,
     required this.items,
     this.label,
     this.initialValue,
   });
-
+  final BuildContext ctx;
   final void Function(Object?)? onChanged;
   final Widget? label;
 
   final List<QuizCollection> items;
   final String? initialValue;
 
+  void init() {
+    if (items.isNotEmpty) {
+      if (initialValue == null) {
+        ctx.read<QuizBloc>().add(OnQuizCollectionChanged(items[0].id));
+      } else {
+        ctx.read<QuizBloc>().add(OnQuizCollectionChanged(initialValue!));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    init();
     return Container(
       padding: const EdgeInsets.symmetric(
         vertical: 8,
