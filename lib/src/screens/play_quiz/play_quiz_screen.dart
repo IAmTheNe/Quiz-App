@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -98,17 +99,35 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
                       ? 5
                       : state.participants.length,
                   itemBuilder: (context, index) {
+                    final participant = state.participants[index];
                     return Ink(
                       decoration: BoxDecoration(
                         color: index == rank ? Colors.grey.shade400 : null,
                         borderRadius: BorderRadius.circular(16.0),
                       ),
-                      child: ListTile(
-                        leading: Text('${index + 1}'),
-                        title:
-                            Text(state.participants[index].participant.name!),
-                        trailing:
-                            Text(state.participants[index].score.toString()),
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                            width: AppConstant.kPadding,
+                          ),
+                          Text(
+                            '${index + 1}',
+                            style: AppConstant.textTitle700,
+                          ),
+                          Expanded(
+                            child: ListTile(
+                              leading: participant.participant.avatar != null
+                                  ? CircleAvatar(
+                                      backgroundImage:
+                                          CachedNetworkImageProvider(
+                                              participant.participant.avatar!),
+                                    )
+                                  : null,
+                              title: Text(participant.participant.name!),
+                              trailing: Text(participant.score.toString()),
+                            ),
+                          ),
+                        ],
                       ),
                     );
                   },
@@ -217,11 +236,32 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
                         itemCount:
                             state.solo.length > 5 ? 5 : state.solo.length,
                         itemBuilder: (context, index) {
-                          return ListTile(
-                            leading: Text('${index + 1}'),
-                            title: Text(state.solo[index].participant.name!),
-                            subtitle: Text(state.startTime.toString()),
-                            trailing: Text(state.solo[index].score.toString()),
+                          final participant = state.participants[index];
+                          return Row(
+                            children: [
+                              const SizedBox(
+                                width: AppConstant.kPadding,
+                              ),
+                              Text(
+                                '${index + 1}',
+                                style: AppConstant.textTitle700,
+                              ),
+                              Expanded(
+                                child: ListTile(
+                                  leading:
+                                      participant.participant.avatar != null
+                                          ? CircleAvatar(
+                                              backgroundImage:
+                                                  CachedNetworkImageProvider(
+                                                participant.participant.avatar!,
+                                              ),
+                                            )
+                                          : null,
+                                  title: Text(participant.participant.name!),
+                                  trailing: Text(participant.score.toString()),
+                                ),
+                              ),
+                            ],
                           );
                         },
                       )
@@ -399,17 +439,35 @@ class _LeaderboardCountdownState extends State<LeaderboardCountdown> {
                       ? 5
                       : state.participants.length,
                   itemBuilder: (context, index) {
+                    final participant = state.participants[index];
                     return Ink(
                       decoration: BoxDecoration(
                         color: index == rank ? Colors.grey.shade400 : null,
                         borderRadius: BorderRadius.circular(16.0),
                       ),
-                      child: ListTile(
-                        leading: Text('${index + 1}'),
-                        title:
-                            Text(state.participants[index].participant.name!),
-                        trailing:
-                            Text(state.participants[index].score.toString()),
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                            width: AppConstant.kPadding,
+                          ),
+                          Text(
+                            '${index + 1}',
+                            style: AppConstant.textTitle700,
+                          ),
+                          Expanded(
+                            child: ListTile(
+                              leading: participant.participant.avatar != null
+                                  ? CircleAvatar(
+                                      backgroundImage:
+                                          CachedNetworkImageProvider(
+                                              participant.participant.avatar!),
+                                    )
+                                  : null,
+                              title: Text(participant.participant.name!),
+                              trailing: Text(participant.score.toString()),
+                            ),
+                          ),
+                        ],
                       ),
                     );
                   },
