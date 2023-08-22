@@ -28,7 +28,7 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
         context.goNamed(RouterPath.home.name);
         break;
       case 1:
-        context.goNamed(RouterPath.discovery.name);
+        context.pushNamed(RouterPath.discovery.name);
         break;
       case 2:
         context.pushNamed(RouterPath.play.name);
@@ -43,7 +43,7 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
         context.goNamed(RouterPath.home.name);
     }
 
-    if (index != 3 && index != 2) {
+    if (index != 3 && index != 2 && index != 1) {
       setState(() {
         currentIndex = index;
       });

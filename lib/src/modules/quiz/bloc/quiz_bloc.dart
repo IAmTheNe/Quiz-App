@@ -49,7 +49,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
         quiz: state.quiz.copyWith(
           title: title,
         ),
-        isValid: title.isNotEmpty,
+        isValid: title.isNotEmpty && state.quiz.questions.isNotEmpty,
       ),
     );
   }
@@ -153,12 +153,14 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       answers: List.generate(4, (_) => const Answer.empty()),
     );
+    final questions = List<Question>.from(state.quiz.questions)..add(question);
     emit(
       state.copyWith(
         quiz: state.quiz.copyWith(
-          questions: List.from(state.quiz.questions)..add(question),
+          questions: questions,
         ),
         index: state.quiz.questions.length,
+        isValid: state.quiz.title.isNotEmpty && questions.isNotEmpty,
       ),
     );
   }

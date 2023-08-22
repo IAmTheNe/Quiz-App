@@ -35,9 +35,14 @@ class HomeScreen extends StatelessWidget {
                     'Top Collection',
                     style: AppConstant.textHeading,
                   ),
-                  Text(
-                    'Show all',
-                    style: AppConstant.textSubtitle,
+                  InkWell(
+                    onTap: () {
+                      context.pushNamed(RouterPath.discovery.name);
+                    },
+                    child: Text(
+                      'Show all',
+                      style: AppConstant.textSubtitle,
+                    ),
                   ),
                 ],
               ),

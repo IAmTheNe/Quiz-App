@@ -94,14 +94,6 @@ class AppRouter {
             ),
           ),
           GoRoute(
-            path: '/discovery',
-            name: RouterPath.discovery.name,
-            pageBuilder: (_, state) => NoTransitionPage(
-              key: state.pageKey,
-              child: const DiscoveryScreen(),
-            ),
-          ),
-          GoRoute(
             path: '/settings',
             name: RouterPath.settings.name,
             pageBuilder: (_, state) => NoTransitionPage(
@@ -110,6 +102,15 @@ class AppRouter {
             ),
           ),
         ],
+      ),
+      GoRoute(
+        path: '/discovery',
+        name: RouterPath.discovery.name,
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (_, state) => NoTransitionPage(
+          key: state.pageKey,
+          child: const DiscoveryScreen(),
+        ),
       ),
       GoRoute(
         path: '/play',

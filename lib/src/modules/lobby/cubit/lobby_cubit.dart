@@ -9,16 +9,21 @@ import 'package:whizz/src/common/extensions/extension.dart';
 import 'package:whizz/src/modules/lobby/model/lobby.dart';
 import 'package:whizz/src/modules/lobby/repository/lobby_repository.dart';
 import 'package:whizz/src/modules/quiz/model/quiz.dart';
+import 'package:whizz/src/modules/quiz/repository/quiz_repository.dart';
 import 'package:whizz/src/router/app_router.dart';
 
 part 'lobby_state.dart';
 
 class LobbyCubit extends Cubit<Lobby> {
-  LobbyCubit({LobbyRepository? repository})
-      : _repository = repository ?? LobbyRepository(),
+  LobbyCubit({
+    LobbyRepository? lobbyRepository,
+    QuizRepository? quizRepository,
+  })  : _lobbyRepository = lobbyRepository ?? LobbyRepository(),
+        _quizRepository = quizRepository ?? QuizRepository(),
         super(const Lobby());
 
-  final LobbyRepository _repository;
+  final LobbyRepository _lobbyRepository;
+  final QuizRepository _quizRepository;
 
   Future<void> createLobby(
     Quiz quiz, {
@@ -32,16 +37,16 @@ class LobbyCubit extends Cubit<Lobby> {
       quiz: quiz,
     ));
 
-    final lobby = await _repository.createLobby(
+    final lobby = await _lobbyRepository.createLobby(
       state,
       isSoloMode: isSoloMode,
     );
 
-    _repository.lobby(lobby).listen((event) {
+    _lobbyRepository.lobby(lobby).listen((event) {
       emit(event);
     });
 
-    _repository.participants(lobby).listen((event) {
+    _lobbyRepository.participants(lobby).listen((event) {
       emit(state.copyWith(
         participants: event,
       ));
@@ -49,27 +54,33 @@ class LobbyCubit extends Cubit<Lobby> {
   }
 
   void startGame() async {
-    await _repository.startGame(state);
-    emit(state.copyWith(isStart: true));
+    // await _quizRepository.updateNumOfPlayer(state.quiz);
+    // await _lobbyRepository.startGame(state);
+    await Future.wait([
+      _quizRepository.updateNumOfPlayer(state.quiz),
+      _lobbyRepository.startGame(state),
+    ]);
   }
 
   void calculateScore(int score) async {
-    _repository.updateScore(state, score).then((_) => getScores());
-    getScores();
+    _lobbyRepository.updateScore(state, score).then((_) => getScores());
+    // getScores();
   }
 
   void getScores() {
-    Lobby lobby = state;
-    lobby.participants.sort((a, b) => b.score - a.score);
-    emit(lobby);
+    final participants = state.participants;
+    participants.sort((a, b) => b.score! - a.score!);
+    emit(state.copyWith(
+      participants: participants,
+    ));
   }
 
   int getRank() {
-    return _repository.getRank(state);
+    return _lobbyRepository.getRank(state);
   }
 
   void enterRoom(BuildContext context, String code) {
-    _repository.enterLobby(code).then((result) {
+    _lobbyRepository.enterLobby(code).then((result) {
       if (result == null) {
         context.showErrorSnackBar('Quiz not found');
       } else {
@@ -77,13 +88,13 @@ class LobbyCubit extends Cubit<Lobby> {
         //   emit(lobby);
         // });
 
-        _repository.lobby(result).listen((event) {
+        _lobbyRepository.lobby(result).listen((event) {
           emit(event.copyWith(
             isHost: false,
           ));
         });
 
-        _repository.participants(result).listen((event) {
+        _lobbyRepository.participants(result).listen((event) {
           emit(state.copyWith(
             participants: event,
           ));
@@ -97,10 +108,14 @@ class LobbyCubit extends Cubit<Lobby> {
   }
 
   void soloHistory() async {
-    final participant = await _repository.soloHistory(state);
-    participant.sort((a, b) => b.score - a.score);
+    final participant = await _lobbyRepository.soloHistory(state);
+    participant.sort((a, b) => b.score! - a.score!);
 
     emit(state.copyWith(solo: participant));
+  }
+
+  Future<void> rating(double rating) async {
+    await _quizRepository.rating(state.quiz, rating);
   }
 
   void cancel() {

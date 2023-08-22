@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
@@ -72,6 +73,7 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
   }
 
   Widget _buildTotalFriendScorePage() {
+    double rating = 0.0;
     return Padding(
       padding: const EdgeInsets.all(AppConstant.kPadding),
       child: BlocBuilder<LobbyCubit, Lobby>(
@@ -96,23 +98,88 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
                       ? 5
                       : state.participants.length,
                   itemBuilder: (context, index) {
-                    return ListTile(
-                      leading: Text('${index + 1}'),
-                      title: Text(state.participants[index].participant.name!),
-                      trailing:
-                          Text(state.participants[index].score.toString()),
+                    return Ink(
+                      decoration: BoxDecoration(
+                        color: index == rank ? Colors.grey.shade400 : null,
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                      child: ListTile(
+                        leading: Text('${index + 1}'),
+                        title:
+                            Text(state.participants[index].participant.name!),
+                        trailing:
+                            Text(state.participants[index].score.toString()),
+                      ),
                     );
                   },
                 ),
               ),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: CustomButton(
-                  onPressed: () {
-                    context.read<LobbyCubit>().cancel();
-                    context.goNamed(RouterPath.home.name);
-                  },
-                  label: 'Go Back',
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Text(
+                        'Are you satisfied with this test?',
+                        style: AppConstant.textTitle700,
+                      ),
+                    ),
+                    Center(
+                      child: RatingBar.builder(
+                        itemBuilder: (context, index) {
+                          switch (index) {
+                            case 0:
+                              return const Icon(
+                                Icons.sentiment_very_dissatisfied,
+                                color: Colors.red,
+                              );
+                            case 1:
+                              return const Icon(
+                                Icons.sentiment_dissatisfied,
+                                color: Colors.redAccent,
+                              );
+                            case 2:
+                              return const Icon(
+                                Icons.sentiment_neutral,
+                                color: Colors.amber,
+                              );
+                            case 3:
+                              return const Icon(
+                                Icons.sentiment_satisfied,
+                                color: Colors.lightGreen,
+                              );
+                            case 4:
+                              return const Icon(
+                                Icons.sentiment_very_satisfied,
+                                color: Colors.green,
+                              );
+                            default:
+                              return const Icon(
+                                Icons.favorite,
+                                color: Colors.red,
+                              );
+                          }
+                        },
+                        allowHalfRating: true,
+                        onRatingUpdate: (r) {
+                          rating = r;
+                        },
+                      ),
+                    ),
+                    const SizedBox(
+                      height: AppConstant.kPadding,
+                    ),
+                    CustomButton(
+                      onPressed: () {
+                        context.read<LobbyCubit>().rating(rating).then((_) {
+                          context.read<LobbyCubit>().cancel();
+                          context.goNamed(RouterPath.home.name);
+                        });
+                      },
+                      label: 'Go Back',
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -325,17 +392,25 @@ class _LeaderboardCountdownState extends State<LeaderboardCountdown> {
           ),
           BlocBuilder<LobbyCubit, Lobby>(
             builder: (context, state) {
+              final rank = context.read<LobbyCubit>().getRank();
               return Expanded(
                 child: ListView.builder(
                   itemCount: state.participants.length > 5
                       ? 5
                       : state.participants.length,
                   itemBuilder: (context, index) {
-                    return ListTile(
-                      leading: Text('${index + 1}'),
-                      title: Text(state.participants[index].participant.name!),
-                      trailing:
-                          Text(state.participants[index].score.toString()),
+                    return Ink(
+                      decoration: BoxDecoration(
+                        color: index == rank ? Colors.grey.shade400 : null,
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                      child: ListTile(
+                        leading: Text('${index + 1}'),
+                        title:
+                            Text(state.participants[index].participant.name!),
+                        trailing:
+                            Text(state.participants[index].score.toString()),
+                      ),
                     );
                   },
                 ),

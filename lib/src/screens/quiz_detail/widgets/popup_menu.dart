@@ -15,6 +15,9 @@ class CreateOptionsPopupMenu extends StatelessWidget {
           const PopupMenuItem(
             child: Text('Copy Quiz Link'),
           ),
+          const PopupMenuItem(
+            child: Text('Save quiz'),
+          ),
         ];
       },
     );

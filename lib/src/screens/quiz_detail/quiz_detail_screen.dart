@@ -49,9 +49,61 @@ class QuestionDetailScreen extends StatelessWidget {
                   color: Colors.red,
                 ),
               ),
-
               const SizedBox(
-                height: AppConstant.kPadding,
+                height: AppConstant.kPadding * 2,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: AppConstant.kPadding),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: [
+                          const Text('Played'),
+                          const SizedBox(
+                            height: AppConstant.kPadding / 4,
+                          ),
+                          Text(
+                            quiz.playedCount.toString(),
+                            style: AppConstant.textTitle700,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          const Text('Rating'),
+                          const SizedBox(
+                            height: AppConstant.kPadding / 4,
+                          ),
+                          Text(
+                            '${quiz.rating.toStringAsFixed(1)} ⭐',
+                            style: AppConstant.textTitle700,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          const Text('Question'),
+                          const SizedBox(
+                            height: AppConstant.kPadding / 4,
+                          ),
+                          Text(
+                            quiz.questions.length.toString(),
+                            style: AppConstant.textTitle700,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: AppConstant.kPadding * 2,
               ),
               Row(
                 children: [
@@ -99,15 +151,6 @@ class QuestionDetailScreen extends StatelessWidget {
               Text(
                 quiz.description!.isEmpty ? 'Empty' : quiz.description!,
                 style: AppConstant.textSubtitle,
-              ),
-              const SizedBox(
-                height: AppConstant.kPadding / 2,
-              ),
-              Text(
-                '${quiz.questions.length} questions',
-                style: AppConstant.textTitle700.copyWith(
-                  color: AppConstant.primaryColor,
-                ),
               ),
               // const SizedBox(
               //   height: AppConstant.kPadding / 2,

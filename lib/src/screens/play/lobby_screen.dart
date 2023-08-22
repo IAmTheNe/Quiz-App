@@ -75,17 +75,19 @@ class LobbyScreen extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  Text(
-                    '${state.participants.length} participants',
-                    style: AppConstant.textTitle700,
-                  ),
-                  Wrap(
-                    children: state.participants
-                        .map((e) => Chip(
-                              label: Text(e.participant.name!),
-                            ))
-                        .toList(),
-                  ),
+                  if (!state.isStart) ...[
+                    Text(
+                      '${state.participants.length} participants',
+                      style: AppConstant.textTitle700,
+                    ),
+                    Wrap(
+                      children: state.participants
+                          .map((e) => Chip(
+                                label: Text(e.participant.name!),
+                              ))
+                          .toList(),
+                    ),
+                  ],
                   const Spacer(),
                   if (state.isStart) ...[
                     Text(

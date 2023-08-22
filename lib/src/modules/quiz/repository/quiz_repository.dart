@@ -112,6 +112,26 @@ class QuizRepository {
     });
   }
 
+  Future<void> updateNumOfPlayer(Quiz quiz) async {
+    final count = quiz.playedCount + 1;
+    final newData = quiz.copyWith(
+      playedCount: count,
+    );
+    return _firestore
+        .collection(FirebaseDocumentConstants.quiz)
+        .doc(quiz.id)
+        .set(newData.toMap());
+  }
+
+  Future<void> rating(Quiz quiz, double rating) async {
+    final avg = (quiz.rating + rating) / 2;
+
+    return _firestore
+        .collection(FirebaseDocumentConstants.quiz)
+        .doc(quiz.id)
+        .update({'rating': avg});
+  }
+
   Future<String> _getDownloadUrl({
     required String path,
     required Media media,

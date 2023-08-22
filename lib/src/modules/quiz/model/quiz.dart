@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+
 import 'package:whizz/src/modules/auth/models/user.dart';
 import 'package:whizz/src/modules/quiz/model/media.dart';
 import 'package:whizz/src/modules/quiz/model/question.dart';
@@ -19,6 +20,7 @@ class Quiz extends Equatable {
     this.media = const Media(),
     this.playedCount = 0,
     this.author = AppUser.empty,
+    this.rating = 0,
   });
 
   final String id;
@@ -32,6 +34,7 @@ class Quiz extends Equatable {
   final List<Question> questions;
   final AppUser author;
   final int playedCount;
+  final double rating;
 
   Quiz copyWith({
     String? id,
@@ -41,10 +44,11 @@ class Quiz extends Equatable {
     QuizVisibility? visibility,
     List<String>? keyword,
     DateTime? createdAt,
-    List<Question>? questions,
     Media? media,
+    List<Question>? questions,
     AppUser? author,
     int? playedCount,
+    double? rating,
   }) {
     return Quiz(
       id: id ?? this.id,
@@ -54,10 +58,11 @@ class Quiz extends Equatable {
       visibility: visibility ?? this.visibility,
       keyword: keyword ?? this.keyword,
       createdAt: createdAt ?? this.createdAt,
-      questions: questions ?? this.questions,
       media: media ?? this.media,
+      questions: questions ?? this.questions,
       author: author ?? this.author,
       playedCount: playedCount ?? this.playedCount,
+      rating: rating ?? this.rating,
     );
   }
 
@@ -74,6 +79,7 @@ class Quiz extends Equatable {
         questions,
         author,
         playedCount,
+        rating,
       ];
 
   Map<String, dynamic> toMap() {
@@ -89,6 +95,7 @@ class Quiz extends Equatable {
       'imageUrl': media.imageUrl,
       'author': author.toMap(),
       'played': playedCount,
+      'rating': rating,
     };
   }
 
@@ -120,6 +127,7 @@ class Quiz extends Equatable {
             : AttachType.online,
       ),
       author: AppUser.fromMap(map['author']),
+      rating: double.parse(map['rating'].toString()),
     );
   }
 

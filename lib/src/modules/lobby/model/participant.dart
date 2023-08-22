@@ -6,11 +6,11 @@ import 'package:whizz/src/modules/auth/models/user.dart';
 class Participant {
   const Participant({
     required this.participant,
-    required this.score,
+     this.score,
   });
 
   final AppUser participant;
-  final int score;
+  final int? score;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -21,8 +21,8 @@ class Participant {
 
   factory Participant.fromMap(Map<String, dynamic> map) {
     return Participant(
-      participant: AppUser.fromMap(map['participant'] as Map<String, dynamic>),
-      score: map['score'] as int,
+      participant: AppUser.fromMap(map['participant'] as Map<String,dynamic>),
+      score: map['score'] != null ? map['score'] as int : null,
     );
   }
 
@@ -30,4 +30,14 @@ class Participant {
 
   factory Participant.fromJson(String source) =>
       Participant.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  Participant copyWith({
+    AppUser? participant,
+    int? score,
+  }) {
+    return Participant(
+      participant: participant ?? this.participant,
+      score: score ?? this.score,
+    );
+  }
 }
