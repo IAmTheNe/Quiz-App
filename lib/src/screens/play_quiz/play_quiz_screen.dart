@@ -75,6 +75,8 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
 
   Widget _buildTotalFriendScorePage() {
     double rating = 0.0;
+    bool isClicked = false;
+
     return Padding(
       padding: const EdgeInsets.all(AppConstant.kPadding),
       child: BlocBuilder<LobbyCubit, Lobby>(
@@ -183,6 +185,7 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
                         allowHalfRating: true,
                         onRatingUpdate: (r) {
                           rating = r;
+                          isClicked = true;
                         },
                       ),
                     ),
@@ -191,7 +194,10 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
                     ),
                     CustomButton(
                       onPressed: () {
-                        context.read<LobbyCubit>().rating(rating).then((_) {
+                        context
+                            .read<LobbyCubit>()
+                            .rating(isClicked, rating)
+                            .then((_) {
                           context.read<LobbyCubit>().cancel();
                           context.goNamed(RouterPath.home.name);
                         });

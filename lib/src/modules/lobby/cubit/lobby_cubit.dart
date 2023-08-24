@@ -114,8 +114,10 @@ class LobbyCubit extends Cubit<Lobby> {
     emit(state.copyWith(solo: participant));
   }
 
-  Future<void> rating(double rating) async {
-    await _quizRepository.rating(state.quiz, rating);
+  Future<void> rating(bool isClicked, double rating) async {
+    if (isClicked) {
+      await _quizRepository.rating(state.quiz, rating);
+    }
   }
 
   void cancel() {
