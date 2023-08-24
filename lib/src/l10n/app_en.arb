@@ -1,1 +1,16 @@
-{}
+{
+    "app_introduce": "Test your skills with Quizwhizz",
+    "app_auth_action": "Sign in / Register now",
+    "app_name": "Quizwhizz",
+    "user_phone_number": "Your phone number",
+    "user_accept_terms_1": "I accept ",
+    "user_accept_terms_2": "the Terms and Conditions",
+    "user_accept_terms_3": " of ",
+    "authenticating": "Please hold on",
+    "continue_text": "Continue",
+    "other_login_method": "Or continue with",
+    "unknown_error": "Unknown error! Please try again!",
+    "user_enter_otp": "Enter your OTP",
+    "otp_hint_text": "Please enter the 6-digit code that was sent to your phone",
+    "otp_expired": "The code will expire in "
+}

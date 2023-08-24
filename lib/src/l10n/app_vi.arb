@@ -1,1 +1,16 @@
-{}
+{
+    "app_introduce": "Thử tài cùng Quizwhizz",
+    "app_auth_action": "Đăng nhập / Đăng ký tài khoản ngay bây giờ",
+    "app_name": "Quizwhizz",
+    "user_phone_number": "Số điện thoại của bạn",
+    "user_accept_terms_1": "Tôi đồng ý với ",
+    "user_accept_terms_2": "Điều kiện và Điều khoản",
+    "user_accept_terms_3": " liên quan đến việc sử dụng dịch vụ của ",
+    "authenticating": "Đang xác thực",
+    "continue_text": "Tiếp tục",
+    "other_login_method": "Hoặc đăng nhập bằng",
+    "unknown_error": "Không xác định được lỗi! Vui lòng thử lại!",
+    "user_enter_otp": "Nhập mã PIN",
+    "otp_hint_text": "Vui lòng nhập mã số gồm 6 chữ số được gửi tới số điện thoại",
+    "otp_expired": "Mã sẽ hết hiệu lực trong "
+}

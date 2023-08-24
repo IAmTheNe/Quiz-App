@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,13 +20,15 @@ class LoginScreen extends HookWidget {
 
     final phoneNumberController = useTextEditingController(text: '');
 
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state.isError) {
-            context.showErrorSnackBar(state.message ?? 'Unknown Error!');
+            context.showErrorSnackBar(state.message ?? l10n.unknown_error);
           }
         },
         child: Padding(
@@ -34,11 +37,11 @@ class LoginScreen extends HookWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Thử tài cùng Quizwhizz!',
+                l10n.app_introduce,
                 style: AppConstant.textTitle700,
               ),
               Text(
-                'Đăng nhập / Đăng ký tài khoản ngay bây giờ',
+                l10n.app_auth_action,
                 style: AppConstant.textSubtitle,
               ),
               SizedBox(
@@ -103,7 +106,7 @@ class LoginScreen extends HookWidget {
                           isDense: true,
                           border: InputBorder.none,
                           contentPadding: EdgeInsets.zero,
-                          hintText: 'Số điện thoại của bạn',
+                          hintText: l10n.user_phone_number,
                           hintStyle: AppConstant.textSubtitle.copyWith(
                             color: Colors.grey,
                           ),
@@ -114,23 +117,23 @@ class LoginScreen extends HookWidget {
                 ],
               ),
               const Spacer(),
-              const Text.rich(
+              Text.rich(
                 TextSpan(
-                  text: 'Tôi đồng ý với ',
+                  text: l10n.user_accept_terms_1,
                   children: [
                     TextSpan(
-                      text: 'Điều kiện và Điều khoản',
-                      style: TextStyle(
+                      text: l10n.user_accept_terms_2,
+                      style: const TextStyle(
                         fontWeight: FontWeight.w700,
                         color: Colors.blue,
                       ),
                     ),
                     TextSpan(
-                      text: ' liên quan đến việc sử dụng dịch vụ của ',
+                      text: l10n.user_accept_terms_3,
                     ),
                     TextSpan(
-                      text: 'Quizwhizz',
-                      style: TextStyle(
+                      text: l10n.app_name,
+                      style: const TextStyle(
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -143,8 +146,8 @@ class LoginScreen extends HookWidget {
               BlocBuilder<AuthBloc, AuthState>(
                 builder: (context, state) {
                   if (state.isLoading) {
-                    return const LoadingButton(
-                      label: 'Đang xác thực',
+                    return LoadingButton(
+                      label: l10n.authenticating,
                     );
                   }
                   return CustomButton(
@@ -154,19 +157,19 @@ class LoginScreen extends HookWidget {
                             phoneNumberController.text,
                           ),
                         ),
-                    label: 'Tiếp tục',
+                    label: l10n.continue_text,
                   );
                 },
               ),
               const Spacer(
                 flex: 2,
               ),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Divider(),
-                  Text('Hoặc đăng nhập bằng'),
-                  Divider(),
+                  const Divider(),
+                  Text(l10n.other_login_method),
+                  const Divider(),
                 ],
               ),
               const SizedBox(

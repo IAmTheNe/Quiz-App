@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pinput/pinput.dart';
@@ -17,6 +18,7 @@ class OtpScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final pinController = useTextEditingController(text: '');
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(),
@@ -32,11 +34,11 @@ class OtpScreen extends HookWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Nhập mã Pin',
+                l10n.user_enter_otp,
                 style: AppConstant.textHeading,
               ),
-              const Text(
-                'Vui lòng nhập mã số gồm 6 chữ số được gửi tới',
+              Text(
+                l10n.otp_hint_text,
               ),
               BlocBuilder<AuthBloc, AuthState>(
                 builder: (context, state) {
@@ -61,7 +63,7 @@ class OtpScreen extends HookWidget {
               const Spacer(),
               Row(
                 children: [
-                  const Text('Mã sẽ hết hiệu lực trong '),
+                  Text(l10n.otp_expired),
                   TweenAnimationBuilder(
                     tween: Tween<double>(begin: 60, end: 0),
                     duration: const Duration(seconds: 60),
@@ -82,9 +84,7 @@ class OtpScreen extends HookWidget {
               BlocBuilder<AuthBloc, AuthState>(
                 builder: (context, state) {
                   return state.isLoading
-                      ? const Center(
-                          child: CircularProgressIndicator.adaptive(),
-                        )
+                      ? LoadingButton(label: l10n.authenticating)
                       : CustomButton(
                           onPressed: () => context.read<AuthBloc>().add(
                                 OtpVerification(
@@ -92,7 +92,7 @@ class OtpScreen extends HookWidget {
                                   codeSent.$1,
                                 ),
                               ),
-                          label: 'Xác minh',
+                          label: l10n.continue_text,
                         );
                 },
               ),

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:whizz/src/common/constants/constants.dart';
 
+import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/gen/fonts.gen.dart';
 import 'package:whizz/src/modules/auth/bloc/auth_bloc.dart';
 import 'package:whizz/src/modules/collection/cubit/quiz_collection_cubit.dart';
@@ -31,6 +32,9 @@ class MyApp extends StatelessWidget {
           routeInformationProvider: AppRouter.router.routeInformationProvider,
           routeInformationParser: AppRouter.router.routeInformationParser,
           routerDelegate: AppRouter.router.routerDelegate,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('en'),
           theme: ThemeData(
             fontFamily: FontFamily.montserrat,
             colorScheme: ColorScheme.fromSeed(
