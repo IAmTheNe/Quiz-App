@@ -124,7 +124,7 @@ class QuizRepository {
   }
 
   Future<void> rating(Quiz quiz, double rating) async {
-    final avg = (quiz.rating + rating) / 2;
+    final avg = quiz.rating == 0.0 ? rating : (quiz.rating + rating) / 2;
 
     return _firestore
         .collection(FirebaseDocumentConstants.quiz)
