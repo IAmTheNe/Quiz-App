@@ -19,6 +19,7 @@ import 'package:whizz/src/screens/home/home_screen.dart';
 import 'package:whizz/src/screens/login/login_screen.dart';
 import 'package:whizz/src/screens/media/media_screen.dart';
 import 'package:whizz/src/screens/otp/otp_screen.dart';
+import 'package:whizz/src/screens/phone_number_profile/phone_number_profile_screen.dart';
 import 'package:whizz/src/screens/play/lobby_screen.dart';
 import 'package:whizz/src/screens/play/play_screen.dart';
 import 'package:whizz/src/screens/play_quiz/play_quiz_screen.dart';
@@ -48,6 +49,7 @@ enum RouterPath {
   error,
   profile,
   playQuiz,
+  phone,
 }
 
 class AppRouter {
@@ -62,7 +64,11 @@ class AppRouter {
     navigatorKey: _rootNavigatorKey,
     redirect: (context, state) {
       final isLoggedIn = _authRepo.currentUser != AppUser.empty;
+      final isPhone = _authRepo.currentUser.name == null;
       if (isLoggedIn) {
+        if (isPhone) {
+          return '/phone';
+        }
         if (state.matchedLocation == '/login') {
           return '/home';
         }
@@ -209,6 +215,14 @@ class AppRouter {
         pageBuilder: (_, state) => MaterialPage(
           key: state.pageKey,
           child: const LoginScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/phone',
+        name: RouterPath.phone.name,
+        pageBuilder: (_, state) => MaterialPage(
+          key: state.pageKey,
+          child: const PhoneNumberProfileScreen(),
         ),
       ),
       GoRoute(

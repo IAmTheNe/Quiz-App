@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +20,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on(_onLoginWithPhoneNumber);
     on(_onPhoneNumberInformationChanged);
     on(_onVerifyOtp);
+    on(_onUpdateUser);
     on(_onLogout);
   }
 
@@ -140,6 +143,27 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         isError: true,
         message: e.message,
       ));
+    } catch (e) {
+      emit(state.copyWith(
+        isLoading: false,
+        isError: true,
+        message: e.toString(),
+      ));
+    }
+  }
+
+  void _onUpdateUser(
+    UpdateUser event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(state.copyWith(
+      isLoading: true,
+      isError: false,
+      message: null,
+    ));
+    try {
+      await _repository.updateUser(event.displayName, event.avatar);
+      emit(state.copyWith(isLoading: false));
     } catch (e) {
       emit(state.copyWith(
         isLoading: false,

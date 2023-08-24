@@ -59,6 +59,10 @@ class $AssetsImagesGen {
   AssetGenImage get loginTwitter =>
       const AssetGenImage('assets/images/login_twitter.png');
 
+  /// File path: assets/images/unknown_user.png
+  AssetGenImage get unknownUser =>
+      const AssetGenImage('assets/images/unknown_user.png');
+
   /// List of all assets
   List<dynamic> get values => [
         appIcon,
@@ -69,7 +73,8 @@ class $AssetsImagesGen {
         icFacebook,
         loginFacebook,
         loginGoogle,
-        loginTwitter
+        loginTwitter,
+        unknownUser
       ];
 }
 

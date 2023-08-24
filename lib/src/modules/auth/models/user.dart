@@ -62,6 +62,22 @@ class AppUser extends Equatable {
 
   factory AppUser.fromJson(String source) =>
       AppUser.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  AppUser copyWith({
+    String? id,
+    String? email,
+    String? name,
+    String? avatar,
+    String? phoneNumber,
+  }) {
+    return AppUser(
+      id: id ?? this.id,
+      email: email ?? this.email,
+      name: name ?? this.name,
+      avatar: avatar ?? this.avatar,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+    );
+  }
 }
 
 extension FirebaseUser on User {

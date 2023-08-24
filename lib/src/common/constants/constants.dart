@@ -32,46 +32,7 @@ class AppConstant {
 final class FirebaseDocumentConstants {
   static const user = 'User';
   static const quiz = 'Quiz';
-  static const quizDetail = "Detail";
-  static const quizScore = "Score";
   static const collection = 'Collection';
   static const lobby = 'Lobby';
-  static const lobbyInfo = 'Information';
   static const lobbyParticipant = 'Participants';
-}
-
-final class ListEnum {
-  static final collections = <Collection>[
-    Collection.holiday,
-    Collection.sports,
-    Collection.education,
-    Collection.games,
-    Collection.art,
-    Collection.healthy,
-    Collection.foodAndBevarage,
-    Collection.lifeStyle,
-    Collection.galaxy,
-  ];
-
-  static final visibility = <Visible>[
-    Visible.public,
-    Visible.private,
-  ];
-}
-
-enum Visible {
-  public,
-  private,
-}
-
-enum Collection {
-  holiday,
-  sports,
-  education,
-  games,
-  art,
-  healthy,
-  foodAndBevarage,
-  lifeStyle,
-  galaxy,
 }

@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -22,11 +24,13 @@ class AuthenticationRepository {
     InMemoryCache? cache,
     FirebaseAuth? firebaseAuth,
     FirebaseFirestore? firestore,
+    FirebaseStorage? storage,
     GoogleSignIn? googleSignIn,
     TwitterLogin? twitterLogin,
   })  : _cache = cache ?? InMemoryCache(),
         _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
         _firestore = firestore ?? FirebaseFirestore.instance,
+        _storage = storage ?? FirebaseStorage.instance,
         _googleSignIn = googleSignIn ?? GoogleSignIn(),
         _twitterLogin = twitterLogin ??
             TwitterLogin(
@@ -38,6 +42,7 @@ class AuthenticationRepository {
   final InMemoryCache _cache;
   final FirebaseAuth _firebaseAuth;
   final FirebaseFirestore _firestore;
+  final FirebaseStorage _storage;
   final GoogleSignIn _googleSignIn;
   final TwitterLogin _twitterLogin;
 
@@ -163,7 +168,8 @@ class AuthenticationRepository {
         verificationId: verificationId,
         smsCode: otp,
       );
-      await _firebaseAuth.signInWithCredential(credential);
+      final user = await _firebaseAuth.signInWithCredential(credential);
+      _addUser(user.user!.toUser);
     } on FirebaseAuthException catch (e) {
       throw VerifyOtpException.fromCode(e.code);
     } catch (e) {
@@ -181,5 +187,53 @@ class AuthenticationRepository {
     } catch (e) {
       log(e.toString());
     }
+  }
+
+  Future<void> updateUser(
+    String displayName,
+    File? image,
+  ) async {
+    final user = _cache.read<AppUser>(key: 'user')!;
+    final avatar = await _getDownloadUrl(
+      path: 'avatar/${currentUser.id}/${currentUser.id}.jpg',
+      image: image,
+    );
+    final updateInfo = _firestore
+        .collection(FirebaseDocumentConstants.user)
+        .doc(currentUser.id)
+        .update({
+      'avatar': avatar,
+      'name': displayName,
+    });
+
+    _cache.write<AppUser>(
+        key: 'user',
+        value: user.copyWith(
+          avatar: avatar,
+          name: displayName,
+        ));
+
+    final updateDisplayName =
+        _firebaseAuth.currentUser!.updateDisplayName(displayName);
+
+    final updateAvatar = _firebaseAuth.currentUser!.updateDisplayName(avatar);
+
+    Future.wait([
+      updateInfo,
+      updateDisplayName,
+      updateAvatar,
+    ]);
+  }
+
+  Future<String?> _getDownloadUrl({
+    required String path,
+    File? image,
+  }) async {
+    if (image == null) return null;
+    final uploadTask = _storage.ref().child(path).putFile(image);
+    final snapshot = await uploadTask;
+    final downloadUrl = await snapshot.ref.getDownloadURL();
+
+    return downloadUrl;
   }
 }
