@@ -23,6 +23,7 @@ import 'package:whizz/src/screens/phone_number_profile/phone_number_profile_scre
 import 'package:whizz/src/screens/play/lobby_screen.dart';
 import 'package:whizz/src/screens/play/play_screen.dart';
 import 'package:whizz/src/screens/play_quiz/play_quiz_screen.dart';
+import 'package:whizz/src/screens/profile/profile_edit_screen.dart';
 import 'package:whizz/src/screens/profile/profile_screen.dart';
 import 'package:whizz/src/screens/question_create/create_question_screen.dart';
 import 'package:whizz/src/screens/quiz_create/create_quiz_screen.dart';
@@ -48,6 +49,7 @@ enum RouterPath {
   noConnection,
   error,
   profile,
+  profileEdit,
   playQuiz,
   phone,
 }
@@ -247,6 +249,18 @@ class AppRouter {
               BlocProvider(create: (_) => QuizBloc()),
             ],
             child: const ProfileScreen(),
+          ),
+        ),
+      ),
+      GoRoute(
+        path: '/edit_profile',
+        name: RouterPath.profileEdit.name,
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (_, state) => MaterialPage(
+          key: state.pageKey,
+          child: BlocProvider.value(
+            value: state.extra! as ProfileCubit,
+            child: const EditProfileScreen(),
           ),
         ),
       ),

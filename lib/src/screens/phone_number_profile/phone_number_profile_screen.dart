@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/extensions/extension.dart';
 import 'package:whizz/src/common/utils/pick_image.dart';
 import 'package:whizz/src/common/widgets/custom_button.dart';
 import 'package:whizz/src/gen/assets.gen.dart';
 import 'package:whizz/src/modules/auth/bloc/auth_bloc.dart';
+import 'package:whizz/src/router/app_router.dart';
 
 class PhoneNumberProfileScreen extends StatefulWidget {
   const PhoneNumberProfileScreen({super.key});
@@ -106,6 +108,7 @@ class _PhoneNumberProfileScreenState extends State<PhoneNumberProfileScreen> {
                       context
                           .read<AuthBloc>()
                           .add(UpdateUser(nameController.text, image));
+                      context.goNamed(RouterPath.home.name);
                     }
                   },
                   label: 'Confirm',

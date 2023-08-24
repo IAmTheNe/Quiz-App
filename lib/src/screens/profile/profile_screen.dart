@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/modules/profile/cubit/profile_cubit.dart';
+import 'package:whizz/src/router/app_router.dart';
 import 'package:whizz/src/screens/profile/widgets/quiz_card.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -154,7 +155,12 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.pushNamed(
+                    RouterPath.profileEdit.name,
+                    extra: context.read<ProfileCubit>(),
+                  );
+                },
                 icon: const Icon(
                   Icons.edit,
                   color: Colors.white,

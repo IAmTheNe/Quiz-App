@@ -216,7 +216,7 @@ class AuthenticationRepository {
     final updateDisplayName =
         _firebaseAuth.currentUser!.updateDisplayName(displayName);
 
-    final updateAvatar = _firebaseAuth.currentUser!.updateDisplayName(avatar);
+    final updateAvatar = _firebaseAuth.currentUser!.updatePhotoURL(avatar);
 
     Future.wait([
       updateInfo,
