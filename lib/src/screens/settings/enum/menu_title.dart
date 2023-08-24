@@ -10,4 +10,5 @@ enum MenuTitle {
   const MenuTitle(this.title);
 
   final String title;
+
 }

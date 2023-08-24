@@ -12,5 +12,20 @@
     "unknown_error": "Unknown error! Please try again!",
     "user_enter_otp": "Enter your OTP",
     "otp_hint_text": "Please enter the 6-digit code that was sent to your phone",
-    "otp_expired": "The code will expire in "
+    "otp_expired": "The code will expire in ",
+    "banner_friend_join": "Play quiz together with your friend now!",
+    "let_us_start": "Let's start!",
+    "show_all": "Show all",
+    "question": "questions",
+    "home": "Home",
+    "discovery": "Discovery",
+    "play": "Play",
+    "create": "Create",
+    "settings": "Setting",
+    "setting_about": "About",
+    "setting_help": "Help",
+    "setting_info": "Personal Information",
+    "setting_language": "Language",
+    "setting_logout": "Logout",
+    "setting_notification": "Notification"
 }

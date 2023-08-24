@@ -36,6 +36,12 @@ class $AssetsImagesGen {
   /// File path: assets/images/empty.json
   LottieGenImage get empty => const LottieGenImage('assets/images/empty.json');
 
+  /// File path: assets/images/en.svg
+  SvgGenImage get en => const SvgGenImage('assets/images/en.svg');
+
+  /// File path: assets/images/en_flag.png
+  AssetGenImage get enFlag => const AssetGenImage('assets/images/en_flag.png');
+
   /// File path: assets/images/hello.png
   AssetGenImage get hello => const AssetGenImage('assets/images/hello.png');
 
@@ -63,18 +69,28 @@ class $AssetsImagesGen {
   AssetGenImage get unknownUser =>
       const AssetGenImage('assets/images/unknown_user.png');
 
+  /// File path: assets/images/vi.svg
+  SvgGenImage get vi => const SvgGenImage('assets/images/vi.svg');
+
+  /// File path: assets/images/vn_flag.png
+  AssetGenImage get vnFlag => const AssetGenImage('assets/images/vn_flag.png');
+
   /// List of all assets
   List<dynamic> get values => [
         appIcon,
         appLogo,
         empty,
+        en,
+        enFlag,
         hello,
         homeIntroduce,
         icFacebook,
         loginFacebook,
         loginGoogle,
         loginTwitter,
-        unknownUser
+        unknownUser,
+        vi,
+        vnFlag
       ];
 }
 

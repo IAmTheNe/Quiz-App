@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
@@ -17,6 +18,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: _buildAppBar(context),
       body: SingleChildScrollView(
@@ -40,7 +42,7 @@ class HomeScreen extends StatelessWidget {
                       context.pushNamed(RouterPath.discovery.name);
                     },
                     child: Text(
-                      'Show all',
+                      l10n.show_all,
                       style: AppConstant.textSubtitle,
                     ),
                   ),
@@ -51,7 +53,7 @@ class HomeScreen extends StatelessWidget {
               ),
               _buildTopCollection(),
               const SizedBox(
-                height: AppConstant.kPadding / 2,
+                height: AppConstant.kPadding,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -61,7 +63,7 @@ class HomeScreen extends StatelessWidget {
                     style: AppConstant.textHeading,
                   ),
                   Text(
-                    'Show all',
+                    l10n.show_all,
                     style: AppConstant.textSubtitle,
                   ),
                 ],
@@ -91,7 +93,7 @@ class HomeScreen extends StatelessWidget {
                                       extra: state.quiz[index],
                                     );
                                   },
-                                  child: _buildTopQuiz(state, index),
+                                  child: _buildTopQuiz(state, index, l10n),
                                 ),
                               )
                             : Container();
@@ -107,7 +109,11 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  AspectRatio _buildTopQuiz(TopQuizState state, int index) {
+  AspectRatio _buildTopQuiz(
+    TopQuizState state,
+    int index,
+    AppLocalizations l10n,
+  ) {
     return AspectRatio(
       aspectRatio: 4 / 3,
       child: Column(
@@ -138,7 +144,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      '${state.quiz[index].questions.length} questions',
+                      '${state.quiz[index].questions.length} ${l10n.question}',
                       style: AppConstant.textSubtitle.copyWith(
                         color: Colors.white,
                       ),
@@ -198,6 +204,7 @@ class HomeScreen extends StatelessWidget {
   }
 
   Stack _buildPlayQuiz(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -235,7 +242,7 @@ class HomeScreen extends StatelessWidget {
           right: 16,
           child: Center(
             child: Text(
-              'Play quiz together with your friend now!',
+              l10n.banner_friend_join,
               style: AppConstant.textTitle700.copyWith(
                 color: Colors.white,
                 fontSize: 18.sp,
@@ -250,7 +257,7 @@ class HomeScreen extends StatelessWidget {
           right: 16,
           child: CustomButton(
             onPressed: () => context.pushNamed(RouterPath.play.name),
-            label: 'Let\'s start!',
+            label: l10n.let_us_start,
           ),
         ),
       ],

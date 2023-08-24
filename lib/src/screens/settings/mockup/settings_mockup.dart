@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:whizz/src/screens/settings/enum/menu_title.dart';
 import 'package:whizz/src/screens/settings/models/menu_setting.dart';
 
-
 class MenuSettingsMockup {
   static const settingsList = <MenuSetting>[
     MenuSetting(
@@ -26,6 +25,7 @@ class MenuSettingsMockup {
     ),
     MenuSetting(
       title: MenuTitle.language,
+      menuType: MenuList.toggle,
       prefixIcon: Icon(
         Icons.language,
       ),

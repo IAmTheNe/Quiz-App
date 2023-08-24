@@ -12,5 +12,20 @@
     "unknown_error": "Không xác định được lỗi! Vui lòng thử lại!",
     "user_enter_otp": "Nhập mã PIN",
     "otp_hint_text": "Vui lòng nhập mã số gồm 6 chữ số được gửi tới số điện thoại",
-    "otp_expired": "Mã sẽ hết hiệu lực trong "
+    "otp_expired": "Mã sẽ hết hiệu lực trong ",
+    "banner_friend_join": "Đến giờ chơi quiz cùng với bạn bè rồi!",
+    "let_us_start": "Gét gô!",
+    "show_all": "Hiện tất cả",
+    "question": "câu hỏi",
+    "home": "Trang chủ",
+    "discovery": "Khám phá",
+    "play": "Tham gia",
+    "create": "Tạo mới",
+    "settings": "Cài đặt",
+    "setting_about": "Về chúng tôi",
+    "setting_help": "Trợ giúp",
+    "setting_info": "Thông tin cá nhân",
+    "setting_language": "Ngôn ngữ",
+    "setting_logout": "Đăng xuất",
+    "setting_notification": "Thông báo"
 }

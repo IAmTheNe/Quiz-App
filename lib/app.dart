@@ -8,6 +8,7 @@ import 'package:whizz/src/gen/fonts.gen.dart';
 import 'package:whizz/src/modules/auth/bloc/auth_bloc.dart';
 import 'package:whizz/src/modules/collection/cubit/quiz_collection_cubit.dart';
 import 'package:whizz/src/modules/lobby/cubit/lobby_cubit.dart';
+import 'package:whizz/src/modules/locale/cubit/locale_cubit.dart';
 import 'package:whizz/src/modules/media/bloc/online_media_bloc.dart';
 import 'package:whizz/src/router/app_router.dart';
 
@@ -24,25 +25,31 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => QuizCollectionCubit()),
         BlocProvider(create: (_) => AuthBloc()),
         BlocProvider(create: (_) => LobbyCubit()),
+        BlocProvider(create: (_) => LocaleCubit()),
       ],
       child: ScreenUtilInit(
-        builder: (context, child) => MaterialApp.router(
-          title: 'Quizwhizz',
-          debugShowCheckedModeBanner: false,
-          routeInformationProvider: AppRouter.router.routeInformationProvider,
-          routeInformationParser: AppRouter.router.routeInformationParser,
-          routerDelegate: AppRouter.router.routerDelegate,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          locale: const Locale('en'),
-          theme: ThemeData(
-            fontFamily: FontFamily.montserrat,
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: AppConstant.primaryColor,
-            ),
-            useMaterial3: true,
-            platform: TargetPlatform.iOS,
-          ),
+        builder: (context, child) => BlocBuilder<LocaleCubit, LocaleState>(
+          builder: (context, state) {
+            return MaterialApp.router(
+              title: 'Quizwhizz',
+              debugShowCheckedModeBanner: false,
+              routeInformationProvider:
+                  AppRouter.router.routeInformationProvider,
+              routeInformationParser: AppRouter.router.routeInformationParser,
+              routerDelegate: AppRouter.router.routerDelegate,
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: state.locale,
+              theme: ThemeData(
+                fontFamily: FontFamily.montserrat,
+                colorScheme: ColorScheme.fromSeed(
+                  seedColor: AppConstant.primaryColor,
+                ),
+                useMaterial3: true,
+                platform: TargetPlatform.iOS,
+              ),
+            );
+          },
         ),
       ),
     );
