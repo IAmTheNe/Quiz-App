@@ -34,7 +34,7 @@ class HomeScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Top Collection',
+                    l10n.top_collection,
                     style: AppConstant.textHeading,
                   ),
                   InkWell(
@@ -59,7 +59,7 @@ class HomeScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Top Quizz',
+                    l10n.top_quiz,
                     style: AppConstant.textHeading,
                   ),
                   Text(

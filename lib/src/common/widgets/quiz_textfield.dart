@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:whizz/src/common/constants/constants.dart';
-import 'package:whizz/src/common/extensions/extension.dart';
 import 'package:whizz/src/modules/collection/model/quiz_collection.dart';
 import 'package:whizz/src/modules/quiz/bloc/quiz_bloc.dart';
 
@@ -158,6 +158,8 @@ class QuizVisibilityTextField extends StatelessWidget {
       'public',
       'private',
     ];
+
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.symmetric(
         vertical: 8,
@@ -177,7 +179,7 @@ class QuizVisibilityTextField extends StatelessWidget {
                 .map<DropdownMenuItem<String>>(
                   (val) => DropdownMenuItem(
                     value: val,
-                    child: Text(val.toCapitalize()),
+                    child: Text(visibility(val, l10n)),
                   ),
                 )
                 .toList()
@@ -192,5 +194,13 @@ class QuizVisibilityTextField extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String visibility(String item, AppLocalizations l10n) {
+    if (item == 'public') {
+      return l10n.quiz_public;
+    }
+
+    return l10n.quiz_private;
   }
 }

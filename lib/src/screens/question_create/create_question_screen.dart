@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
@@ -17,10 +18,11 @@ class CreateQuestionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Create Question'),
+        title: Text(l10n.question_create),
         actions: [
           IconButton(
             onPressed: () {
@@ -73,7 +75,7 @@ class CreateQuestionScreen extends StatelessWidget {
                           color: Colors.white,
                         ),
                         label: Text(
-                          '${state.quiz.questions[state.index].duration} sec',
+                          '${state.quiz.questions[state.index].duration}s',
                           style: AppConstant.textSubtitle.copyWith(
                             color: Colors.white,
                           ),
@@ -109,7 +111,7 @@ class CreateQuestionScreen extends StatelessWidget {
                     ),
                     child: Text(
                       state.quiz.questions[state.index].name.isEmpty
-                          ? 'Add title'
+                          ? l10n.question_add_title
                           : state.quiz.questions[state.index].name,
                       style: AppConstant.textSubtitle.copyWith(
                         color: Colors.white,
@@ -167,6 +169,8 @@ void showSetTimer({
   required BuildContext context,
   required QuizState state,
 }) {
+  final l10n = AppLocalizations.of(context)!;
+
   final lsTimer = <int>[5, 10, 15, 30, 45, 60, 90, 120];
   int currentIndex =
       lsTimer.indexOf(state.quiz.questions[state.index].duration!);
@@ -185,7 +189,7 @@ void showSetTimer({
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Set duration',
+                  l10n.question_set_duration,
                   style: AppConstant.textHeading,
                 ),
                 const SizedBox(
@@ -224,7 +228,7 @@ void showSetTimer({
                                     borderRadius: BorderRadius.circular(16.0),
                                   ),
                             child: Center(
-                              child: Text('${lsTimer[index]} sec'),
+                              child: Text('${lsTimer[index]}s'),
                             ),
                           ),
                         ),
@@ -242,7 +246,7 @@ void showSetTimer({
                         .add(OnQuestionDurationChanged(lsTimer[currentIndex]));
                     context.pop();
                   },
-                  label: 'Continue',
+                  label: l10n.continue_text,
                 ),
               ],
             ),
@@ -258,13 +262,14 @@ void showInputTitle({
   required String initialValue,
   void Function(String)? onChanged,
 }) {
+  final l10n = AppLocalizations.of(context)!;
   showDialog(
     context: context,
     barrierDismissible: false,
     useRootNavigator: true,
     builder: (context) {
       return AlertDialog(
-        title: const Text('Enter question'),
+        title: Text(l10n.question_enter_title),
         content: TextFormField(
           autofocus: true,
           maxLength: 150,

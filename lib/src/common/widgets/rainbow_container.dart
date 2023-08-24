@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:whizz/src/common/constants/constants.dart';
 
 class RainbowContainer extends StatelessWidget {
@@ -11,6 +13,7 @@ class RainbowContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return AspectRatio(
       aspectRatio: 4 / 3,
       child: Container(
@@ -23,12 +26,12 @@ class RainbowContainer extends StatelessWidget {
           gradient: AppConstant.sunsetGradient,
         ),
         child: !isPreview
-            ? const Column(
+            ? Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.image_outlined),
-                  SizedBox(height: AppConstant.kPadding / 4),
-                  Text('Tap to add cover image'),
+                  const Icon(Icons.image_outlined),
+                  const SizedBox(height: AppConstant.kPadding / 4),
+                  Text(l10n.image_cover),
                 ],
               )
             : null,

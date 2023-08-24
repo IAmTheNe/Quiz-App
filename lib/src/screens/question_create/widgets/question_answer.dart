@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/modules/quiz/bloc/quiz_bloc.dart';
@@ -22,6 +23,8 @@ class QuestionAnswer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return GridView.builder(
       itemCount: 4,
       shrinkWrap: true,
@@ -62,7 +65,7 @@ class QuestionAnswer extends StatelessWidget {
                 child: Text(
                   answers[index].answer.isNotEmpty
                       ? answers[index].answer
-                      : 'Add answer',
+                      : l10n.question_add_answer,
                   style: AppConstant.textSubtitle.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
@@ -101,11 +104,13 @@ void showAnswer({
   void Function(String)? onChanged,
   void Function(bool)? onToggled,
 }) {
+  final l10n = AppLocalizations.of(context)!;
+
   showDialog(
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: const Text('Enter Answer'),
+        title: Text(l10n.question_enter_answer),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -125,7 +130,7 @@ void showAnswer({
                 onToggled!(val);
                 context.pop();
               },
-              title: const Text('Correct answer'),
+              title: Text(l10n.question_correct_answer),
             ),
           ],
         ),

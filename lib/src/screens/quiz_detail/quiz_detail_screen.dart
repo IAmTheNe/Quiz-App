@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
@@ -20,6 +21,7 @@ class QuestionDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         actions: const [
@@ -60,7 +62,7 @@ class QuestionDetailScreen extends StatelessWidget {
                     Expanded(
                       child: Column(
                         children: [
-                          const Text('Played'),
+                          Text(l10n.quiz_played),
                           const SizedBox(
                             height: AppConstant.kPadding / 4,
                           ),
@@ -74,7 +76,7 @@ class QuestionDetailScreen extends StatelessWidget {
                     Expanded(
                       child: Column(
                         children: [
-                          const Text('Rating'),
+                          Text(l10n.quiz_rating),
                           const SizedBox(
                             height: AppConstant.kPadding / 4,
                           ),
@@ -88,7 +90,7 @@ class QuestionDetailScreen extends StatelessWidget {
                     Expanded(
                       child: Column(
                         children: [
-                          const Text('Question'),
+                          Text(l10n.quiz_question_count),
                           const SizedBox(
                             height: AppConstant.kPadding / 4,
                           ),
@@ -140,7 +142,7 @@ class QuestionDetailScreen extends StatelessWidget {
                 height: AppConstant.kPadding,
               ),
               Text(
-                'Description',
+                l10n.quiz_description,
                 style: AppConstant.textTitle700.copyWith(
                   color: AppConstant.primaryColor,
                 ),
@@ -149,7 +151,9 @@ class QuestionDetailScreen extends StatelessWidget {
                 height: AppConstant.kPadding / 2,
               ),
               Text(
-                quiz.description!.isEmpty ? 'Empty' : quiz.description!,
+                quiz.description!.isEmpty
+                    ? l10n.quiz_description_empty
+                    : quiz.description!,
                 style: AppConstant.textSubtitle,
               ),
               // const SizedBox(
@@ -227,7 +231,7 @@ class QuestionDetailScreen extends StatelessWidget {
                 ),
                 child: FittedBox(
                   child: Text(
-                    'Play with Friend',
+                    l10n.quiz_play_friend,
                     style: AppConstant.textHeading.copyWith(
                       color: Colors.white,
                       fontSize: 14.sp,
@@ -253,7 +257,7 @@ class QuestionDetailScreen extends StatelessWidget {
                 ),
                 child: FittedBox(
                   child: Text(
-                    'Play solo',
+                    l10n.quiz_play_solo,
                     style: AppConstant.textHeading.copyWith(
                       fontSize: 14.sp,
                     ),
