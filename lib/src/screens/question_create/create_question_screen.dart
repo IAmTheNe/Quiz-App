@@ -27,9 +27,8 @@ class CreateQuestionScreen extends StatelessWidget {
           IconButton(
             onPressed: () {
               context.showConfirmDialog(
-                title: 'Are you sure?',
-                description:
-                    'Do you want to delete this question? This process cannot be undone.',
+                title: l10n.delete_title,
+                description: l10n.delete_subtitle,
                 onNegativeButton: () {},
                 onPositiveButton: () => context
                     .read<QuizBloc>()

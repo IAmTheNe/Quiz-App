@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -23,7 +24,8 @@ class LobbyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final title = isSoloMode ? 'Solo Mode' : 'PvP Mode';
+    final l10n = AppLocalizations.of(context)!;
+    final title = isSoloMode ? l10n.solo_mode : l10n.pvp_mode;
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -77,7 +79,7 @@ class LobbyScreen extends StatelessWidget {
                   const Spacer(),
                   if (!state.isStart) ...[
                     Text(
-                      '${state.participants.length} participants',
+                      '${state.participants.length} ${l10n.participant}',
                       style: AppConstant.textTitle700,
                     ),
                     Wrap(
@@ -91,7 +93,7 @@ class LobbyScreen extends StatelessWidget {
                   const Spacer(),
                   if (state.isStart) ...[
                     Text(
-                      'Game starts in',
+                      l10n.lobby_start,
                       style: AppConstant.textHeading,
                     ),
                     Counter(
@@ -103,7 +105,7 @@ class LobbyScreen extends StatelessWidget {
                       onPressed: () {
                         context.read<LobbyCubit>().startGame();
                       },
-                      label: 'Start now',
+                      label: l10n.lobby_start_button,
                     ),
                 ],
               ),

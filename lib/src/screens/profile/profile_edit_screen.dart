@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/extensions/extension.dart';
 import 'package:whizz/src/common/utils/pick_image.dart';
@@ -36,6 +38,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Profile'),
@@ -89,11 +92,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   controller.text = state.user.name!;
                   return TextFormField(
                     controller: controller,
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.people),
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.people),
                       isDense: true,
-                      border: OutlineInputBorder(),
-                      label: Text('Display Name'),
+                      border: const OutlineInputBorder(),
+                      label: Text(l10n.user_display_name),
                     ),
                   );
                 }),
@@ -118,11 +121,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   initialValue: state.user.phoneNumber,
                   enabled: false,
                   onChanged: (val) {},
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.people),
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.people),
                     isDense: true,
-                    border: OutlineInputBorder(),
-                    label: Text('Phone Number'),
+                    border: const OutlineInputBorder(),
+                    label: Text(l10n.user_phone_number),
                   ),
                 ),
               ],

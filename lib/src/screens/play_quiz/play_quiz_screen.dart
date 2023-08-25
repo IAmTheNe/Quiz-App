@@ -3,10 +3,13 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+
 import 'package:whizz/src/common/constants/constants.dart';
+import 'package:whizz/src/common/extensions/extension.dart';
 import 'package:whizz/src/common/widgets/shared_widget.dart';
 import 'package:whizz/src/modules/lobby/cubit/lobby_cubit.dart';
 import 'package:whizz/src/modules/lobby/model/lobby.dart';
@@ -56,8 +59,8 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
                 if (index.isEven) {
                   if (index == widget.quiz.questions.length * 2) {
                     return widget.isSoloMode
-                        ? _buildTotalSoloScorePage()
-                        : _buildTotalFriendScorePage();
+                        ? _buildTotalSoloScorePage(context)
+                        : _buildTotalFriendScorePage(context);
                   }
                   return _buildQuestionPage(
                       state, currentQuestion, index, context);
@@ -73,9 +76,11 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
     );
   }
 
-  Widget _buildTotalFriendScorePage() {
+  Widget _buildTotalFriendScorePage(BuildContext context) {
     double rating = 0.0;
     bool isClicked = false;
+
+    final l10n = AppLocalizations.of(context)!;
 
     return Padding(
       padding: const EdgeInsets.all(AppConstant.kPadding),
@@ -86,12 +91,12 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppBar(
-                title: const Text('Leaderboard'),
+                title: Text(l10n.leaderboard),
                 automaticallyImplyLeading: false,
               ),
               Center(
                 child: Text(
-                  'You got rank ${rank + 1}',
+                  l10n.user_got_rank(rank + 1),
                   style: AppConstant.textHeading,
                 ),
               ),
@@ -142,7 +147,7 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
                   children: [
                     Center(
                       child: Text(
-                        'Are you satisfied with this test?',
+                        l10n.quiz_satisfied,
                         style: AppConstant.textTitle700,
                       ),
                     ),
@@ -202,7 +207,7 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
                           context.goNamed(RouterPath.home.name);
                         });
                       },
-                      label: 'Go Back',
+                      label: l10n.go_back,
                     ),
                   ],
                 ),
@@ -214,7 +219,9 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
     );
   }
 
-  Widget _buildTotalSoloScorePage() {
+  Widget _buildTotalSoloScorePage(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Padding(
       padding: const EdgeInsets.all(AppConstant.kPadding),
       child: BlocBuilder<LobbyCubit, Lobby>(
@@ -223,14 +230,14 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppBar(
-                title: const Text('Leaderboard'),
+                title: Text(l10n.leaderboard),
                 automaticallyImplyLeading: false,
               ),
               BlocBuilder<GameCubit, GameState>(
                 builder: (context, s) {
                   return Center(
                     child: Text(
-                      'You got ${s.score} points',
+                      l10n.user_got_point(s.score),
                       style: AppConstant.textHeading,
                     ),
                   );
@@ -271,12 +278,12 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
                           );
                         },
                       )
-                    : const Center(
+                    : Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('Waiting to get leaderboard!'),
-                            CircularProgressIndicator.adaptive(),
+                            Text(l10n.leaderboard_wait),
+                            const CircularProgressIndicator.adaptive(),
                           ],
                         ),
                       ),
@@ -289,7 +296,7 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
                       context.goNamed(RouterPath.home.name);
                       context.read<LobbyCubit>().cancel();
                     },
-                    label: 'Go Back',
+                    label: l10n.go_back,
                   ),
                 ),
             ],
@@ -317,15 +324,20 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
     );
   }
 
-  Widget _buildQuestionPage(GameState state, Question currentQuestion,
-      int index, BuildContext context) {
+  Widget _buildQuestionPage(
+    GameState state,
+    Question currentQuestion,
+    int index,
+    BuildContext context,
+  ) {
+    final l10n = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.all(AppConstant.kPadding),
       child: Column(
         children: [
           AppBar(
             title: Text(
-              'Question ${state.currentQuestion + 1}/${widget.quiz.questions.length}',
+              '${l10n.question.toCapitalize()} ${state.currentQuestion + 1}/${widget.quiz.questions.length}',
             ),
             actions: [
               // Bộ đếm thời gian
@@ -427,13 +439,14 @@ class _LeaderboardCountdownState extends State<LeaderboardCountdown> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.all(AppConstant.kPadding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AppBar(
-            title: const Text('Show Score'),
+            title: Text(l10n.show_score),
             automaticallyImplyLeading: false,
           ),
           BlocBuilder<LobbyCubit, Lobby>(

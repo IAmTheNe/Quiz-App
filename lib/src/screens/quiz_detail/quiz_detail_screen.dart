@@ -24,8 +24,8 @@ class QuestionDetailScreen extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        actions: const [
-          CreateOptionsPopupMenu(),
+        actions: [
+          CreateOptionsPopupMenu(quiz: quiz),
         ],
       ),
       body: SingleChildScrollView(

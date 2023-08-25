@@ -3,6 +3,7 @@
     "app_auth_action": "Sign in / Register now",
     "app_name": "Quizwhizz",
     "user_phone_number": "Your phone number",
+    "user_display_name": "Display Name",
     "user_accept_terms_1": "I accept ",
     "user_accept_terms_2": "the Terms and Conditions",
     "user_accept_terms_3": " of ",
@@ -27,6 +28,7 @@
     "setting_info": "Personal Information",
     "setting_language": "Language",
     "setting_logout": "Logout",
+    "setting_mode": "Dark Mode",
     "setting_notification": "Notification",
     "top_quiz": "Top Quizz",
     "top_collection": "Top Collection",
@@ -53,5 +55,50 @@
     "image_cover": "Tap to add cover imageĐ",
     "collection": "Collection",
     "save": "Save",
-    "loading": "Loading"
+    "loading": "Loading",
+    "edit_information": "Edit Information",
+    "choose_image": "Choose an image",
+    "solo_mode": "Solo Mode",
+    "pvp_mode": "PvP Mode",
+    "participant": "participants",
+    "lobby_start": "Game starts in ",
+    "lobby_start_button": "Start now",
+    "leaderboard": "Leaderboard",
+    "user_got_rank": "You got rank {rank}",
+    "@user_got_rank": {
+        "placeholders": {
+            "rank": {
+                "type": "int"
+            }
+        }
+    },
+    "quiz_satisfied": "Are you satisfied with this test?",
+    "go_back": "Go Back",
+    "user_got_point": "You got {point} points",
+    "@user_got_point": {
+        "placeholders": {
+            "point": {
+                "type": "int"
+            }
+        }
+    },
+    "leaderboard_wait": "Waiting to get leaderboard!",
+    "show_score": "Show Score",
+    "join_quiz": "Join Quiz",
+    "join_button": "Join",
+    "qr_code_title": "Place the QR code in the area",
+    "qr_code_subtitle": "Scanner will be started automatically!",
+    "quiz_edit": "Edit Quiz",
+    "discard_change_title": "Discard changes?",
+    "discard_change_subtitle": "Changes you made won't be saved!",
+    "delete_title": "Are you sure?",
+    "delete_subtitle": "Do you want to delete this question? This process cannot be undone.",
+    "profile_quiz": "My Quiz",
+    "profile_collecttion": "My Collection",
+    "profile_save": "Save",
+    "share_social_media": "Share to Social Media",
+    "copy_quiz_link": "Copy Quiz Link",
+    "bookmark_save_quiz": "Save Quiz",
+    "bookmark_save_quiz_successfully": "Save quiz succesfully",
+    "quiz_save_action": "Successfully!"
 }

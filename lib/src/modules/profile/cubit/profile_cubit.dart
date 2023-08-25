@@ -41,6 +41,18 @@ class ProfileCubit extends Cubit<ProfileState> {
         );
       },
     );
+    _quizRepository.fetchBookmarks().listen((bm) async {
+      final newData = <Quiz>[];
+      for (final quiz in bm) {
+        final data = await _quizRepository.getQuizById(quiz);
+        newData.add(data);
+      }
+
+      emit(state.copyWith(
+        save: newData,
+        isLoading: false,
+      ));
+    });
   }
 
   Future<void> onEditProfile(String displayName, File? avatar) async {
@@ -51,5 +63,11 @@ class ProfileCubit extends Cubit<ProfileState> {
       isLoading: false,
       user: user,
     ));
+  }
+
+  Future<void> onSaveQuiz(Quiz quiz) async {
+    emit(state.copyWith(isLoading: true));
+    await _quizRepository.saveQuiz(quiz);
+    emit(state.copyWith(isLoading: false));
   }
 }

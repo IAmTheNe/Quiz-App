@@ -28,8 +28,8 @@ class CreateQuizScreen extends StatelessWidget {
         leading: IconButton(
           onPressed: () {
             context.showConfirmDialog(
-              title: 'Discard changes?',
-              description: 'Changes you made won\'t be saved!',
+              title: l10n.discard_change_title,
+              description: l10n.discard_change_subtitle,
               onPositiveButton: context.pop,
               onNegativeButton: () {},
             );

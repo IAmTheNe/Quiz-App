@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/modules/profile/cubit/profile_cubit.dart';
@@ -12,22 +14,71 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocBuilder<ProfileCubit, ProfileState>(
-        builder: (context, state) {
-          return ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              _buildTop(context, state),
-              _buildDisplayInformation(state),
-              const SizedBox(
-                height: AppConstant.kPadding,
-              ),
-              _buildListQuiz(state),
-            ],
-          );
-          // return _buildTop(state);
-        },
+    final l10n = AppLocalizations.of(context)!;
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        body: BlocBuilder<ProfileCubit, ProfileState>(
+          builder: (context, state) {
+            return ListView(
+              shrinkWrap: true,
+              padding: EdgeInsets.zero,
+              children: [
+                _buildTop(context, state),
+                _buildDisplayInformation(state),
+                const SizedBox(
+                  height: AppConstant.kPadding,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: AppConstant.kPadding),
+                  child: Container(
+                    height: 55,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[400],
+                      borderRadius:
+                          BorderRadius.circular(AppConstant.kPadding * 2),
+                    ),
+                    child: TabBar(
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      unselectedLabelColor: Colors.black,
+                      labelColor: Colors.white,
+                      indicator: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.circular(AppConstant.kPadding * 2),
+                        color: Colors.green[400],
+                      ),
+                      tabs: [
+                        Tab(
+                          text: l10n.profile_quiz,
+                        ),
+                        Tab(
+                          text: l10n.profile_collecttion,
+                        ),
+                        Tab(
+                          text: l10n.profile_save,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: AppConstant.kPadding,
+                ),
+                SizedBox(
+                  height: 1.sh,
+                  child: TabBarView(
+                    children: [
+                      _buildListQuiz(state),
+                      _buildListQuiz(state),
+                      _buildSaveQuiz(state),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -40,29 +91,67 @@ class ProfileScreen extends StatelessWidget {
         children: [
           state.isLoading
               ? Text(
-                  '0 Quiz',
+                  '0 Quizz',
                   style: AppConstant.textHeading,
                 )
               : Text(
                   '${state.quizzies.length} Quizz',
                   style: AppConstant.textHeading,
                 ),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  QuizCard(quiz: state.quizzies[index]),
-                  const SizedBox(
-                    height: AppConstant.kPadding / 2,
-                  ),
-                ],
-              );
-            },
-            itemCount: state.quizzies.length,
-          ),
+          if (state.quizzies.isNotEmpty)
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    QuizCard(quiz: state.quizzies[index]),
+                    const SizedBox(
+                      height: AppConstant.kPadding / 2,
+                    ),
+                  ],
+                );
+              },
+              itemCount: state.quizzies.length,
+            ),
+        ],
+      ),
+    );
+  }
+
+  Padding _buildSaveQuiz(ProfileState state) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          state.isLoading
+              ? Text(
+                  '0 Quizz',
+                  style: AppConstant.textHeading,
+                )
+              : Text(
+                  '${state.save.length} Quizz',
+                  style: AppConstant.textHeading,
+                ),
+          if (state.save.isNotEmpty)
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    QuizCard(quiz: state.save[index]),
+                    const SizedBox(
+                      height: AppConstant.kPadding / 2,
+                    ),
+                  ],
+                );
+              },
+              itemCount: state.save.length,
+            ),
         ],
       ),
     );

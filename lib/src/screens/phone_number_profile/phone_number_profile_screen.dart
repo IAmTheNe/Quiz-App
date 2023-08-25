@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
@@ -31,9 +32,10 @@ class _PhoneNumberProfileScreenState extends State<PhoneNumberProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Information'),
+        title: Text(l10n.edit_information),
       ),
       body: Padding(
         padding: const EdgeInsets.all(AppConstant.kPadding),
@@ -62,7 +64,7 @@ class _PhoneNumberProfileScreenState extends State<PhoneNumberProfileScreen> {
             ElevatedButton.icon(
               onPressed: selectAvatar,
               icon: const Icon(Icons.add_a_photo_outlined),
-              label: const Text('Choose an image'),
+              label: Text(l10n.choose_image),
             ),
             const SizedBox(
               height: AppConstant.kPadding,
@@ -86,7 +88,7 @@ class _PhoneNumberProfileScreenState extends State<PhoneNumberProfileScreen> {
                   isDense: true,
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.zero,
-                  hintText: 'Display name',
+                  hintText: l10n.user_display_name,
                   hintStyle: AppConstant.textSubtitle.copyWith(
                     color: Colors.grey,
                   ),
@@ -97,7 +99,7 @@ class _PhoneNumberProfileScreenState extends State<PhoneNumberProfileScreen> {
             BlocBuilder<AuthBloc, AuthState>(
               builder: (context, state) {
                 if (state.isLoading) {
-                  return const LoadingButton(label: 'Loading');
+                  return LoadingButton(label: l10n.loading);
                 }
                 return CustomButton(
                   onPressed: () {
@@ -111,7 +113,7 @@ class _PhoneNumberProfileScreenState extends State<PhoneNumberProfileScreen> {
                       context.goNamed(RouterPath.home.name);
                     }
                   },
-                  label: 'Confirm',
+                  label: l10n.continue_text,
                 );
               },
             ),

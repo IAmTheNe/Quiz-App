@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
@@ -15,14 +16,16 @@ class EditQuizScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Quiz'),
+        title: Text(l10n.quiz_edit),
         leading: IconButton(
           onPressed: () {
             context.showConfirmDialog(
-              title: 'Discard changes?',
-              description: 'Changes you made won\'t be saved!',
+              title: l10n.discard_change_title,
+              description: l10n.discard_change_subtitle,
               onPositiveButton: context.pop,
               onNegativeButton: () {},
             );
@@ -50,7 +53,7 @@ class EditQuizScreen extends StatelessWidget {
                     height: AppConstant.kPadding,
                   ),
                   QuizFormField(
-                    hintText: 'Name',
+                    hintText: l10n.quiz_name,
                     initialValue: quizState.quiz.title,
                     maxLength: 50,
                     onChanged: (title) =>
@@ -61,7 +64,7 @@ class EditQuizScreen extends StatelessWidget {
                   ),
                   QuizFormField(
                     initialValue: quizState.quiz.description,
-                    hintText: 'Description',
+                    hintText: l10n.quiz_description,
                     maxLines: 6,
                     maxLength: 500,
                     onChanged: (desc) => context
@@ -80,7 +83,7 @@ class EditQuizScreen extends StatelessWidget {
                           context.read<QuizBloc>().add(
                               OnQuizCollectionChanged(collectionId as String));
                         },
-                        label: const Text('Collection'),
+                        label: Text(l10n.collection),
                         items: state is QuizCollectionSuccess
                             ? state.collections
                             : [],
@@ -95,7 +98,7 @@ class EditQuizScreen extends StatelessWidget {
                     onChanged: (val) => context
                         .read<QuizBloc>()
                         .add(OnQuizVisibilityChanged(val as String)),
-                    label: const Text('Visibility'),
+                    label: Text(l10n.quiz_visibility),
                   ),
                 ],
               );
@@ -121,7 +124,7 @@ class EditQuizScreen extends StatelessWidget {
                       elevation: 4,
                     ),
                     child: Text(
-                      'Add Question',
+                      l10n.quiz_add_question,
                       style: AppConstant.textHeading.copyWith(
                         color: Colors.white,
                         fontSize: 14.sp,
@@ -138,7 +141,7 @@ class EditQuizScreen extends StatelessWidget {
                           onPressed: () {},
                           icon: const CircularProgressIndicator.adaptive(),
                           label: Text(
-                            'Loading',
+                            l10n.loading,
                             style: AppConstant.textHeading.copyWith(
                               fontSize: 14.sp,
                             ),
@@ -161,7 +164,7 @@ class EditQuizScreen extends StatelessWidget {
                             elevation: 4,
                           ),
                           child: Text(
-                            'Save',
+                            l10n.save,
                             style: AppConstant.textHeading.copyWith(
                               fontSize: 14.sp,
                             ),

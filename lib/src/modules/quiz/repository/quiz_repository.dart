@@ -84,15 +84,17 @@ class QuizRepository {
     final user = _cache.read<AppUser>(key: 'user');
     return _firestore
         .collection(FirebaseDocumentConstants.quiz)
-        .where('author', isEqualTo: user?.toMap())
         .snapshots()
         .asyncMap((event) {
-      final quiz = <Quiz>[];
+      final quizzes = <Quiz>[];
       for (final doc in event.docs) {
-        quiz.add(Quiz.fromMap(doc.data()));
+        final quiz = Quiz.fromMap(doc.data());
+        if (quiz.author.id == user!.id) {
+          quizzes.add(quiz);
+        }
       }
 
-      return quiz;
+      return quizzes;
     });
   }
 
@@ -130,6 +132,47 @@ class QuizRepository {
         .collection(FirebaseDocumentConstants.quiz)
         .doc(quiz.id)
         .update({'rating': avg});
+  }
+
+  Future<void> saveQuiz(Quiz quiz) async {
+    final user = _cache.read<AppUser>(key: 'user');
+    await _firestore
+        .collection(FirebaseDocumentConstants.user)
+        .doc(user!.id)
+        .collection(FirebaseDocumentConstants.save)
+        .doc(quiz.id)
+        .set(quiz.toMap());
+  }
+
+  Stream<List<Quiz>> fetchBookmarks() {
+    final user = _cache.read<AppUser>(key: 'user');
+    return _firestore
+        .collection(FirebaseDocumentConstants.user)
+        .doc(user!.id)
+        .collection(FirebaseDocumentConstants.save)
+        .snapshots()
+        .asyncMap((event) {
+      final bookmarks = <Quiz>[];
+      for (final doc in event.docs) {
+        final quiz = Quiz.fromMap(doc.data());
+        bookmarks.add(quiz);
+      }
+      return bookmarks;
+    });
+  }
+
+  Future<Quiz> getQuizById(Quiz quiz) async {
+    Quiz newQuiz = quiz;
+    await _firestore
+        .collection(FirebaseDocumentConstants.quiz)
+        .doc(quiz.id)
+        .get()
+        .then((querySnapshot) {
+      final quiz = Quiz.fromMap(querySnapshot.data()!);
+      newQuiz = quiz;
+    });
+
+    return newQuiz;
   }
 
   Future<String> _getDownloadUrl({

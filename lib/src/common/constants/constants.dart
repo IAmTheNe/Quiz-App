@@ -35,4 +35,5 @@ final class FirebaseDocumentConstants {
   static const collection = 'Collection';
   static const lobby = 'Lobby';
   static const lobbyParticipant = 'Participants';
+  static const save = 'Bookmark';
 }

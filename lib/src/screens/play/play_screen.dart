@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:pinput/pinput.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -13,11 +14,13 @@ class PlayScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Join quiz'),
+          title: Text(l10n.join_quiz),
         ),
         body: const Column(
           children: [
@@ -82,6 +85,7 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Column(
       children: [
         Expanded(
@@ -89,11 +93,11 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Place the QR code in the area',
+                l10n.qr_code_title,
                 style: AppConstant.textTitle700,
               ),
               Text(
-                'Scanner will be started automatically!',
+                l10n.qr_code_subtitle,
                 style: AppConstant.textSubtitle,
               ),
             ],
@@ -122,6 +126,7 @@ class InputCodeScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final pinController = useTextEditingController();
+    final l10n = AppLocalizations.of(context)!;
     return Column(
       children: [
         const Spacer(),
@@ -137,7 +142,7 @@ class InputCodeScreen extends HookWidget {
           onPressed: () {
             context.read<LobbyCubit>().enterRoom(context, pinController.text);
           },
-          label: 'Join',
+          label: l10n.join_button,
         ),
         const Spacer(),
       ],

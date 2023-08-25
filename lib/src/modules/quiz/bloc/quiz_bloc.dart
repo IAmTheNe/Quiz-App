@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/extensions/extension.dart';
 import 'package:whizz/src/modules/quiz/model/answer.dart';
@@ -116,6 +117,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     OnInitialNewQuiz event,
     Emitter<QuizState> emit,
   ) async {
+    final l10n = AppLocalizations.of(event.context)!;
     emit(state.copyWith(isLoading: true));
     final quiz = state.quiz;
     try {
@@ -123,7 +125,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
       emit(state.copyWith(isLoading: false));
 
       // ignore: use_build_context_synchronously
-      event.context.showSuccessDialog(title: 'Create Quiz Successfully!');
+      event.context.showSuccessDialog(title: l10n.quiz_save_action);
     } catch (e) {
       log(e.toString());
       emit(state.copyWith(isLoading: false));

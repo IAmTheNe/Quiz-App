@@ -66,7 +66,6 @@ class QuizCollectionRepository {
     await _firestore
         .collection(FirebaseDocumentConstants.quiz)
         .where('collectionId', isEqualTo: collectionId)
-        .orderBy('name')
         .get()
         .then((querySnapshot) {
       for (final quiz in querySnapshot.docs) {

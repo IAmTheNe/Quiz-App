@@ -82,7 +82,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       case MenuTitle.logout:
         return l10n.setting_logout;
       case MenuTitle.mode:
-        return "Dark Mode";
+        return l10n.setting_mode;
       case MenuTitle.notifications:
         return l10n.setting_notification;
       default:

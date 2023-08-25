@@ -3,6 +3,7 @@
     "app_auth_action": "Đăng nhập / Đăng ký tài khoản ngay bây giờ",
     "app_name": "Quizwhizz",
     "user_phone_number": "Số điện thoại của bạn",
+    "user_display_name": "Tên hiển thị",
     "user_accept_terms_1": "Tôi đồng ý với ",
     "user_accept_terms_2": "Điều kiện và Điều khoản",
     "user_accept_terms_3": " liên quan đến việc sử dụng dịch vụ của ",
@@ -27,6 +28,7 @@
     "setting_info": "Thông tin cá nhân",
     "setting_language": "Ngôn ngữ",
     "setting_logout": "Đăng xuất",
+    "setting_mode": "Chế độ tối",
     "setting_notification": "Thông báo",
     "top_quiz": "Quizz nổi bật",
     "top_collection": "Bộ sưu tập nổi bật",
@@ -53,5 +55,50 @@
     "image_cover": "Hãy chạm vào đây để thêm ảnh bìa",
     "collection": "Bộ sưu tập",
     "save": "Lưu",
-    "loading": "Đang xử lý"
+    "loading": "Đang xử lý",
+    "edit_information": "Chỉnh sửa thông tin",
+    "choose_image": "Chọn ảnh",
+    "solo_mode": "Tập luyện",
+    "pvp_mode": "Chiến đấu",
+    "participant": "thí sinh",
+    "lobby_start": "Trận đấu sẽ bắt đầu trong ",
+    "lobby_start_button": "Chiến nào",
+    "leaderboard": "Bảng xếp hạng",
+    "user_got_rank": "Bạn xếp hạng {rank}",
+    "@user_got_rank": {
+        "placeholders": {
+            "rank": {
+                "type": "int"
+            }
+        }
+    },
+    "quiz_satisfied": "Bạn có hài lòng với kết quả bài kiểm tra không?",
+    "go_back": "Quay lại",
+    "user_got_point": "Bạn đạt được {point} điểm",
+    "@user_got_point": {
+        "placeholders": {
+            "point": {
+                "type": "int"
+            }
+        }
+    },
+    "leaderboard_wait": "Chờ đợi để lấy bảng xếp hạng!",
+    "show_score": "Bảng điểm",
+    "join_quiz": "Tham gia thi đấu",
+    "join_button": "Tham gia",
+    "qr_code_title": "Đặt mã QR tại vị trí này",
+    "qr_code_subtitle": "Máy quét sẽ tự động khởi động!",
+    "quiz_edit": "Chỉnh sửa bộ đề",
+    "discard_change_title": "Bỏ qua các thay đổi?",
+    "discard_change_subtitle": "Các thay đổi của bạn sẽ không được lưu lại!",
+    "delete_title": "Xóa câu hỏi này?",
+    "delete_subtitle": "Bạn có chắc chắn không muốn xóa câu hỏi này? Bạn có chắc chắn không muốn xóa câu hỏi này?",
+    "profile_quiz": "Quizz",
+    "profile_collecttion": "Lưu trữ",
+    "profile_save": "Đánh dấu",
+    "share_social_media": "Chia sẻ qua Mạng xã hội",
+    "copy_quiz_link": "Sao chép liên kết",
+    "bookmark_save_quiz": "Đánh dấu bộ đề",
+    "bookmark_save_quiz_successfully": "Lưu thành công",
+    "quiz_save_action": "Thao tác thành công!"
 }

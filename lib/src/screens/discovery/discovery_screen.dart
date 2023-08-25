@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
+
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/modules/collection/cubit/quiz_collection_cubit.dart';
-
 import 'package:whizz/src/modules/collection/model/quiz_collection.dart';
-
 import 'package:whizz/src/router/app_router.dart';
 
 class DiscoveryScreen extends StatelessWidget {
@@ -15,9 +15,10 @@ class DiscoveryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Discovery'),
+        title: Text(l10n.discovery),
       ),
       body: BlocBuilder<QuizCollectionCubit, QuizCollectionState>(
         builder: (context, state) {
