@@ -82,6 +82,21 @@ extension BuildContextX on BuildContext {
       btnOkOnPress: pop,
     ).show();
   }
+
+  void showInformationDialog({
+    required String title,
+    String? description,
+    required void Function()? btnOkOnPress,
+  }) {
+    AwesomeDialog(
+      context: this,
+      title: title,
+      desc: description,
+      animType: AnimType.SCALE,
+      dialogType: DialogType.INFO,
+      btnOkOnPress: btnOkOnPress,
+    ).show();
+  }
 }
 
 extension DateTimeFormat on int {

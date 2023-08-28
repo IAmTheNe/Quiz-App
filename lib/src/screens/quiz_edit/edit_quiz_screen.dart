@@ -74,7 +74,7 @@ class EditQuizScreen extends StatelessWidget {
                   const SizedBox(
                     height: AppConstant.kPadding,
                   ),
-                  BlocBuilder<QuizCollectionCubit, QuizCollectionState>(
+                  BlocBuilder<QuizCollectionCubit, QuizCollectionState2>(
                     builder: (context, state) {
                       return QuizCollectionDropDownField(
                         ctx: context,

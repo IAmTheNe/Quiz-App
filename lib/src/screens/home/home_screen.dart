@@ -173,14 +173,13 @@ class HomeScreen extends StatelessWidget {
   SizedBox _buildTopCollection() {
     return SizedBox(
       height: .15.sh,
-      child: BlocBuilder<QuizCollectionCubit, QuizCollectionState>(
+      child: BlocBuilder<QuizCollectionCubit, QuizCollectionState2>(
         builder: (context, state) {
           return ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount:
-                state is QuizCollectionSuccess ? state.collections.length : 10,
+            itemCount: state.collections.length,
             itemBuilder: (context, index) {
-              if (state is QuizCollectionSuccess) {
+              if (!state.isLoading) {
                 return GestureDetector(
                     onTap: () {
                       context.pushNamed(

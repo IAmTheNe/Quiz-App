@@ -18,6 +18,7 @@ class QuizFormField extends StatelessWidget {
     this.maxLines,
     this.maxLength,
     this.label,
+    this.controller,
   });
 
   final String? initialValue;
@@ -29,6 +30,7 @@ class QuizFormField extends StatelessWidget {
   final int? maxLines;
   final int? maxLength;
   final Widget? label;
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +48,7 @@ class QuizFormField extends StatelessWidget {
         ),
       ),
       child: TextFormField(
+        controller: controller,
         keyboardType: keyboardType,
         initialValue: initialValue,
         onChanged: onChanged,

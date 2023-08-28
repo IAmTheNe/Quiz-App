@@ -37,7 +37,7 @@
     "quiz_question_count": "Question",
     "quiz_description": "Description",
     "quiz_description_empty": "Empty",
-    "quiz_name": "Tiêu đề",
+    "quiz_name": "Title",
     "quiz_play_friend": "Play with Friend",
     "quiz_play_solo": "Play solo",
     "quiz_visibility": "Visibility",
@@ -52,7 +52,7 @@
     "question_enter_answer": "Enter answer",
     "question_correct_answer": "Correct answer",
     "question_set_duration": "Set duration",
-    "image_cover": "Tap to add cover imageĐ",
+    "image_cover": "Tap to add cover image!",
     "collection": "Collection",
     "save": "Save",
     "loading": "Loading",
@@ -100,5 +100,12 @@
     "copy_quiz_link": "Copy Quiz Link",
     "bookmark_save_quiz": "Save Quiz",
     "bookmark_save_quiz_successfully": "Save quiz succesfully",
-    "quiz_save_action": "Successfully!"
+    "quiz_save_action": "Successfully!",
+    "lobby_cancel_title_host": "Are you want to close?",
+    "lobby_cancel_description_host": "The lobby will no longer exist and all players will be kicked out.",
+    "lobby_cancel_title_user": "Do you want to leave the lobby?",
+    "lobby_cancel_description_user": "ou will no longer be in this lobby!",
+    "lobby_quit_title": "Leave Room!",
+    "lobby_quit_description": "The room owner has closed this lobby! Click to confirm to return to Home!",
+    "collection_create_heading": "Create Collection"
 }

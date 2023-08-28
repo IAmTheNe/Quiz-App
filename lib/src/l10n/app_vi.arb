@@ -100,5 +100,12 @@
     "copy_quiz_link": "Sao chép liên kết",
     "bookmark_save_quiz": "Đánh dấu bộ đề",
     "bookmark_save_quiz_successfully": "Lưu thành công",
-    "quiz_save_action": "Thao tác thành công!"
+    "quiz_save_action": "Thao tác thành công!",
+    "lobby_cancel_title_host": "Bạn có muốn đóng phòng chờ không?",
+    "lobby_cancel_description_host": "Phòng chờ sẽ không còn tồn tại và tất cả người chơi sẽ bị đẩy ra ngoài.",
+    "lobby_cancel_title_user": "Bạn muốn thoát khỏi phòng chờ?",
+    "lobby_cancel_description_user": "Bạn sẽ không còn trong phòng chờ này nữa!",
+    "lobby_quit_title": "Rời phòng!",
+    "lobby_quit_description": "Chủ phòng đã đóng phòng chờ này! Xác nhận để trở lại trang chính!",
+    "collection_create_heading": "Thêm bộ sưu tập"
 }

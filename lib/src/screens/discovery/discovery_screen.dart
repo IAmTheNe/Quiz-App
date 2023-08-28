@@ -20,7 +20,7 @@ class DiscoveryScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(l10n.discovery),
       ),
-      body: BlocBuilder<QuizCollectionCubit, QuizCollectionState>(
+      body: BlocBuilder<QuizCollectionCubit, QuizCollectionState2>(
         builder: (context, state) {
           return Padding(
             padding: const EdgeInsets.all(AppConstant.kPadding),
@@ -39,33 +39,28 @@ class DiscoveryScreen extends StatelessWidget {
                 crossAxisCount: 2,
               ),
               childrenDelegate: SliverChildBuilderDelegate(
-                childCount: state is QuizCollectionSuccess
-                    ? state.collections.length
-                    : 50,
+                childCount: state.collections.length,
                 (context, index) {
-                  return switch (state) {
-                    QuizCollectionLoading() => const Center(
-                        child: CircularProgressIndicator.adaptive(),
-                      ),
-                    QuizCollectionSuccess() => GestureDetector(
-                        onTap: () {
-                          context.pushNamed(
-                            RouterPath.discoveryDetail.name,
-                            extra: state.collections[index],
-                          );
-                          context
-                              .read<QuizCollectionCubit>()
-                              .onGetQuizByCollectionId(
-                                  state.collections[index].id);
-                        },
-                        child: DiscoveryCard(
-                          collection: state.collections[index],
-                        ),
-                      ),
-                    _ => Container(
-                        color: Colors.grey.shade300,
-                      ),
-                  };
+                  if (state.isLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator.adaptive(),
+                    );
+                  }
+
+                  return GestureDetector(
+                    onTap: () {
+                      context.pushNamed(
+                        RouterPath.discoveryDetail.name,
+                        extra: state.collections[index],
+                      );
+                      context
+                          .read<QuizCollectionCubit>()
+                          .onGetQuizByCollectionId(state.collections[index].id);
+                    },
+                    child: DiscoveryCard(
+                      collection: state.collections[index],
+                    ),
+                  );
                 },
               ),
             ),
@@ -78,7 +73,9 @@ class DiscoveryScreen extends StatelessWidget {
           bottom: AppConstant.kPadding,
         ),
         child: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            context.pushNamed(RouterPath.discoveryCreate.name);
+          },
           child: const Icon(
             Icons.add,
           ),

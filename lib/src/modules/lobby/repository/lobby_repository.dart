@@ -194,4 +194,21 @@ class LobbyRepository {
 
     return participant;
   }
+
+  Future<void> onCancelRoom(Lobby lobby) async {
+    await _firestore
+        .collection(FirebaseDocumentConstants.lobby)
+        .doc(lobby.id)
+        .update({'code': null});
+  }
+
+  Future<void> onLeaveRoom(Lobby lobby) async {
+    final user = _cache.read<AppUser>(key: 'user') ?? AppUser.empty;
+    await _firestore
+        .collection(FirebaseDocumentConstants.lobby)
+        .doc(lobby.id)
+        .collection(FirebaseDocumentConstants.lobbyParticipant)
+        .doc(user.id)
+        .delete();
+  }
 }

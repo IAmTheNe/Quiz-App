@@ -99,7 +99,7 @@ class LobbyCubit extends Cubit<Lobby> {
             participants: event,
           ));
         });
-        context.goNamed(
+        context.pushNamed(
           RouterPath.lobby.name,
           extra: false,
         );
@@ -118,6 +118,21 @@ class LobbyCubit extends Cubit<Lobby> {
     if (isClicked) {
       await _quizRepository.rating(state.quiz, rating);
     }
+  }
+
+  Future<void> outRoom() async {
+    if (state.isHost) {
+      await _lobbyRepository.onCancelRoom(state);
+      emit(state.copyWith(
+        isCancelled: true,
+      ));
+    } else {
+      await _lobbyRepository.onLeaveRoom(state);
+    }
+  }
+
+  Stream<Lobby> streamData() {
+    return _lobbyRepository.lobby(state);
   }
 
   void cancel() {

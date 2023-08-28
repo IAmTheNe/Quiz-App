@@ -77,7 +77,7 @@ class CreateQuizScreen extends StatelessWidget {
               const SizedBox(
                 height: AppConstant.kPadding,
               ),
-              BlocBuilder<QuizCollectionCubit, QuizCollectionState>(
+              BlocBuilder<QuizCollectionCubit, QuizCollectionState2>(
                 builder: (context, state) {
                   return QuizCollectionDropDownField(
                     ctx: context,
@@ -89,7 +89,7 @@ class CreateQuizScreen extends StatelessWidget {
                     },
                     label: Text(l10n.collection),
                     items:
-                        state is QuizCollectionSuccess ? state.collections : [],
+                        state.collections.isNotEmpty ? state.collections : [],
                   );
                 },
               ),

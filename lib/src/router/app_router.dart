@@ -14,6 +14,7 @@ import 'package:whizz/src/modules/quiz/cubit/top_quiz_cubit.dart';
 import 'package:whizz/src/modules/quiz/model/quiz.dart';
 import 'package:whizz/src/router/scaffold_with_bottom_nav_bar.dart';
 import 'package:whizz/src/screens/discovery/discovery_screen.dart';
+import 'package:whizz/src/screens/discovery_create/discovery_create_screen.dart';
 import 'package:whizz/src/screens/discovery_detail/discovery_detail_screen.dart';
 import 'package:whizz/src/screens/home/home_screen.dart';
 import 'package:whizz/src/screens/login/login_screen.dart';
@@ -37,6 +38,7 @@ enum RouterPath {
   otp,
   lobby,
   discovery,
+  discoveryCreate,
   discoveryDetail,
   play,
   quiz,
@@ -267,6 +269,15 @@ class AppRouter {
           child: DiscoveryDetailScreen(
             quizCollection: state.extra! as QuizCollection,
           ),
+        ),
+      ),
+      GoRoute(
+        path: '/discovery_create',
+        name: RouterPath.discoveryCreate.name,
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (_, state) => MaterialPage(
+          key: state.pageKey,
+          child: const DiscoveryCreateScreen(),
         ),
       ),
       GoRoute(

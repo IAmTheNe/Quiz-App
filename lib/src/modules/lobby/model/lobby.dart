@@ -18,6 +18,7 @@ class Lobby {
     this.startTime,
     this.isSolo = true,
     this.isHost = true,
+    this.isCancelled = false,
   });
 
   final String id;
@@ -31,6 +32,7 @@ class Lobby {
   final DateTime? startTime;
   final bool isSolo;
   final bool isHost;
+  final bool isCancelled;
 
   Lobby copyWith({
     String? id,
@@ -44,6 +46,7 @@ class Lobby {
     DateTime? startTime,
     bool? isSolo,
     bool? isHost,
+    bool? isCancelled,
   }) {
     return Lobby(
       id: id ?? this.id,
@@ -57,6 +60,7 @@ class Lobby {
       startTime: startTime ?? this.startTime,
       isSolo: isSolo ?? this.isSolo,
       isHost: isHost ?? this.isHost,
+      isCancelled: isCancelled ?? this.isCancelled,
     );
   }
 
@@ -70,6 +74,7 @@ class Lobby {
       'isStart': isStart,
       'startTime': startTime?.millisecondsSinceEpoch,
       'isSolo': isSolo,
+      'isCancelled': isCancelled,
     };
   }
 
@@ -82,6 +87,7 @@ class Lobby {
       'isStart': isStart,
       'startTime': startTime?.millisecondsSinceEpoch,
       'isSolo': isSolo,
+      'isCancelled': isCancelled,
     };
   }
 
@@ -101,6 +107,7 @@ class Lobby {
           ? DateTime.fromMillisecondsSinceEpoch(map['startTime'] as int)
           : null,
       isSolo: map['isSolo'] as bool,
+      isCancelled: map['isCancelled'] as bool,
     );
   }
 

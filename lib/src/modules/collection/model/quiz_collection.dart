@@ -9,12 +9,16 @@ class QuizCollection extends Equatable {
     required this.name,
     this.imageUrl,
     this.quantity = 0,
+    this.isVibility,
+    this.owner,
   });
 
   final String id;
   final String name;
   final String? imageUrl;
   final int quantity;
+  final bool? isVibility;
+  final String? owner;
 
   @override
   List<Object?> get props => [
@@ -22,6 +26,8 @@ class QuizCollection extends Equatable {
         name,
         imageUrl,
         quantity,
+        isVibility,
+        owner,
       ];
 
   Map<String, dynamic> toMap() {
@@ -30,6 +36,8 @@ class QuizCollection extends Equatable {
       'name': name,
       'imageUrl': imageUrl,
       'quantity': quantity,
+      if (isVibility != null) 'isVibility': isVibility,
+      if (owner != null) 'owner': owner,
     };
   }
 
@@ -38,7 +46,11 @@ class QuizCollection extends Equatable {
       id: map['id'] as String,
       name: map['name'] as String,
       imageUrl: map['imageUrl'] != null ? map['imageUrl'] as String : null,
-      quantity: int.parse(map['quantity'].toString()),
+      // quantity: map['quantity'] as int,
+      quantity: map.containsKey('quantity') ? map['quantity'] as int : 0,
+      isVibility:
+          map.containsKey('isVisibity') ? map['isVibility'] as bool : null,
+      owner: map.containsKey('owner') ? map['owner'] as String : null,
     );
   }
 
