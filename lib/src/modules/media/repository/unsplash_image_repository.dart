@@ -19,7 +19,6 @@ class UnsplashImageRepository {
           perPage: 30,
         )
         .goAndGet();
-    client.close();
     return photos;
   }
 }

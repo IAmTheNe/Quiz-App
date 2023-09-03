@@ -193,7 +193,7 @@ class _CounterState extends State<Counter> {
           seconds--;
         } else {
           timer?.cancel();
-          context.goNamed(
+          context.pushReplacementNamed(
             RouterPath.playQuiz.name,
             pathParameters: {'id': widget.quiz.id},
             extra: {

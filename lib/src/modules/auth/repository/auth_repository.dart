@@ -130,6 +130,8 @@ class AuthenticationRepository {
     String phoneNumber,
     VoidCallback onVerificationCompleted,
   ) async {
+    int? resendingToken;
+
     final completer = Completer<PhoneAuthCredential>();
     await _firebaseAuth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
@@ -140,11 +142,13 @@ class AuthenticationRepository {
       codeSent: (verificationId, forceResendingToken) async {
         context.hideCurrentSnackbar();
         onVerificationCompleted();
+        resendingToken = forceResendingToken;
         await context.pushNamed(
           RouterPath.otp.name,
           extra: (verificationId, forceResendingToken),
         );
       },
+      forceResendingToken: resendingToken,
       codeAutoRetrievalTimeout: (_) {},
       timeout: const Duration(seconds: 60),
     );
