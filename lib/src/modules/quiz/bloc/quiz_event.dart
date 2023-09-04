@@ -31,7 +31,7 @@ final class OnQuizVisibilityChanged implements QuizEvent {
 final class OnQuizCollectionChanged implements QuizEvent {
   const OnQuizCollectionChanged(this.collectionId);
 
-  final String collectionId;
+  final String? collectionId;
 }
 
 final class OnTakePhoto implements QuizEvent {

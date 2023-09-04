@@ -82,11 +82,7 @@ class CreateQuizScreen extends StatelessWidget {
                   return QuizCollectionDropDownField(
                     ctx: context,
                     initialValue: collectionId,
-                    onChanged: (collectionId) {
-                      context
-                          .read<QuizBloc>()
-                          .add(OnQuizCollectionChanged(collectionId as String));
-                    },
+                   
                     label: Text(l10n.collection),
                     items:
                         state.collections.isNotEmpty ? state.collections : [],

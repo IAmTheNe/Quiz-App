@@ -57,34 +57,37 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: widget.child,
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        type: BottomNavigationBarType.fixed,
-        onTap: onTap,
-        items: [
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.home),
-            label: l10n.home,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.explore),
-            label: l10n.discovery,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.games),
-            label: l10n.play,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.add_circle),
-            label: l10n.create,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.settings),
-            label: l10n.settings,
-          ),
-        ],
+      bottomNavigationBar: Material(
+        elevation: 4,
+        child: BottomNavigationBar(
+          currentIndex: currentIndex,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          type: BottomNavigationBarType.fixed,
+          onTap: onTap,
+          items: [
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.home),
+              label: l10n.home,
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.explore),
+              label: l10n.discovery,
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.games),
+              label: l10n.play,
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.add_circle),
+              label: l10n.create,
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.settings),
+              label: l10n.settings,
+            ),
+          ],
+        ),
       ),
     );
   }

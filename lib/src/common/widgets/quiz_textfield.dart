@@ -74,7 +74,7 @@ class QuizCollectionDropDownField extends StatelessWidget {
   const QuizCollectionDropDownField({
     super.key,
     required this.ctx,
-    required this.onChanged,
+    this.onChanged,
     required this.items,
     this.label,
     this.initialValue,
@@ -86,19 +86,8 @@ class QuizCollectionDropDownField extends StatelessWidget {
   final List<QuizCollection> items;
   final String? initialValue;
 
-  void init() {
-    if (items.isNotEmpty) {
-      if (initialValue == null) {
-        ctx.read<QuizBloc>().add(OnQuizCollectionChanged(items[0].id));
-      } else {
-        ctx.read<QuizBloc>().add(OnQuizCollectionChanged(initialValue!));
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    init();
     return Container(
       padding: const EdgeInsets.symmetric(
         vertical: 8,
@@ -123,10 +112,12 @@ class QuizCollectionDropDownField extends StatelessWidget {
                 )
                 .toList()
             : null,
-        onChanged: onChanged,
+        onChanged: (val) {
+          context.read<QuizBloc>().add(OnQuizCollectionChanged(val));
+        },
         value: items.isNotEmpty
             ? (initialValue == null
-                ? items[0].id
+                ? null
                 : items
                     .firstWhere((collection) => collection.id == initialValue!)
                     .id)
