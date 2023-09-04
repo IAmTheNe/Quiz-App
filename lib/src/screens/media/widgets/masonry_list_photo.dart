@@ -7,8 +7,6 @@ import 'package:whizz/src/modules/media/bloc/online_media_bloc.dart';
 import 'package:whizz/src/modules/quiz/model/media.dart';
 import 'package:whizz/src/modules/quiz/model/quiz.dart';
 
-
-
 class MasonryListPhotos extends StatelessWidget {
   const MasonryListPhotos({
     super.key,
@@ -27,7 +25,8 @@ class MasonryListPhotos extends StatelessWidget {
       mainAxisSpacing: AppConstant.kPadding / 4,
       crossAxisSpacing: AppConstant.kPadding / 4,
       itemBuilder: (context, index) {
-        final url = state.photos[index].urls.raw.toString();
+        // final url = state.photos[index].urls.raw.toString();
+        final url = state.photos[index].url;
         return GestureDetector(
           onTap: () {
             context.pop(Media(

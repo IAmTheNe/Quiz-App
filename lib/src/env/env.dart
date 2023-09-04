@@ -15,4 +15,7 @@ abstract class Env {
 
   @EnviedField(varName: 'UNSPLASH_SECRET_KEY', obfuscate: true)
   static String unsplashSecretKey = _Env.unsplashSecretKey;
+
+  @EnviedField(varName: 'PEXELS_API_KEY', obfuscate: true)
+  static String pexelsApiKey = _Env.pexelsApiKey;
 }

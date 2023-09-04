@@ -15,7 +15,7 @@ base class LoadingFetchState implements OnlineMediaState {
 base class SuccessFetchState implements OnlineMediaState {
   const SuccessFetchState(this.photos);
 
-  final List<Photo> photos;
+  final List<PexelsPhoto> photos;
 }
 
 base class ErrorFetchState implements OnlineMediaState {
