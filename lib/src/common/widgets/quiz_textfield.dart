@@ -86,8 +86,15 @@ class QuizCollectionDropDownField extends StatelessWidget {
   final List<QuizCollection> items;
   final String? initialValue;
 
+  void checkSaveInitial(BuildContext context) {
+    if (initialValue != null) {
+      context.read<QuizBloc>().add(OnQuizCollectionChanged(initialValue));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    checkSaveInitial(context);
     return Container(
       padding: const EdgeInsets.symmetric(
         vertical: 8,

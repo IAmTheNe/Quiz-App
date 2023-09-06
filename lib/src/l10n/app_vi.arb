@@ -107,5 +107,6 @@
     "lobby_cancel_description_user": "Bạn sẽ không còn trong phòng chờ này nữa!",
     "lobby_quit_title": "Rời phòng!",
     "lobby_quit_description": "Chủ phòng đã đóng phòng chờ này! Xác nhận để trở lại trang chính!",
-    "collection_create_heading": "Thêm bộ sưu tập"
+    "collection_create_heading": "Thêm bộ sưu tập",
+    "discovery_empty": "Đáng tiếc! Không có quiz nào ở đây cả! Tạo mới nào!"
 }

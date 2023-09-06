@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
@@ -20,6 +21,7 @@ class DiscoveryDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         title: Text(quizCollection.name),
@@ -51,7 +53,10 @@ class DiscoveryDetailScreen extends StatelessWidget {
                       media: snapshot.data![index].media,
                       isPreview: true,
                     ),
-                    title: Text(snapshot.data![index].title),
+                    title: Text(
+                      snapshot.data![index].title,
+                      style: AppConstant.textTitle700,
+                    ),
                     subtitle: Text(snapshot.data![index].author.name ?? ''),
                   ),
                 );
@@ -67,8 +72,9 @@ class DiscoveryDetailScreen extends StatelessWidget {
                     height: .25.sh,
                   ),
                   Text(
-                    'Oops! There\'s nothing here!',
+                    l10n.discovery_empty,
                     style: AppConstant.textTitle700,
+                    textAlign: TextAlign.center,
                   ),
                 ],
               ),
