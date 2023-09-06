@@ -14,3 +14,9 @@ base class PopEvent implements OnlineMediaEvent {
   final BuildContext context;
   final Future<File?> callback;
 }
+
+base class SearchPhotoEvent implements OnlineMediaEvent {
+  const SearchPhotoEvent(this.query);
+
+  final String query;
+}

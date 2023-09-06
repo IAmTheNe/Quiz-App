@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/utils/pick_image.dart';
 
@@ -7,11 +8,12 @@ import 'package:whizz/src/modules/media/bloc/online_media_bloc.dart';
 import 'package:whizz/src/screens/media/widgets/custom_square_button.dart';
 import 'package:whizz/src/screens/media/widgets/masonry_list_photo.dart';
 
-class MediaScreen extends StatelessWidget {
+class MediaScreen extends HookWidget {
   const MediaScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final searchController = useTextEditingController();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add media'),
@@ -43,17 +45,8 @@ class MediaScreen extends StatelessWidget {
             const SizedBox(
               height: AppConstant.kPadding,
             ),
-            TextFormField(
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search),
-                isDense: true,
-                suffixIcon: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.clear),
-                ),
-                border: const OutlineInputBorder(),
-                hintText: 'Search image',
-              ),
+            SearchImageTextField(
+              controller: searchController,
             ),
             const SizedBox(
               height: AppConstant.kPadding,
@@ -77,6 +70,54 @@ class MediaScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class SearchImageTextField extends StatefulWidget {
+  const SearchImageTextField({
+    super.key,
+    this.controller,
+  });
+
+  final TextEditingController? controller;
+
+  @override
+  State<SearchImageTextField> createState() => _SearchImageTextFieldState();
+}
+
+class _SearchImageTextFieldState extends State<SearchImageTextField> {
+  @override
+  void initState() {
+    super.initState();
+    widget.controller?.addListener(_searchImage);
+  }
+
+  void _searchImage() {
+    final query = widget.controller?.text ?? '';
+    if (query.isEmpty) {
+      context.read<OnlineMediaBloc>().add(const GetListPhotosEvent());
+    } else {
+      context.read<OnlineMediaBloc>().add(SearchPhotoEvent(query));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: widget.controller,
+      decoration: InputDecoration(
+        prefixIcon: const Icon(Icons.search),
+        isDense: true,
+        suffixIcon: IconButton(
+          onPressed: () {
+            widget.controller?.clear();
+          },
+          icon: const Icon(Icons.clear),
+        ),
+        border: const OutlineInputBorder(),
+        hintText: 'Search image',
       ),
     );
   }

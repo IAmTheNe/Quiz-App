@@ -14,10 +14,11 @@ part 'online_media_state.dart';
 
 class OnlineMediaBloc extends Bloc<OnlineMediaEvent, OnlineMediaState> {
   OnlineMediaBloc({UnsplashImageRepository? imageRepository})
-      : _imageRepository = imageRepository ?? const UnsplashImageRepository(),
+      : _imageRepository = imageRepository ?? UnsplashImageRepository(),
         super(const InitialFetchState()) {
     on(_onGetListPhotos);
     on(_onPop);
+    on(_onSearchPhotos);
   }
 
   final UnsplashImageRepository _imageRepository;
@@ -28,6 +29,16 @@ class OnlineMediaBloc extends Bloc<OnlineMediaEvent, OnlineMediaState> {
   ) async {
     emit(const LoadingFetchState());
     final photos = await _imageRepository.loadImages();
+    emit(SuccessFetchState(photos));
+  }
+
+  void _onSearchPhotos(
+    SearchPhotoEvent event,
+    Emitter<OnlineMediaState> emit,
+  ) async {
+    final query = event.query;
+    emit(const LoadingFetchState());
+    final photos = await _imageRepository.searchImage(query);
     emit(SuccessFetchState(photos));
   }
 

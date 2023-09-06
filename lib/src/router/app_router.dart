@@ -245,7 +245,13 @@ class AppRouter {
         parentNavigatorKey: _rootNavigatorKey,
         pageBuilder: (_, state) => MaterialPage(
           key: state.pageKey,
-          child: const ProfileScreen(),
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (_) => ProfileCubit()),
+              BlocProvider(create: (_) => QuizBloc()),
+            ],
+            child: const ProfileScreen(),
+          ),
         ),
       ),
       GoRoute(

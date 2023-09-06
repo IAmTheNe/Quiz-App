@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:whizz/src/common/constants/constants.dart';
@@ -16,6 +17,7 @@ class QuizCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return GestureDetector(
       onTap: () {
         context.pushNamed(
@@ -28,8 +30,6 @@ class QuizCard extends StatelessWidget {
           Expanded(
             child: Stack(
               children: [
-                /// The `ImageCover` widget is used to display an image cover for the quiz. It takes two
-                /// parameters: `media` and `isPreview`.
                 ImageCover(
                   media: quiz.media,
                   isPreview: true,
@@ -49,7 +49,8 @@ class QuizCard extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      '${quiz.questions.length} questions',
+                      // '${quiz.questions.length} questions',
+                      '${quiz.questions.length} ${l10n.question}',
                       style: AppConstant.textSubtitle.copyWith(
                         color: Colors.white,
                       ),
