@@ -84,10 +84,6 @@ class LobbyCubit extends Cubit<Lobby> {
       if (result == null) {
         context.showErrorSnackBar('Quiz not found');
       } else {
-        // _repository.lobbyInformation(result).listen((lobby) {
-        //   emit(lobby);
-        // });
-
         _lobbyRepository.lobby(result).listen((event) {
           emit(event.copyWith(
             isHost: false,
@@ -109,7 +105,7 @@ class LobbyCubit extends Cubit<Lobby> {
 
   void soloHistory() async {
     final participant = await _lobbyRepository.soloHistory(state);
-    participant.sort((a, b) => b.score! - a.score!);
+    participant.sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
 
     emit(state.copyWith(solo: participant));
   }
