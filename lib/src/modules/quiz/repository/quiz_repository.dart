@@ -98,7 +98,7 @@ class QuizRepository {
     });
   }
 
-  Stream<List<Quiz>> fetchTopQuizzes() {
+  Stream<List<Quiz>> fetchListQuizzes() {
     return _firestore
         .collection(FirebaseDocumentConstants.quiz)
         .where('isPublic', isEqualTo: true)

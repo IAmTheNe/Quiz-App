@@ -10,7 +10,7 @@ import 'package:whizz/src/modules/collection/model/quiz_collection.dart';
 import 'package:whizz/src/modules/play/cubit/play_cubit.dart';
 import 'package:whizz/src/modules/profile/cubit/profile_cubit.dart';
 import 'package:whizz/src/modules/quiz/bloc/quiz_bloc.dart';
-import 'package:whizz/src/modules/quiz/cubit/top_quiz_cubit.dart';
+import 'package:whizz/src/modules/quiz/cubit/list_quiz_cubit.dart';
 import 'package:whizz/src/modules/quiz/model/quiz.dart';
 import 'package:whizz/src/router/scaffold_with_bottom_nav_bar.dart';
 import 'package:whizz/src/screens/discovery/discovery_screen.dart';
@@ -98,7 +98,7 @@ class AppRouter {
             pageBuilder: (_, state) => NoTransitionPage(
               key: state.pageKey,
               child: BlocProvider(
-                create: (_) => TopQuizCubit(),
+                create: (_) => ListQuizCubit(),
                 child: const HomeScreen(),
               ),
             ),

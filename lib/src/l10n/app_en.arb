@@ -108,5 +108,6 @@
     "lobby_quit_title": "Leave Room!",
     "lobby_quit_description": "The room owner has closed this lobby! Click to confirm to return to Home!",
     "collection_create_heading": "Create Collection",
-    "discovery_empty": "Oops! There's nothong here! Create a new one!"
+    "discovery_empty": "Oops! There's nothong here! Create a new one!",
+    "search_quiz_not_found": "No results found!"
 }

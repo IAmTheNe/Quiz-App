@@ -118,4 +118,14 @@ extension F on String {
           (match) => match.group(0)!.toUpperCase(),
         );
   }
+
+  String removeDiacritics() {
+    return replaceAll(RegExp('[àáạảãâầấậẩẫăằắặẳẵ]'), 'a')
+        .replaceAll(RegExp('[èéẹẻẽêềếệểễ]'), 'e')
+        .replaceAll(RegExp('[ìíịỉĩ]'), 'i')
+        .replaceAll(RegExp('[òóọỏõôồốộổỗơờớợởỡ]'), 'o')
+        .replaceAll(RegExp('[ùúụủũưừứựửữ]'), 'u')
+        .replaceAll(RegExp('[ỳýỵỷỹ]'), 'y')
+        .replaceAll(RegExp('[đ]'), 'd');
+  }
 }

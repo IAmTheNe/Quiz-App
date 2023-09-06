@@ -5,12 +5,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
+import 'package:whizz/src/common/extensions/extension.dart';
 import 'package:whizz/src/common/widgets/shared_widget.dart';
 
 import 'package:whizz/src/gen/assets.gen.dart';
 import 'package:whizz/src/modules/collection/cubit/quiz_collection_cubit.dart';
 import 'package:whizz/src/modules/collection/model/quiz_collection.dart';
-import 'package:whizz/src/modules/quiz/cubit/top_quiz_cubit.dart';
+import 'package:whizz/src/modules/quiz/cubit/list_quiz_cubit.dart';
+import 'package:whizz/src/modules/quiz/model/quiz.dart';
 import 'package:whizz/src/router/app_router.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -73,7 +75,7 @@ class HomeScreen extends StatelessWidget {
               ),
               SizedBox(
                 height: .18.sh,
-                child: BlocBuilder<TopQuizCubit, TopQuizState>(
+                child: BlocBuilder<ListQuizCubit, ListQuizState>(
                   builder: (context, state) {
                     return ListView.builder(
                       scrollDirection: Axis.horizontal,
@@ -110,7 +112,7 @@ class HomeScreen extends StatelessWidget {
   }
 
   AspectRatio _buildTopQuiz(
-    TopQuizState state,
+    ListQuizState state,
     int index,
     AppLocalizations l10n,
   ) {
@@ -271,7 +273,9 @@ class HomeScreen extends StatelessWidget {
           onPressed: () {
             showSearch(
               context: context,
-              delegate: CustomSearch(),
+              delegate: CustomSearch(
+                cubit: context.read<ListQuizCubit>(),
+              ),
             );
           },
           icon: const Icon(
@@ -343,13 +347,9 @@ class CollectionCard extends StatelessWidget {
 }
 
 class CustomSearch extends SearchDelegate {
-  List<String> examples = [
-    'Cấu trúc dữ liệu và giải thuật',
-    'Vợ nhặt',
-    'English 10 - Unit 6',
-    'Ai là người hiểu Thương nhất?',
-    'Christmas',
-  ];
+  CustomSearch({required this.cubit});
+
+  final ListQuizCubit cubit;
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -375,40 +375,90 @@ class CustomSearch extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    final matchQuery = <String>[];
-    for (final item in examples) {
-      if (item.toLowerCase().contains(query.toLowerCase())) {
-        matchQuery.add(item);
-      }
-    }
-
-    return ListView.builder(
-      itemCount: matchQuery.length,
-      itemBuilder: (context, index) {
-        final result = matchQuery[index];
-        return ListTile(
-          title: Text(result),
-        );
+    final l10n = AppLocalizations.of(context)!;
+    return BlocBuilder<ListQuizCubit, ListQuizState>(
+      bloc: cubit,
+      builder: (context, state) {
+        final matchQuery = <Quiz>[];
+        for (final item in state.quiz) {
+          if (item.title.toLowerCase().contains(query.toLowerCase())) {
+            matchQuery.add(item);
+          }
+        }
+        if (matchQuery.isNotEmpty) {
+          return ListView.builder(
+            itemCount: matchQuery.length,
+            itemBuilder: (context, index) {
+              final result = matchQuery[index];
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListTile(
+                  leading: ImageCover(media: result.media),
+                  title: Text(result.title),
+                ),
+              );
+            },
+          );
+        } else {
+          return Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: AppConstant.kPadding / 2,
+              horizontal: AppConstant.kPadding,
+            ),
+            child: Text(l10n.search_quiz_not_found),
+          );
+        }
       },
     );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final matchQuery = <String>[];
-    for (final item in examples) {
-      if (item.toLowerCase().contains(query.toLowerCase())) {
-        matchQuery.add(item);
-      }
-    }
-
-    return ListView.builder(
-      itemCount: matchQuery.length,
-      itemBuilder: (context, index) {
-        final result = matchQuery[index];
-        return ListTile(
-          title: Text(result),
-        );
+    final l10n = AppLocalizations.of(context)!;
+    return BlocBuilder<ListQuizCubit, ListQuizState>(
+      bloc: cubit,
+      builder: (context, state) {
+        final matchQuery = <Quiz>[];
+        for (final item in state.quiz) {
+          if (item.title
+              .removeDiacritics()
+              .toLowerCase()
+              .contains(query.removeDiacritics().toLowerCase())) {
+            matchQuery.add(item);
+          }
+        }
+        if (matchQuery.isNotEmpty) {
+          return ListView.builder(
+            itemCount: matchQuery.length,
+            itemBuilder: (context, index) {
+              final result = matchQuery[index];
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                  onTap: () {
+                    context.pushNamed(
+                      RouterPath.quizDetail.name,
+                      pathParameters: {'id': matchQuery[index].id},
+                      extra: matchQuery[index],
+                    );
+                  },
+                  child: ListTile(
+                    leading: ImageCover(media: result.media),
+                    title: Text(result.title),
+                  ),
+                ),
+              );
+            },
+          );
+        } else {
+          return Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: AppConstant.kPadding / 2,
+              horizontal: AppConstant.kPadding,
+            ),
+            child: Text(l10n.search_quiz_not_found),
+          );
+        }
       },
     );
   }
