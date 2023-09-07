@@ -7,11 +7,13 @@ class CustomButton extends StatelessWidget {
     required this.onPressed,
     required this.label,
     this.backgroundColor,
+    this.color,
   });
 
   final void Function()? onPressed;
   final String label;
   final Color? backgroundColor;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +23,13 @@ class CustomButton extends StatelessWidget {
         backgroundColor: backgroundColor ?? AppConstant.primaryColor,
         minimumSize: const Size.fromHeight(40),
       ),
-      child: Text(
-        label,
-        style: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.w700,
+      child: FittedBox(
+        child: Text(
+          label,
+          style: TextStyle(
+            color: color ?? Colors.white,
+            fontWeight: FontWeight.w700,
+          ),
         ),
       ),
     );

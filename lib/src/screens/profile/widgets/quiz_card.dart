@@ -1,30 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:go_router/go_router.dart';
 
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/extensions/extension.dart';
 import 'package:whizz/src/common/widgets/shared_widget.dart';
-import 'package:whizz/src/modules/quiz/bloc/quiz_bloc.dart';
 import 'package:whizz/src/modules/quiz/model/quiz.dart';
-import 'package:whizz/src/router/app_router.dart';
 
 class QuizCard extends StatelessWidget {
-  const QuizCard({super.key, required this.quiz});
+  const QuizCard({
+    super.key,
+    required this.quiz,
+    this.onTap,
+  });
 
   final Quiz quiz;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return GestureDetector(
-      onTap: () {
-        context.pushNamed(
-          RouterPath.quizEdit.name,
-          extra: context.read<QuizBloc>()..add(OnGoToEditScreen(quiz)),
-        );
-      },
+      onTap: onTap,
       child: Row(
         children: [
           Expanded(
@@ -49,7 +45,6 @@ class QuizCard extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      // '${quiz.questions.length} questions',
                       '${quiz.questions.length} ${l10n.question}',
                       style: AppConstant.textSubtitle.copyWith(
                         color: Colors.white,

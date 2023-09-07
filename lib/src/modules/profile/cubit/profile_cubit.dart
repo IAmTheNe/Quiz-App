@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whizz/src/common/utils/cache.dart';
 import 'package:whizz/src/modules/auth/models/user.dart';
 import 'package:whizz/src/modules/auth/repository/auth_repository.dart';
+import 'package:whizz/src/modules/collection/model/quiz_collection.dart';
+import 'package:whizz/src/modules/collection/repository/quiz_collection_repository.dart';
 import 'package:whizz/src/modules/quiz/model/quiz.dart';
 import 'package:whizz/src/modules/quiz/repository/quiz_repository.dart';
 
@@ -14,9 +16,12 @@ class ProfileCubit extends Cubit<ProfileState> {
   ProfileCubit({
     InMemoryCache? cache,
     QuizRepository? quizRepository,
+    QuizCollectionRepository? collectionRepository,
     AuthenticationRepository? authenticationRepository,
   })  : _cache = cache ?? InMemoryCache(),
         _quizRepository = quizRepository ?? QuizRepository(),
+        _collectionRepository =
+            collectionRepository ?? QuizCollectionRepository(),
         _authenticationRepository =
             authenticationRepository ?? AuthenticationRepository(),
         super(const ProfileState()) {
@@ -25,11 +30,16 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   final InMemoryCache _cache;
   final QuizRepository _quizRepository;
+  final QuizCollectionRepository _collectionRepository;
   final AuthenticationRepository _authenticationRepository;
 
   void _onGetProfile() async {
     emit(state.copyWith(isLoading: true));
     final user = _cache.read<AppUser>(key: 'user');
+    final collections = await _collectionRepository.ownCollection();
+    emit(state.copyWith(
+      collections: collections,
+    ));
     _quizRepository.fetchAllQuizzes2().listen(
       (quiz) {
         emit(
@@ -65,9 +75,16 @@ class ProfileCubit extends Cubit<ProfileState> {
     ));
   }
 
-  Future<void> onSaveQuiz(Quiz quiz) async {
+  Future<List<Quiz>> onGetQuizByCollection(String collectionId) async {
+    return await _quizRepository.fetchQuizByCollection(collectionId);
+  }
+
+  Future<void> onSaveQuiz(
+    Quiz quiz, [
+    QuizCollection? collection,
+  ]) async {
     emit(state.copyWith(isLoading: true));
-    await _quizRepository.saveQuiz(quiz);
+    await _quizRepository.saveQuiz(quiz, collection);
     emit(state.copyWith(isLoading: false));
   }
 }

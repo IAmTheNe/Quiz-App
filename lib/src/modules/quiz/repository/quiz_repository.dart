@@ -8,6 +8,7 @@ import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/utils/cache.dart';
 
 import 'package:whizz/src/modules/auth/models/user.dart';
+import 'package:whizz/src/modules/collection/model/quiz_collection.dart';
 import 'package:whizz/src/modules/quiz/model/media.dart';
 import 'package:whizz/src/modules/quiz/model/quiz.dart';
 
@@ -134,14 +135,17 @@ class QuizRepository {
         .update({'rating': avg});
   }
 
-  Future<void> saveQuiz(Quiz quiz) async {
+  Future<void> saveQuiz(
+    Quiz quiz,
+    QuizCollection? collection,
+  ) async {
     final user = _cache.read<AppUser>(key: 'user');
     await _firestore
         .collection(FirebaseDocumentConstants.user)
         .doc(user!.id)
         .collection(FirebaseDocumentConstants.save)
         .doc(quiz.id)
-        .set(quiz.toMap());
+        .set(quiz.toMap()..addAll({'belongsTo': collection?.id}));
   }
 
   Stream<List<Quiz>> fetchBookmarks() {
@@ -173,6 +177,26 @@ class QuizRepository {
     });
 
     return newQuiz;
+  }
+
+  Future<List<Quiz>> fetchQuizByCollection(String collectionId) async {
+    final quizzies = <Quiz>[];
+    final user = _cache.read<AppUser>(key: 'user') ?? AppUser.empty;
+    await _firestore
+        .collection(FirebaseDocumentConstants.user)
+        .doc(user.id)
+        .collection(FirebaseDocumentConstants.save)
+        .where('belongsTo', isEqualTo: collectionId)
+        .get()
+        .then((querySnapshot) async {
+      for (final quiz in querySnapshot.docs) {
+        final q = Quiz.fromMap(quiz.data());
+        final q2 = await getQuizById(q);
+        quizzies.add(q2);
+      }
+    });
+
+    return quizzies;
   }
 
   Future<String> _getDownloadUrl({

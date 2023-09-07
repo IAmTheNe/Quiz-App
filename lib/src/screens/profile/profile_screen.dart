@@ -6,7 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/modules/profile/cubit/profile_cubit.dart';
+import 'package:whizz/src/modules/quiz/bloc/quiz_bloc.dart';
+import 'package:whizz/src/modules/quiz/model/quiz.dart';
 import 'package:whizz/src/router/app_router.dart';
+import 'package:whizz/src/screens/profile/widgets/collection_card.dart';
 import 'package:whizz/src/screens/profile/widgets/quiz_card.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -70,7 +73,7 @@ class ProfileScreen extends StatelessWidget {
                   child: TabBarView(
                     children: [
                       _buildListQuiz(state),
-                      _buildListQuiz(state),
+                      _buildOwnCollection(state),
                       _buildSaveQuiz(state),
                     ],
                   ),
@@ -106,7 +109,16 @@ class ProfileScreen extends StatelessWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    QuizCard(quiz: state.quizzies[index]),
+                    QuizCard(
+                      quiz: state.quizzies[index],
+                      onTap: () {
+                        context.pushNamed(
+                          RouterPath.quizEdit.name,
+                          extra: context.read<QuizBloc>()
+                            ..add(OnGoToEditScreen(state.quizzies[index])),
+                        );
+                      },
+                    ), //! hehe
                     const SizedBox(
                       height: AppConstant.kPadding / 2,
                     ),
@@ -114,6 +126,59 @@ class ProfileScreen extends StatelessWidget {
                 );
               },
               itemCount: state.quizzies.length,
+            ),
+        ],
+      ),
+    );
+  }
+
+  Padding _buildOwnCollection(ProfileState state) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          state.isLoading
+              ? Text(
+                  '0 Collection',
+                  style: AppConstant.textHeading,
+                )
+              : Text(
+                  '${state.collections.length} Collection',
+                  style: AppConstant.textHeading,
+                ),
+          if (state.collections.isNotEmpty)
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                final quizzies = <Quiz>[];
+                context
+                    .read<ProfileCubit>()
+                    .onGetQuizByCollection(state.collections[index].id)
+                    .then((value) {
+                  quizzies.addAll(value);
+                });
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    DiscoveryCard(
+                      onTap: () {
+                        context
+                            .pushNamed(RouterPath.discoverySave.name, extra: {
+                          'collection': state.collections[index],
+                          'quizzies': quizzies,
+                        });
+                      },
+                      collection: state.collections[index],
+                    ),
+                    const SizedBox(
+                      height: AppConstant.kPadding / 2,
+                    ),
+                  ],
+                );
+              },
+              itemCount: state.collections.length,
             ),
         ],
       ),
@@ -143,7 +208,16 @@ class ProfileScreen extends StatelessWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    QuizCard(quiz: state.save[index]),
+                    QuizCard(
+                      quiz: state.save[index],
+                      onTap: () {
+                        context.pushNamed(
+                          RouterPath.quizDetail.name,
+                          pathParameters: {'id': state.save[index].id},
+                          extra: state.save[index],
+                        );
+                      },
+                    ), //! hehe
                     const SizedBox(
                       height: AppConstant.kPadding / 2,
                     ),

@@ -164,6 +164,23 @@ class QuizCollectionRepository {
     //.collection(FirebaseDocumentConstants.collectionInfo)
   }
 
+  Future<List<QuizCollection>> ownCollection() async {
+    final collections = <QuizCollection>[];
+    final user = _cache.read<AppUser>(key: 'user') ?? AppUser.empty;
+
+    await _firestore
+        .collection(FirebaseDocumentConstants.collection)
+        .where('user', isEqualTo: user.id)
+        .get()
+        .then((querySnapshot) {
+      for (final collection in querySnapshot.docs) {
+        collections.add(QuizCollection.fromMap(collection.data()));
+      }
+    });
+
+    return collections;
+  }
+
   Future<String> _getDownloadUrl({
     required String path,
     required Media media,

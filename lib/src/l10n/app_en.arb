@@ -109,5 +109,8 @@
     "lobby_quit_description": "The room owner has closed this lobby! Click to confirm to return to Home!",
     "collection_create_heading": "Create Collection",
     "discovery_empty": "Oops! There's nothong here! Create a new one!",
-    "search_quiz_not_found": "No results found!"
+    "search_quiz_not_found": "No results found!",
+    "save_quiz_collection_title": "Save quiz as...",
+    "save_quiz_collection_positive": "Save",
+    "save_quiz_collection_negative": "Create new!"
 }

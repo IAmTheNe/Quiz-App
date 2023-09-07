@@ -16,6 +16,7 @@ import 'package:whizz/src/router/scaffold_with_bottom_nav_bar.dart';
 import 'package:whizz/src/screens/discovery/discovery_screen.dart';
 import 'package:whizz/src/screens/discovery_create/discovery_create_screen.dart';
 import 'package:whizz/src/screens/discovery_detail/discovery_detail_screen.dart';
+import 'package:whizz/src/screens/discovery_save/discovery_save_screen.dart';
 import 'package:whizz/src/screens/home/home_screen.dart';
 import 'package:whizz/src/screens/login/login_screen.dart';
 import 'package:whizz/src/screens/media/media_screen.dart';
@@ -40,6 +41,7 @@ enum RouterPath {
   discovery,
   discoveryCreate,
   discoveryDetail,
+  discoverySave,
   play,
   quiz,
   quizDetail,
@@ -284,6 +286,18 @@ class AppRouter {
         pageBuilder: (_, state) => MaterialPage(
           key: state.pageKey,
           child: const DiscoveryCreateScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/discovery_save',
+        name: RouterPath.discoverySave.name,
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (_, state) => MaterialPage(
+          key: state.pageKey,
+          child: DiscoverySaveScreen(
+            collection: (state.extra! as Map)['collection'] as QuizCollection,
+            quizzies: (state.extra as Map)['quizzies'] as List<Quiz>,
+          ),
         ),
       ),
       GoRoute(

@@ -109,5 +109,8 @@
     "lobby_quit_description": "Chủ phòng đã đóng phòng chờ này! Xác nhận để trở lại trang chính!",
     "collection_create_heading": "Thêm bộ sưu tập",
     "discovery_empty": "Đáng tiếc! Không có quiz nào ở đây cả! Tạo mới nào!",
-    "search_quiz_not_found": "Không tìm thấy kết quả!"
+    "search_quiz_not_found": "Không tìm thấy kết quả!",
+    "save_quiz_collection_title": "Lưu quiz vào...",
+    "save_quiz_collection_positive": "Lưu",
+    "save_quiz_collection_negative": "Tạo mới"
 }
