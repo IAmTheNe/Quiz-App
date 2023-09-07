@@ -166,33 +166,41 @@ class LobbyRepository {
     return index;
   }
 
-  Future<List<Participant>> soloHistory(Lobby lobby) async {
-    final listLobby = <Lobby>[];
-    final participant = <Participant>[];
+  Future<List<Lobby>> soloHistory(Lobby lobby) async {
+    var listLobby = <Lobby>[];
+    // final participant = <Participant>[];
 
     await _firestore
         .collection(FirebaseDocumentConstants.lobby)
-        .where('quiz', isEqualTo: lobby.quiz.toMap())
         .where('isSolo', isEqualTo: true)
+        .where('isCancelled', isEqualTo: false)
         .get()
         .then((querySnapshot) {
       for (final doc in querySnapshot.docs) {
-        listLobby.add(Lobby.fromMap(doc.data()));
+        final firestoreLobby = Lobby.fromMap(doc.data());
+        if (firestoreLobby.quiz.id == lobby.quiz.id) {
+          listLobby.add(Lobby.fromMap(doc.data()));
+        }
       }
     });
 
-    for (final lobby in listLobby) {
+    for (int i = 0; i < listLobby.length; i++) {
+      final lobby = listLobby[i];
+      final participants = <Participant>[];
       await _firestore
           .collection(FirebaseDocumentConstants.lobby)
           .doc(lobby.id)
           .collection(FirebaseDocumentConstants.lobbyParticipant)
           .get()
           .then((querySnapshot) {
-        participant.add(Participant.fromMap(querySnapshot.docs[0].data()));
+        final p = Participant.fromMap(querySnapshot.docs[0].data());
+        participants.add(p);
+        final newLobby = lobby.copyWith(participants: participants);
+        listLobby[i] = newLobby;
       });
     }
 
-    return participant;
+    return listLobby;
   }
 
   Future<void> onCancelRoom(Lobby lobby) async {

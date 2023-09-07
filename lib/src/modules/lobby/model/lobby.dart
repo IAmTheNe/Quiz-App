@@ -26,7 +26,7 @@ class Lobby {
   final Quiz quiz;
   final AppUser host;
   final List<Participant> top5;
-  final List<Participant> solo;
+  final List<Lobby> solo;
   final String? code;
   final bool isStart;
   final DateTime? startTime;
@@ -40,7 +40,7 @@ class Lobby {
     Quiz? quiz,
     AppUser? host,
     List<Participant>? top5,
-    List<Participant>? solo,
+    List<Lobby>? solo,
     String? code,
     bool? isStart,
     DateTime? startTime,

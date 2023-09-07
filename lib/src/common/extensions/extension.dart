@@ -3,6 +3,7 @@ import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 extension BuildContextX on BuildContext {
   void showErrorSnackBar(String message, {Duration? duration}) {
@@ -106,6 +107,12 @@ extension DateTimeFormat on int {
 
     if (remains.inDays == 0) return 'Today';
     return '${remains.inDays.toString()} days ago';
+  }
+}
+
+extension DateFormatter on DateTime {
+  String format() {
+    return DateFormat('yyyy-MM-dd, hh:mm a').format(this);
   }
 }
 

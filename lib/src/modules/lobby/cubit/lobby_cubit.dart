@@ -103,11 +103,17 @@ class LobbyCubit extends Cubit<Lobby> {
     });
   }
 
-  void soloHistory() async {
-    final participant = await _lobbyRepository.soloHistory(state);
-    participant.sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
+  Future<void> soloHistory() async {
+    var lobby = await _lobbyRepository.soloHistory(state);
+    // for (var i = 0; i < lobby.length; i++) {
+    //   List<Participant> participants = lobby[i].participants;
+    //   participants.sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
 
-    emit(state.copyWith(solo: participant));
+    // }
+    lobby.sort((a, b) => (b.participants[0].score ?? 0) - (a.participants[0].score ?? 0) );
+    // participant.sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
+
+    emit(state.copyWith(solo: lobby));
   }
 
   Future<void> rating(bool isClicked, double rating) async {

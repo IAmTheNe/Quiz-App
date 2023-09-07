@@ -11,6 +11,7 @@ import 'package:go_router/go_router.dart';
 import 'package:whizz/src/common/constants/constants.dart';
 import 'package:whizz/src/common/extensions/extension.dart';
 import 'package:whizz/src/common/widgets/shared_widget.dart';
+import 'package:whizz/src/gen/assets.gen.dart';
 import 'package:whizz/src/modules/lobby/cubit/lobby_cubit.dart';
 import 'package:whizz/src/modules/lobby/model/lobby.dart';
 import 'package:whizz/src/modules/play/cubit/play_cubit.dart';
@@ -249,7 +250,8 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
                         itemCount:
                             state.solo.length > 5 ? 5 : state.solo.length,
                         itemBuilder: (context, index) {
-                          final participant = state.participants[index];
+                          final lobby = state.solo[index];
+                          final participant = lobby.participants[0];
                           return Row(
                             children: [
                               const SizedBox(
@@ -269,9 +271,22 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
                                                 participant.participant.avatar!,
                                               ),
                                             )
-                                          : null,
+                                          : CircleAvatar(
+                                              backgroundImage: Assets
+                                                  .images.unknownUser
+                                                  .provider(),
+                                            ),
                                   title: Text(participant.participant.name!),
-                                  trailing: Text(participant.score.toString()),
+                                  subtitle: Text(
+                                    lobby.startTime!.format(),
+                                    style: AppConstant.textSubtitle,
+                                  ),
+                                  trailing: Text(
+                                    participant.score.toString(),
+                                    style: AppConstant.textTitle700.copyWith(
+                                      color: Colors.red,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ],
@@ -308,12 +323,12 @@ class _PlayQuizScreenState extends State<PlayQuizScreen> {
 
   LeaderboardCountdown _buildShowScorePage(int index, BuildContext context) {
     return LeaderboardCountdown(
-      onNextQuestion: () {
+      onNextQuestion: () async {
         if (index <= (widget.quiz.questions.length - 1) * 2 + 1) {
           if (index <= (widget.quiz.questions.length - 1) * 2) {
             context.read<GameCubit>().nextQuestion();
           } else {
-            context.read<LobbyCubit>().soloHistory();
+            await context.read<LobbyCubit>().soloHistory();
           }
           _controller.nextPage(
             duration: const Duration(milliseconds: 300),
