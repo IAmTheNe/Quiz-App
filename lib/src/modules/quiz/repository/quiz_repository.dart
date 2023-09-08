@@ -196,6 +196,19 @@ class QuizRepository {
       }
     });
 
+    await _firestore
+        .collection(FirebaseDocumentConstants.quiz)
+        .where('collectionId', isEqualTo: collectionId)
+        .get()
+        .then((querySnapshot) {
+      for (final snapshot in querySnapshot.docs) {
+        final quiz = Quiz.fromMap(snapshot.data());
+        if (!quizzies.contains(quiz)) {
+          quizzies.add(quiz);
+        }
+      }
+    });
+
     return quizzies;
   }
 

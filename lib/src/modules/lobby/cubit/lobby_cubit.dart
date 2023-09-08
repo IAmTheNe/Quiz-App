@@ -8,6 +8,8 @@ import 'package:uuid/uuid.dart';
 import 'package:whizz/src/common/extensions/extension.dart';
 import 'package:whizz/src/modules/lobby/model/lobby.dart';
 import 'package:whizz/src/modules/lobby/repository/lobby_repository.dart';
+import 'package:whizz/src/modules/quiz/model/answer.dart';
+import 'package:whizz/src/modules/quiz/model/question.dart';
 import 'package:whizz/src/modules/quiz/model/quiz.dart';
 import 'package:whizz/src/modules/quiz/repository/quiz_repository.dart';
 import 'package:whizz/src/router/app_router.dart';
@@ -42,20 +44,23 @@ class LobbyCubit extends Cubit<Lobby> {
       isSoloMode: isSoloMode,
     );
 
+    _shuffleAnswer(lobby);
+
     _lobbyRepository.lobby(lobby).listen((event) {
-      emit(event);
+      emit(event.copyWith(
+        quiz: state.quiz,
+      ));
     });
 
     _lobbyRepository.participants(lobby).listen((event) {
       emit(state.copyWith(
+        quiz: state.quiz,
         participants: event,
       ));
     });
   }
 
   void startGame() async {
-    // await _quizRepository.updateNumOfPlayer(state.quiz);
-    // await _lobbyRepository.startGame(state);
     await Future.wait([
       _quizRepository.updateNumOfPlayer(state.quiz),
       _lobbyRepository.startGame(state),
@@ -110,7 +115,8 @@ class LobbyCubit extends Cubit<Lobby> {
     //   participants.sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
 
     // }
-    lobby.sort((a, b) => (b.participants[0].score ?? 0) - (a.participants[0].score ?? 0) );
+    lobby.sort((a, b) =>
+        (b.participants[0].score ?? 0) - (a.participants[0].score ?? 0));
     // participant.sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
 
     emit(state.copyWith(solo: lobby));
@@ -135,6 +141,25 @@ class LobbyCubit extends Cubit<Lobby> {
 
   Stream<Lobby> streamData() {
     return _lobbyRepository.lobby(state);
+  }
+
+  _shuffleAnswer(Lobby lobby) {
+    List<Question> questions = List<Question>.from(lobby.quiz.questions);
+
+    for (int i = 0; i < questions.length; i++) {
+      final shuffleAnswer = List<Answer>.from(questions[i].answers)..shuffle();
+      questions[i] = questions[i].copyWith(
+        answers: shuffleAnswer,
+      );
+    }
+
+    emit(
+      state.copyWith(
+        quiz: lobby.quiz.copyWith(
+          questions: questions,
+        ),
+      ),
+    );
   }
 
   void cancel() {

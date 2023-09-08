@@ -8,6 +8,7 @@ import 'package:whizz/src/common/utils/cache.dart';
 import 'package:whizz/src/modules/auth/models/user.dart';
 import 'package:whizz/src/modules/lobby/model/lobby.dart';
 import 'package:whizz/src/modules/lobby/model/participant.dart';
+import 'package:whizz/src/modules/quiz/model/question.dart';
 
 class LobbyRepository {
   LobbyRepository({
@@ -30,9 +31,15 @@ class LobbyRepository {
     final participants = List<Participant>.from(lobby.participants)
       ..add(participant);
 
+    final shuffleQuestion = List<Question>.from(lobby.quiz.questions);
+    shuffleQuestion.shuffle();
+
     final lobbyNew = lobby.copyWith(
       host: user,
       participants: participants,
+      quiz: lobby.quiz.copyWith(
+        questions: shuffleQuestion,
+      ),
       startTime: now,
       code: isSoloMode ? null : _randomCode(),
     );
