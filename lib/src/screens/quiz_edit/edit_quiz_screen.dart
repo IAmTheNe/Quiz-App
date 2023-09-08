@@ -33,7 +33,10 @@ class EditQuizScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              final quiz = context.read<QuizBloc>().state.quiz;
+              context.read<QuizBloc>().add(OnRemoveQuiz(context, quiz));
+            },
             icon: const Icon(Icons.delete),
           ),
         ],

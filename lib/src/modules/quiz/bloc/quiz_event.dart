@@ -107,3 +107,10 @@ final class OnGoToEditScreen implements QuizEvent {
 
   final Quiz quiz;
 }
+
+final class OnRemoveQuiz implements QuizEvent {
+  const OnRemoveQuiz(this.context, this.quiz);
+
+  final BuildContext context;
+  final Quiz quiz;
+}

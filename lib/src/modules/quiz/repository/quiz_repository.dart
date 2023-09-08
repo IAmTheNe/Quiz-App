@@ -212,6 +212,13 @@ class QuizRepository {
     return quizzies;
   }
 
+  Future<void> removeQuiz(Quiz quiz) async {
+    await _firestore
+        .collection(FirebaseDocumentConstants.quiz)
+        .doc(quiz.id)
+        .delete();
+  }
+
   Future<String> _getDownloadUrl({
     required String path,
     required Media media,

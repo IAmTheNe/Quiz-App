@@ -148,37 +148,23 @@ class QuizCollectionRepository {
         .set(collectionExtra);
 
     return collection;
-
-    // await _firestore
-    //     .collection(FirebaseDocumentConstants.collection)
-    //     .doc(id)
-    //     .collection(FirebaseDocumentConstants.collectionInfo)
-    //     .doc(user.id)
-    //     .set({
-    //   'isPublic': isPublic,
-    //   'user': user,
-    // });
-
-    // final collection = QuizCollection(id: id, name: name, imageUrl: );
-
-    //.collection(FirebaseDocumentConstants.collectionInfo)
   }
 
-  Future<List<QuizCollection>> ownCollection() async {
-    final collections = <QuizCollection>[];
+  Stream<List<QuizCollection>> ownCollection() {
     final user = _cache.read<AppUser>(key: 'user') ?? AppUser.empty;
 
-    await _firestore
+    return _firestore
         .collection(FirebaseDocumentConstants.collection)
         .where('user', isEqualTo: user.id)
-        .get()
-        .then((querySnapshot) {
-      for (final collection in querySnapshot.docs) {
-        collections.add(QuizCollection.fromMap(collection.data()));
+        .snapshots()
+        .asyncMap((event) {
+      final collections = <QuizCollection>[];
+      for (final doc in event.docs) {
+        collections.add(QuizCollection.fromMap(doc.data()));
       }
-    });
 
-    return collections;
+      return collections;
+    });
   }
 
   Future<String> _getDownloadUrl({

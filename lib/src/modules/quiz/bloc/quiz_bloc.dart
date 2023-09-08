@@ -36,6 +36,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     on(_onQuestionRemoveCurrent);
     on(_onCreateQuiz);
     on(_onGoToEditScreen);
+    on(_onRemoveQuiz);
   }
 
   final QuizRepository _quizRepository;
@@ -313,6 +314,27 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
         quiz: event.quiz,
         isValid: event.quiz.title.isNotEmpty,
       ),
+    );
+  }
+
+  void _onRemoveQuiz(
+    OnRemoveQuiz event,
+    Emitter<QuizState> emit,
+  ) {
+    final quiz = event.quiz;
+    final context = event.context;
+
+    final l10n = AppLocalizations.of(context)!;
+
+    context.showConfirmDialog(
+      title: l10n.delete_title,
+      description: l10n.delete_subtitle,
+      onNegativeButton: () {},
+      onPositiveButton: () async {
+        await _quizRepository.removeQuiz(quiz).then((_) {
+          context.pop();
+        });
+      },
     );
   }
 }
