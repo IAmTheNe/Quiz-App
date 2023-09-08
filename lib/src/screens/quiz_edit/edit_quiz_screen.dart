@@ -9,7 +9,6 @@ import 'package:whizz/src/common/extensions/extension.dart';
 import 'package:whizz/src/common/widgets/shared_widget.dart';
 import 'package:whizz/src/modules/collection/cubit/quiz_collection_cubit.dart';
 import 'package:whizz/src/modules/quiz/bloc/quiz_bloc.dart';
-import 'package:whizz/src/screens/quiz_create/widgets/popup_menu.dart';
 
 class EditQuizScreen extends StatelessWidget {
   const EditQuizScreen({super.key});
@@ -32,8 +31,11 @@ class EditQuizScreen extends StatelessWidget {
           },
           icon: const Icon(Icons.arrow_back_ios_new),
         ),
-        actions: const [
-          CreateOptionsPopupMenu(),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.delete),
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -84,7 +86,7 @@ class EditQuizScreen extends StatelessWidget {
                               OnQuizCollectionChanged(collectionId as String));
                         },
                         label: Text(l10n.collection),
-                        items: state is QuizCollectionSuccess
+                        items: state.collections.isNotEmpty
                             ? state.collections
                             : [],
                       );

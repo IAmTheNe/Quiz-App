@@ -95,6 +95,7 @@ class QuizCollectionDropDownField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     checkSaveInitial(context);
+    print(items.length);
     return Container(
       padding: const EdgeInsets.symmetric(
         vertical: 8,

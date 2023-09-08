@@ -21,9 +21,10 @@ class UnsplashImageRepository {
     final photos = await client.photos
         .list(
           page: 1,
-          perPage: 30,
+          perPage: 10,
         )
         .goAndGet();
+    client.close();
     return photos;
   }
 
