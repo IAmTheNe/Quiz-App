@@ -10,19 +10,19 @@ class MenuSettingsMockup {
         Icons.person_4,
       ),
     ),
-    MenuSetting(
-      title: MenuTitle.notifications,
-      prefixIcon: Icon(
-        Icons.notifications,
-      ),
-    ),
-    MenuSetting(
-      title: MenuTitle.mode,
-      menuType: MenuList.toggle,
-      prefixIcon: Icon(
-        Icons.dark_mode,
-      ),
-    ),
+    // MenuSetting(
+    //   title: MenuTitle.notifications,
+    //   prefixIcon: Icon(
+    //     Icons.notifications,
+    //   ),
+    // ),
+    // MenuSetting(
+    //   title: MenuTitle.mode,
+    //   menuType: MenuList.toggle,
+    //   prefixIcon: Icon(
+    //     Icons.dark_mode,
+    //   ),
+    // ),
     MenuSetting(
       title: MenuTitle.language,
       menuType: MenuList.toggle,
